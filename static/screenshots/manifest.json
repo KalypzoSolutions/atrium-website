@@ -1,0 +1,385 @@
+[
+	{
+		"file": "01-login.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Anmeldung",
+		"title_en": "Sign-in",
+		"caption_de": "Die Anmeldeseite: links E-Mail und Passwort eingeben und auf „Anmelden“ klicken, rechts alternativ den QR-Code mit einem bereits angemeldeten Handy scannen („Mit dem Handy anmelden“). Unten lässt sich die Sprache zwischen Deutsch und English umschalten; „Passwort vergessen?“ startet das Zurücksetzen per E-Mail.",
+		"caption_en": "The sign-in page: enter your e-mail and password on the left and click “Sign in”, or scan the QR code on the right with a phone that is already signed in (“Sign in with your phone”). The footer switches the language between Deutsch and English; “Forgot password?” starts a reset by e-mail.",
+		"route": "/login"
+	},
+	{
+		"file": "02-dashboard.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Dashboard",
+		"title_en": "Dashboard",
+		"caption_de": "Die Startseite nach dem Login: Kachel „Zu erledigen“ und Wochenübersicht „Diese Woche“. Über „Anpassen“ ordnen Sie die Kacheln an. Links die Navigation (Dashboard, Administration), oben die globale Suche (Strg+K), der Hell/Dunkel-Schalter und das Benutzermenü.",
+		"caption_en": "The start page after signing in: a “To do” card and the “This week” overview. “Customize” lets you arrange the cards. The navigation (Dashboard, Administration) is on the left; global search (Ctrl+K), the light/dark toggle and the user menu are at the top.",
+		"route": "/dashboard"
+	},
+	{
+		"file": "02b-admin-overview.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Administration im Überblick",
+		"title_en": "Administration overview",
+		"caption_de": "Unter „Administration“ sehen Sie Kennzahlen (Anmeldungen, aktive Konten, Sitzungen, fehlgeschlagene Anmeldungen, Administratoren ohne 2FA, API-Aufrufe, Speicher, KI-Kosten) und alle Verwaltungsbereiche: Personen & Rechte, Einstellungen, Module, Schnittstellen sowie Protokoll & Wartung. Das Suchfeld oben findet Einstellungen direkt (z. B. „SMTP“, „Logo“).",
+		"caption_en": "“Administration” shows key figures (sign-ins, active accounts, sessions, failed sign-ins, administrators without 2FA, API calls, storage, AI cost) and every admin area: People & permissions, Settings, Modules, Interfaces and Log & maintenance. The search box at the top jumps straight to a setting (e.g. “SMTP”, “logo”).",
+		"route": "/admin"
+	},
+	{
+		"file": "03-modules.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Module – installiert",
+		"title_en": "Modules – installed",
+		"caption_de": "Administration → Module, Tab „Installiert“: Liste der Module im aktuellen Build. Aktivierte Module erscheinen in der Navigation und in der API. „Nach Updates suchen“ prüft die Quellen auf neue Versionen. In einer frischen Installation ist die Liste leer – der Core bringt keine Fachmodule mit.",
+		"caption_en": "Administration → Modules, “Installed” tab: the modules in the current build. Enabled modules appear in the navigation and the API. “Check for updates” looks for new versions at their sources. On a fresh installation the list is empty – the core ships without business modules.",
+		"route": "/admin/modules"
+	},
+	{
+		"file": "04-module-install.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Modul installieren – Quelle wählen",
+		"title_en": "Install a module – choose the source",
+		"caption_de": "Tab „Installieren“, Schritt 1 „1. Quelle wählen“: einen GitHub-Link (ganzes Repository, Ordner oder Branch/Tag) eintragen oder eine ZIP-Datei (max. 50 MB) wählen, dann „Quelle laden“. Darunter: optionaler GitHub-Token für private Repositorys und die Liste „Erlaubte Quellen“ (je Zeile owner/repo oder owner/*).",
+		"caption_en": "“Install” tab, step 1 “1. Choose a source”: paste a GitHub link (whole repository, a folder, or a branch/tag) or pick a ZIP file (max. 50 MB), then click “Load source”. Below: an optional GitHub token for private repositories and the “Allowed sources” list (one owner/repo or owner/* per line).",
+		"route": "/admin/modules/install"
+	},
+	{
+		"file": "04b-module-install-select.webp",
+		"width": 1440,
+		"height": 1422,
+		"title_de": "Modul installieren – Module auswählen",
+		"title_en": "Install a module – select modules",
+		"caption_de": "Schritt 2 „Module auswählen“: Atrium liest den Katalog (atrium-modules.json) der Quelle und zeigt alle enthaltenen Module mit ID, Version und Beschreibung sowie den festgehaltenen Commit. Gewünschte Module ankreuzen und „Vorschau anzeigen“ klicken. Beispielquelle: die Atrium-Basismodule (Termine, Dateien, Notizen, Aufgaben, Whiteboards).",
+		"caption_en": "Step 2 “Select modules”: Atrium reads the source’s catalog (atrium-modules.json) and lists every module with ID, version and description plus the pinned commit. Tick the modules you want and click “Show preview”. Example source: the Atrium basic modules (events, files, notes, tasks, whiteboards).",
+		"route": "/admin/modules/install"
+	},
+	{
+		"file": "04c-module-install-preview.webp",
+		"width": 1440,
+		"height": 2239,
+		"title_de": "Modul installieren – Vorschau und Bestätigung",
+		"title_en": "Install a module – preview and confirm",
+		"caption_de": "Schritt 3 „Vorschau“: Für jedes Modul zeigt Atrium Version, Quelle mit Commit, benötigte Core-Version, neue Rechte, Datenbank-Migrationen, npm-Pakete und Dateianzahl; empfohlene optionale Module werden aufgelistet. Nach dem Warnhinweis („Modulcode läuft mit vollen Rechten“) bestätigen Sie „Ich habe die Quelle geprüft und vertraue ihr“, geben Ihr Konto-Passwort (ggf. 2FA-Code) ein und klicken auf „Installieren“. Danach baut der Server die App neu und startet sie automatisch; neue Module sind zunächst deaktiviert.",
+		"caption_en": "Step 3 “Preview”: for each module Atrium shows version, source with commit, required core version, new permissions, database migrations, npm packages and file count; recommended optional modules are listed. After the warning (“Module code runs with full privileges”) tick “I have checked the source and trust it”, enter your account password (and 2FA code if enabled) and click “Install”. The server then rebuilds and restarts the app automatically; new modules start out disabled.",
+		"route": "/admin/modules/install",
+		"height_en": 2219
+	},
+	{
+		"file": "05-settings.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Einstellungen – Allgemein",
+		"title_en": "Settings – General",
+		"caption_de": "Administration → Einstellungen → Allgemein: Systemname, Systemsprache („Automatisch“ folgt der Browsersprache), Bezeichnung für „alle“ sowie Name, Anschrift und Kontakt der Organisation (für Briefe und PDFs). Die Tabs oben führen zu Design, E-Mail-Versand, E-Mail-Layout, Speicher, Benachrichtigungen, KI, PDF und Modul-Einstellungen.",
+		"caption_en": "Administration → Settings → General: system name, system language (“Automatic” follows the browser), the name for “everyone”, and the organization’s name, address and contact details (used in letters and PDFs). The tabs lead to Design, Email delivery, Email layout, Storage, Notifications, AI, PDF and module settings.",
+		"route": "/admin/settings/general"
+	},
+	{
+		"file": "06-settings-mail.webp",
+		"width": 1440,
+		"height": 958,
+		"title_de": "Einstellungen – E-Mail-Versand (SMTP)",
+		"title_en": "Settings – Email delivery (SMTP)",
+		"caption_de": "Tab „E-Mail-Versand“: SMTP-Host, Port, „TLS direkt (Port 465)“, Benutzer, Passwort (verschlüsselt gespeichert, nie an den Browser übertragen) und Absenderadresse eintragen und speichern. Im Abschnitt „Test-E-Mail“ einen Empfänger angeben und „Test-E-Mail senden“ klicken, um die Verbindung zu prüfen.",
+		"caption_en": "“Email delivery” tab: enter SMTP host, port, “Direct TLS (port 465)”, user, password (stored encrypted, never sent to the browser) and sender address, then save. In the “Test email” section enter a recipient and click “Send test email” to verify the connection.",
+		"route": "/admin/settings/mail"
+	},
+	{
+		"file": "07-settings-storage.webp",
+		"width": 1440,
+		"height": 1296,
+		"title_de": "Einstellungen – Speicher (S3)",
+		"title_en": "Settings – Storage (S3)",
+		"caption_de": "Tab „Speicher“: Anbindung an AWS S3, Cloudflare R2, MinIO oder einen anderen S3-kompatiblen Dienst – Endpoint (leer = AWS), Region, Bucket, Access Key ID, Secret Access Key, Path-Style-URLs, maximale Dateigröße und erlaubte Dateitypen. Nach dem Speichern prüft „Verbindung testen“ den Zugriff. Darunter der Speicherverbrauch je Modul.",
+		"caption_en": "“Storage” tab: connect AWS S3, Cloudflare R2, MinIO or any S3-compatible service – endpoint (empty = AWS), region, bucket, access key ID, secret access key, path-style URLs, maximum file size and allowed file types. After saving, “Test connection” checks access. Storage usage per module is shown below.",
+		"route": "/admin/settings/storage"
+	},
+	{
+		"file": "08-settings-pdf.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Einstellungen – PDF",
+		"title_en": "Settings – PDF",
+		"caption_de": "Tab „PDF“: einheitliches Layout für alle erzeugten Dokumente – Standard-Seitenformat und -Ausrichtung, Seitenränder, Kopf- und Fußzeile sowie Logo im Header. Logo und Organisationsdaten kommen aus „Design“ bzw. „Allgemein“.",
+		"caption_en": "“PDF” tab: one layout for every generated document – default page format and orientation, margins, header and footer text, and logo in the header. Logo and organization details come from “Design” and “General”.",
+		"route": "/admin/settings/pdf"
+	},
+	{
+		"file": "09-users.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Benutzer",
+		"title_en": "Users",
+		"caption_de": "Administration → Benutzer: alle Konten mit Rollen, Status, 2FA und letzter Anmeldung; Suche und Filter nach Status, 2FA und Rolle, CSV-Export. „Benutzer anlegen“ erstellt ein neues Konto; je Zeile lassen sich Konten bearbeiten, deaktivieren oder löschen.",
+		"caption_en": "Administration → Users: every account with roles, status, 2FA and last sign-in; search and filter by status, 2FA and role, CSV export. “Create user” adds an account; each row lets you edit, deactivate or delete it.",
+		"route": "/admin/users"
+	},
+	{
+		"file": "10-roles.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Rollen & Berechtigungen",
+		"title_en": "Roles & permissions",
+		"caption_de": "Administration → Rollen: Rollen bündeln Berechtigungen und werden Benutzer*innen zugewiesen. Jede Karte zeigt Beschreibung sowie Anzahl der Berechtigungen und Benutzer. Die Systemrolle „Administrator“ ist schreibgeschützt; eigene Rollen (hier z. B. „Kassenwart“) über „Rolle anlegen“ erstellen und bearbeiten. Der Tab „Berechtigungen“ listet alle Rechte.",
+		"caption_en": "Administration → Roles: roles bundle permissions and are assigned to users. Each card shows the description and how many permissions and users it has. The system role “Administrator” is read-only; create and edit your own roles (here e.g. “Kassenwart”, treasurer) with “Create role”. The “Permissions” tab lists every permission.",
+		"route": "/admin/roles"
+	},
+	{
+		"file": "10b-role-edit.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Rolle bearbeiten",
+		"title_en": "Edit a role",
+		"caption_de": "Der Dialog „Rolle bearbeiten“: Name, Beschreibung und die einzelnen Berechtigungen je Bereich (mit „alle“/„keine“) ankreuzen und speichern. Sie können nur Rechte vergeben, die Sie selbst besitzen; als „Admin-gleich“ markierte Rechte (z. B. Modulinstallation, Datensicherung, Zurücksetzen) dürfen nur Administrator*innen vergeben.",
+		"caption_en": "The “Edit role” dialog: set name and description and tick individual permissions per area (with “all”/“none”), then save. You can only grant permissions you have yourself; permissions marked “Admin-level” (e.g. module installation, backup, reset) can only be granted by administrators.",
+		"route": "/admin/roles"
+	},
+	{
+		"file": "11-api-keys.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "API-Keys",
+		"title_en": "API keys",
+		"caption_de": "Administration → Schnittstellen → API-Keys: Schlüssel für externe Dienste (z. B. die eigene Website) mit Präfix, Scopes, Status, Ablaufdatum und letzter Nutzung; „Widerrufen“ sperrt einen Schlüssel sofort. Wirksame Rechte sind die Schnittmenge aus Scopes und den eigenen Berechtigungen.",
+		"caption_en": "Administration → Interfaces → API keys: keys for external services (e.g. your website) with prefix, scopes, status, expiry date and last use; “Revoke” disables a key immediately. Effective rights are the intersection of the scopes and your own permissions.",
+		"route": "/admin/api"
+	},
+	{
+		"file": "11b-api-key-create.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "API-Key erstellen",
+		"title_en": "Create an API key",
+		"caption_de": "„API-Key erstellen“ öffnet den Dialog: Name vergeben, optional ein Ablaufdatum setzen und die benötigten Scopes auswählen (Filterfeld hilft), dann „Erstellen“. Der Schlüssel wird danach nur ein einziges Mal angezeigt – sofort kopieren und sicher aufbewahren.",
+		"caption_en": "“Create API key” opens the dialog: enter a name, optionally an expiry date, and select the scopes you need (use the filter), then click “Create”. The key is shown only once afterwards – copy it right away and keep it safe.",
+		"route": "/admin/api"
+	},
+	{
+		"file": "12-2fa.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Profil – Sicherheit",
+		"title_en": "Profile – Security",
+		"caption_de": "Profil (Benutzermenü oben rechts) → Tab „Sicherheit“: Passwort ändern (mind. 12 Zeichen, optional alle anderen Sitzungen beenden), Zwei-Faktor-Authentifizierung mit „Aktivieren“ einschalten und aktive Sitzungen einsehen oder beenden.",
+		"caption_en": "Profile (user menu, top right) → “Security” tab: change your password (at least 12 characters, optionally sign out all other sessions), turn on two-factor authentication with “Turn on”, and review or end active sessions.",
+		"route": "/profile?tab=security"
+	},
+	{
+		"file": "12b-2fa-setup.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "2FA einrichten",
+		"title_en": "Set up 2FA",
+		"caption_de": "Nach Bestätigung mit dem Passwort zeigt der Dialog einen QR-Code für die Authenticator-App und zehn Backup-Codes („Codes kopieren“). Codes sicher ablegen, „Ich habe die Codes gespeichert“ ankreuzen, den 6-stelligen Bestätigungscode aus der App eingeben und „Aktivierung abschließen“ klicken.",
+		"caption_en": "After confirming with your password the dialog shows a QR code for your authenticator app and ten backup codes (“Copy codes”). Store the codes safely, tick “I have saved the codes”, enter the 6-digit verification code from the app and click “Finish activation”.",
+		"route": "/profile?tab=security"
+	},
+	{
+		"file": "13-audit-log.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Audit-Log",
+		"title_en": "Audit log",
+		"caption_de": "Administration → Audit-Log: unveränderliches Protokoll sicherheitsrelevanter Ereignisse mit Zeitpunkt, Aktion, Akteur, Ziel und IP-Adresse. Filtern nach Freitext, Aktions-Präfix (z. B. core.user) und Zeitraum; „Anzeigen“ öffnet die Details eines Eintrags.",
+		"caption_en": "Administration → Audit log: a tamper-proof record of security-relevant events with time, action, actor, target and IP address. Filter by text, action prefix (e.g. core.user) and date range; “Show” opens an entry’s details.",
+		"route": "/admin/audit"
+	},
+	{
+		"file": "14-backup.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Datensicherung",
+		"title_en": "Backup",
+		"caption_de": "Administration → Datensicherung, Tab „Export“: Bereiche wählen (Benutzer, Rollen, API-Keys, Einstellungen, Audit-Log, API-Protokoll, Job-Läufe, KI-Nutzung, optional Dateien) und ein Sicherungs-Passwort festlegen – die Sicherungsdatei wird damit verschlüsselt. Über „Import“ wird eine Sicherung wieder eingespielt oder zusammengeführt.",
+		"caption_en": "Administration → Backup, “Export” tab: choose the areas (users, roles, API keys, settings, audit log, API log, job runs, AI usage, optionally files) and set a backup password – the backup file is encrypted with it. “Import” restores or merges a backup.",
+		"route": "/admin/backup"
+	},
+	{
+		"file": "15-search.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Globale Suche",
+		"title_en": "Global search",
+		"caption_de": "Die globale Suche öffnet sich über das Suchfeld oben oder mit Strg+K. Sie findet Benutzer*innen, Rollen, Verwaltungsseiten und Inhalte der Module; mit ↑/↓ auswählen, Enter öffnet, Esc schließt.",
+		"caption_en": "Global search opens from the search box at the top or with Ctrl+K. It finds users, roles, admin pages and module content; select with ↑/↓, Enter opens, Esc closes.",
+		"route": "/dashboard (Strg+K / Ctrl+K)"
+	},
+	{
+		"file": "16-api-docs.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "API-Übersicht",
+		"title_en": "API overview",
+		"caption_de": "Administration → Schnittstellen → API-Übersicht: alle REST-Endpunkte von Core und Modulen, automatisch aus dem Code erzeugt – mit Methode, Pfad, Beschreibung und Zugriff (öffentlich, Anmeldung, Berechtigung). Filter nach Modul, Methode und Zugriff; „OpenAPI (JSON)“ lädt die OpenAPI-3.1-Spezifikation (/api/v1/openapi.json).",
+		"caption_en": "Administration → Interfaces → API overview: every REST endpoint of the core and modules, generated from the code – with method, path, description and access (public, sign-in, permission). Filter by module, method and access; “OpenAPI (JSON)” opens the OpenAPI 3.1 specification (/api/v1/openapi.json).",
+		"route": "/admin/api/docs"
+	},
+	{
+		"file": "17-settings-design.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Einstellungen – Design",
+		"title_en": "Settings – Design",
+		"caption_de": "Administration → Einstellungen → Design: Akzentfarbe und Hintergrund der App-Icons (mit Kontrastanzeige) sowie das Logo. Das Logo erscheint in PDFs, in der Seitenleiste, auf der Anmeldeseite, als Favicon und als App-Icon.",
+		"caption_en": "Administration → Settings → Design: accent color and app icon background (with a contrast check) plus the logo. The logo appears in PDFs, the sidebar, the sign-in page, as the favicon and as the app icon.",
+		"route": "/admin/settings/design"
+	},
+	{
+		"file": "18-settings-mail-layout.webp",
+		"width": 1440,
+		"height": 1774,
+		"title_de": "Einstellungen – E-Mail-Layout",
+		"title_en": "Settings – Email layout",
+		"caption_de": "Administration → Einstellungen → E-Mail-Layout: einheitliches Layout ein- oder ausschalten, Emblem im Kopf, Signatur und Fußzeile. Darunter eine Live-Vorschau („Vorschau neu laden“) und der Versand einer Test-E-Mail.",
+		"caption_en": "Administration → Settings → Email layout: turn the organization layout on or off, show the emblem in the header, signature and footer. Below: a live preview (“Reload preview”) and sending a test email.",
+		"route": "/admin/settings/mail-layout"
+	},
+	{
+		"file": "19-settings-notifications.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Einstellungen – Benachrichtigungen",
+		"title_en": "Settings – Notifications",
+		"caption_de": "Administration → Einstellungen → Benachrichtigungen: Web Push systemweit ein- oder ausschalten, Anzahl registrierter Geräte und der öffentliche VAPID-Schlüssel. „Schlüssel neu erzeugen“ meldet alle Geräte ab.",
+		"caption_en": "Administration → Settings → Notifications: turn Web Push on or off system-wide, the number of registered devices and the public VAPID key. “Regenerate keys” unsubscribes all devices.",
+		"route": "/admin/settings/notifications"
+	},
+	{
+		"file": "20-settings-ai.webp",
+		"width": 1440,
+		"height": 2756,
+		"title_de": "Einstellungen – KI",
+		"title_en": "Settings – AI",
+		"caption_de": "Administration → Einstellungen → KI: Datenschutzhinweis, Nutzung im laufenden Monat und je Modul, Konfiguration (API-Key, Basis-URL, Standardmodell, erlaubte Modelle und Module, Limits, Preise) sowie die Schreibhilfe (Ton, Anrede, Grußformel, Limit je Person).",
+		"caption_en": "Administration → Settings → AI: privacy notice, usage this month and per module, configuration (API key, base URL, default model, allowed models and modules, limits, prices) and the writing assistant (tone, form of address, closing, per-person limit).",
+		"route": "/admin/settings/ai",
+		"height_en": 2736
+	},
+	{
+		"file": "22-module-history.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Module – Verlauf",
+		"title_en": "Modules – History",
+		"caption_de": "Administration → Module → Verlauf: „Installierte Quellen“ (Modul, Version, Quelle, Commit, Installationszeit) und der Verlauf aller Installationen, Aktualisierungen und Entfernungen mit Status. Auf einem frischen Server sind beide Listen leer.",
+		"caption_en": "Administration → Modules → History: “Installed sources” (module, version, source, commit, install time) and the history of every installation, update and removal with its status. On a fresh server both lists are empty.",
+		"route": "/admin/modules/history"
+	},
+	{
+		"file": "23-permissions.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Berechtigungen",
+		"title_en": "Permissions",
+		"caption_de": "Administration → Rollen → Berechtigungen: alle registrierten Rechte von Core und Modulen im Schema modul.ressource.aktion, mit Beschreibung und den Rollen, die das Recht enthalten.",
+		"caption_en": "Administration → Roles → Permissions: every permission registered by the core and modules in the module.resource.action scheme, with its description and the roles that contain it.",
+		"route": "/admin/roles/permissions"
+	},
+	{
+		"file": "24-privacy.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Datenauskunft",
+		"title_en": "Data export",
+		"caption_de": "Administration → Datenauskunft: Person per Name oder E-Mail suchen und mit „Auskunft (JSON)“ alle gespeicherten Daten exportieren (Art. 15/20 DSGVO). Der Hinweis oben erinnert daran, dass die Datei unverschlüsselt ist.",
+		"caption_en": "Administration → Data export: search for a person by name or email and export all stored data with “Export (JSON)” (GDPR Art. 15/20). The notice at the top points out that the file is not encrypted.",
+		"route": "/admin/privacy"
+	},
+	{
+		"file": "25-reset.webp",
+		"width": 1440,
+		"height": 1075,
+		"title_de": "Zurücksetzen",
+		"title_en": "Reset",
+		"caption_de": "Administration → Zurücksetzen, Schritt 1 von 4: Bereiche wählen (API-Keys, Benutzer, Rollen, API-Protokoll, Job-Läufe, KI-Nutzung, Einstellungen, Audit-Log sowie Bereiche aktiver Module). Danach folgen Vorschau, Pflicht-Sicherung und Bestätigung.",
+		"caption_en": "Administration → Reset, step 1 of 4: choose areas (API keys, users, roles, API log, job runs, AI usage, settings, audit log and areas of enabled modules). Preview, mandatory backup and confirmation follow.",
+		"route": "/admin/reset",
+		"height_en": 1055
+	},
+	{
+		"file": "26-user-detail.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Benutzer – Detailseite",
+		"title_en": "User – detail page",
+		"caption_de": "Detailseite eines Kontos unter Administration → Benutzer: Status, 2FA und Rollen als Abzeichen, Reiter Übersicht, Aktivität, Sitzungen, Sicherheit und Rechte sowie Kennzahlen wie letzte Anmeldung, aktive Sitzungen, API-Keys und Dateien.",
+		"caption_en": "Detail page of an account under Administration → Users: status, 2FA and roles as badges, the Overview, Activity, Sessions, Security and Permissions tabs, and figures such as last sign-in, active sessions, API keys and files.",
+		"route": "/admin/users/<id>"
+	},
+	{
+		"file": "26b-user-security.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Benutzer – Sicherheit",
+		"title_en": "User – Security",
+		"caption_de": "Reiter „Sicherheit“ eines Kontos: Zurücksetzen-Mail senden, Einmal-Link erzeugen, Passwort setzen oder Einladung erneut senden; darunter Konto deaktivieren oder löschen.",
+		"caption_en": "The “Security” tab of an account: send a reset email, create a one-time link, set a password or resend the invitation; below that, disable or delete the account.",
+		"route": "/admin/users/<id>?tab=security"
+	},
+	{
+		"file": "26c-user-create.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Benutzer anlegen",
+		"title_en": "Create user",
+		"caption_de": "Dialog „Benutzer anlegen“: Name, E-Mail und Passwort (mindestens 12 Zeichen) – oder „Stattdessen einladen“, dann setzt die Person ihr Passwort selbst über einen 7 Tage gültigen Link. Der Reiter „Rollen & Rechte“ vergibt Rollen und Einzelrechte.",
+		"caption_en": "The “Create user” dialog: name, email and password (at least 12 characters) – or “Invite instead”, so the person sets their own password via a link valid for 7 days. The “Roles & permissions” tab assigns roles and individual permissions.",
+		"route": "/admin/users"
+	},
+	{
+		"file": "27-forgot-password.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Passwort vergessen",
+		"title_en": "Forgot password",
+		"caption_de": "Die Seite „Passwort vergessen“: E-Mail-Adresse eingeben und „Link anfordern“. Der Link ist eine Stunde gültig; die Antwort verrät nicht, ob ein Konto existiert.",
+		"caption_en": "The “Forgot password” page: enter the email address and request a link. The link is valid for one hour; the response does not reveal whether an account exists.",
+		"route": "/forgot-password"
+	},
+	{
+		"file": "28-profile.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Profil – Konto",
+		"title_en": "Profile – Account",
+		"caption_de": "Profil, Reiter „Konto“: Profilbild, Name, E-Mail-Adresse (Änderung per Bestätigungslink) sowie Mitglied seit und Rollen. Weitere Reiter: Sicherheit, Darstellung und Benachrichtigungen.",
+		"caption_en": "Profile, “Account” tab: profile picture, name, email address (changed via a confirmation link), member since and roles. Further tabs: Security, Appearance and Notifications.",
+		"route": "/profile"
+	},
+	{
+		"file": "29b-profile-appearance.webp",
+		"width": 1440,
+		"height": 1710,
+		"title_de": "Profil – Darstellung",
+		"title_en": "Profile – Appearance",
+		"caption_de": "Profil, Reiter „Darstellung“: Theme-Vorschläge und eigene Themes, Farbschema (Hell, Dunkel, System), Akzentfarbe sowie Sprache, Dichte, Einträge pro Seite und Startseite.",
+		"caption_en": "Profile, “Appearance” tab: suggested and custom themes, color scheme (light, dark, system), accent color, plus language, density, entries per page and start page.",
+		"route": "/profile?tab=appearance"
+	},
+	{
+		"file": "30-dashboard-customize.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Dashboard anpassen",
+		"title_en": "Customize the dashboard",
+		"caption_de": "„Anpassen“ auf dem Dashboard: Kacheln ein- und ausblenden und mit den Pfeilen oder per Ziehen sortieren. Änderungen werden sofort gespeichert; „Standard wiederherstellen“ setzt die Anordnung zurück.",
+		"caption_en": "“Customize” on the dashboard: show or hide tiles and reorder them with the arrows or by dragging. Changes are saved immediately; “Restore default” resets the layout.",
+		"route": "/dashboard"
+	},
+	{
+		"file": "31-backup-import.webp",
+		"width": 1440,
+		"height": 900,
+		"title_de": "Datensicherung – Import",
+		"title_en": "Backup – Import",
+		"caption_de": "Administration → Datensicherung, Reiter „Import“: in vier Schritten (Datei wählen, Passwörter, Vorschau, Bestätigen) eine .atriumbackup-Datei hochladen, prüfen und wiederherstellen oder zusammenführen.",
+		"caption_en": "Administration → Backup, “Import” tab: in four steps (choose file, passwords, preview, confirm) upload an .atriumbackup file, check it and restore or merge it.",
+		"route": "/admin/backup?tab=import"
+	}
+]

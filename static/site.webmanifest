@@ -1,0 +1,17 @@
+{
+	"name": "Kalypzo Atrium",
+	"short_name": "Atrium",
+	"description": "Modulare Verwaltungsplattform – selbst gehostet.",
+	"start_url": "/",
+	"scope": "/",
+	"display": "browser",
+	"lang": "de",
+	"theme_color": "#0b1020",
+	"background_color": "#0b1020",
+	"icons": [
+		{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+		{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+		{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+		{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+	]
+}
