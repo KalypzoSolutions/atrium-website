@@ -1,6 +1,6 @@
 ---
 title: Development
-description: Contribute to the Kalypzo Atrium core – npm scripts, project structure, migrations and tests with Vitest, PGlite and Playwright.
+description: Contribute to the Kalypzo Atrium core – npm scripts, project structure, tests and migrations.
 order: 34
 section: Development
 source: README.md
@@ -51,7 +51,7 @@ tests/{unit,integration,e2e,helpers,fixtures}
 docs/                            documentation
 ```
 
-The core doesn't know any feature modules: a Vite plugin (`tools/vite-plugin-atrium-modules.ts`) includes the modules from the module directory at build time. The directory can be changed via `ATRIUM_MODULES_DIR`.
+Feature modules are not part of the repository; a Vite plugin includes them from the module directory (`ATRIUM_MODULES_DIR`) at build time (see [Architecture](/en/docs/architecture#layers)).
 
 ## Tests
 

@@ -1,6 +1,6 @@
 ---
 title: Architektur
-description: Aufbau von Kalypzo Atrium: modularer Monolith, Schichten, Requestfluss für Seiten und REST-API, Aktivierung von Modulen, Jobs und zentrale Entscheidungen.
+description: Aufbau von Kalypzo Atrium – modularer Monolith, Schichten, Requestfluss, Modulaktivierung, Jobs und zentrale Entscheidungen.
 order: 30
 section: Entwickeln
 source: docs/architecture.md
@@ -82,7 +82,7 @@ Module durchlaufen drei voneinander getrennte Ebenen:
 
 | Ebene | Wann | Wirkung |
 |---|---|---|
-| **Registrierung** | Build und Start | Das Modul ist im Build bekannt, sein Manifest wird validiert. Ein ungültiges Modul wird nicht geladen und als „Defekt“ angezeigt. |
+| **Registrierung** | Build und Start | Das Modul ist im Build bekannt, sein Manifest wird validiert. Ein ungültiges Modul wird nicht geladen und als „Defekt“ angezeigt ([Prüfungen](/de/docs/modules#manifest-und-definition-module-ts)). |
 | **Routing** | Build | Statische Catch-all-Routen `/modules/[moduleId]/[...path]` und `/api/v1/modules/<id>/…`, aufgelöst zur Laufzeit |
 | **Aktivierung** | Laufzeit | Tabelle `module_state` entscheidet über Erreichbarkeit, Navigation und wirksame Rechte (mit 3 s Cache) |
 
@@ -91,13 +91,15 @@ Beim Start legt `syncModules()` fehlende Einträge in `module_state` an (deaktiv
 ## Datenbank
 
 - PostgreSQL 17 mit Drizzle ORM; Core-Tabellen im Schema `public`, Migrationen in `drizzle/`.
-- **Ein Schema je Modul** (`mod_<id>`). `core.database.forModule(id).transaction(…)` setzt den `search_path` darauf. Core-Tabellen und fremde Modulschemas sind damit nur **unqualifiziert** unerreichbar – eine Konvention, kein Sicherheitsmechanismus.
+- **Ein Schema je Modul** (`mod_<id>`). `core.database.forModule(id).transaction(…)` setzt den `search_path` darauf. Core-Tabellen und fremde Modulschemas sind damit nur **unqualifiziert** unerreichbar – eine Konvention, kein Sicherheitsmechanismus. Wie Module Tabellen und Migrationen anlegen, steht unter [Datenbank und Migrationen](/de/docs/modules#datenbank-und-migrationen).
 - Das Audit-Log ist per Datenbank-Trigger unveränderlich.
 - Eine Advisory-Sperre sorgt dafür, dass jede Migration genau einmal läuft.
 
 ## Hintergrundjobs
 
-Module (und der Core) deklarieren Jobs mit dem Zeitplan `hourly`, `daily` oder `{ everyMinutes: n }`. Der Runner startet nach der Initialisierung, prüft **jede Minute** und führt fällige Jobs **aktiver** Module im Systemkontext aus:
+Module (und der Core) deklarieren Jobs mit dem Zeitplan `hourly`, `daily` oder `{ everyMinutes: n }`. Der Runner startet nach der Initialisierung, prüft **jede Minute** und führt fällige Jobs **aktiver** Module im Systemkontext aus. Wie ein Modul Jobs deklariert, zeigt [Jobs und Suche](/de/docs/core-services#jobs-und-suche).
+
+Für den Runner gilt:
 
 - `daily` läuft einmal je Kalendertag im Zeitfenster `JOBS_DAILY_WINDOW` (Standard `6-20`, Europe/Berlin).
 - Nach einem Fehlschlag folgt ein neuer Versuch nach 15 Minuten.
@@ -108,7 +110,7 @@ Core-Jobs sind z. B. `core.housekeeping` (Aufbewahrungsfristen) und `core.notifi
 
 ## Modulinstallation zur Laufzeit
 
-Das Docker-Image startet nicht `node build`, sondern `scripts/supervisor.mjs`. Der Supervisor startet die App als Kindprozess und baut sie neu, wenn Module installiert werden:
+Das Docker-Image startet nicht `node build`, sondern `scripts/supervisor.mjs`. Der Supervisor startet die App als Kindprozess und baut sie neu, wenn Module installiert werden (Bedienung siehe [Module verwalten](/de/docs/module-management)):
 
 1. Module der laufenden Generation kopieren, neuen Inhalt einspielen (muss zum Inhaltshash der Vorschau passen), eigene npm-Pakete der Module installieren,
 2. `svelte-kit sync` und `vite build` in eine neue **Generation** unter `/data/atrium/gen/<id>`,

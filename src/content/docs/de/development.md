@@ -1,6 +1,6 @@
 ---
 title: Entwicklung
-description: Am Core von Kalypzo Atrium entwickeln – npm-Skripte, Projektstruktur, Migrationen sowie Tests mit Vitest, PGlite und Playwright.
+description: Am Core von Kalypzo Atrium entwickeln – npm-Skripte, Projektstruktur, Tests und Migrationen.
 order: 34
 section: Entwickeln
 source: README.md
@@ -51,7 +51,7 @@ tests/{unit,integration,e2e,helpers,fixtures}
 docs/                            Dokumentation
 ```
 
-Der Core kennt keine Fachmodule: Ein Vite-Plugin (`tools/vite-plugin-atrium-modules.ts`) bindet die Module aus dem Modulverzeichnis zur Build-Zeit ein. Das Verzeichnis lässt sich über `ATRIUM_MODULES_DIR` umstellen.
+Fachmodule liegen nicht im Repository; ein Vite-Plugin bindet sie zur Build-Zeit aus dem Modulverzeichnis (`ATRIUM_MODULES_DIR`) ein (siehe [Architektur](/de/docs/architecture#schichten)).
 
 ## Tests
 
