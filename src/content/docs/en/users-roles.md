@@ -1,6 +1,6 @@
 ---
 title: Users, roles and permissions
-description: Create, invite and lock accounts, assign roles and individual permissions, understand admin-level permissions and manage passwords, sessions and 2FA.
+description: Create and manage accounts, assign roles and individual permissions, and understand the rules against privilege escalation.
 order: 11
 section: Administration
 source: docs/permissions.md
@@ -45,7 +45,7 @@ Select several accounts (up to 500) to enable or disable them together, send a r
 ### Disabling or deleting
 
 - **Disable** signs the person out immediately and blocks sign-in until the account is active again. All data is kept – usually the better choice.
-- **Delete** removes the account permanently. Modules clean up their data for this account (hook `onUserDeleted`); the confirmation dialog shows what is removed along with it.
+- **Delete** removes the account permanently. Modules clean up their data for this account (hook `onUserDeleted`); the confirmation dialog shows what is removed along with it. What this means for data protection is described under [Deleting accounts](/en/docs/privacy#deleting-accounts).
 
 ## An account’s detail page
 
@@ -78,7 +78,7 @@ In the **Sessions** tab you end individual sessions or sign the person out on ev
 - You need the admin-level permission `core.users.impersonate`, confirm with your password (and 2FA code) and give a **reason**. The reason is only shown on the detail page, not in the audit log.
 - Administrators can never be the target, nor can accounts with more permissions than yours.
 - Every action is recorded in the audit log with you as the acting person. The person’s password, 2FA, sessions, email and API keys stay locked.
-- A banner shows the remaining time and lets you end the session early. By default the person receives an email (setting “Notify users when an administrator acts as them” under *General*).
+- A banner shows the remaining time and lets you end the session early. By default the person receives an email (setting “Notify users when an administrator acts as them” under [Settings → General](/en/docs/settings#general)).
 
 ## Roles
 
@@ -128,27 +128,44 @@ Four permissions effectively allow taking over the whole system and are therefor
 
 ## Core permissions
 
+This reference lists all core permissions, grouped by topic. The permissions of installed modules additionally appear under **Roles → Permissions**.
+
+**Accounts and roles**
+
 | Key | Meaning |
 |---|---|
 | `core.users.view` / `.create` / `.edit` / `.delete` | View, create, edit and disable, delete users |
 | `core.users.impersonate` | Act as another user (admin-level) |
 | `core.roles.view` / `.create` / `.edit` / `.delete` | View roles and permissions, create, edit, delete roles |
 | `core.roles.assign` | Assign roles and individual permissions to users |
+
+**Modules, settings and operations**
+
+| Key | Meaning |
+|---|---|
 | `core.modules.view` / `.manage` | View modules, or enable and disable them |
 | `core.modules.install` | Install and update modules from GitHub or ZIP (administrators only) |
-| `core.jobs.manage` | View background jobs and trigger them manually |
 | `core.settings.view` / `.manage` | View or change system settings |
+| `core.jobs.manage` | View background jobs and trigger them manually |
 | `core.api.view` / `.manage` | View or manage API keys |
+
+**Services: storage, PDF and AI**
+
+| Key | Meaning |
+|---|---|
 | `core.storage.read` / `.write` / `.delete` | Read, write, delete files in the core storage area |
 | `core.storage.manage` | Configure storage and manage all storage areas |
 | `core.pdf.generate` / `.manage` | Generate PDFs via the API, configure PDF templates |
 | `core.ai.use` / `.manage` / `.view` | Use AI, configure it, view usage |
-| `core.audit.view` | View the audit log |
-| `core.system.reset` | Reset data areas (admin-level) |
-| `core.system.backup` | Export and import backups (admin-level) |
-| `core.privacy.export` | GDPR data export (admin-level) |
 
-The permissions of installed modules additionally appear under **Roles → Permissions**.
+**Audit, backup and privacy**
+
+| Key | Meaning |
+|---|---|
+| `core.audit.view` | View the audit log |
+| `core.system.backup` | Export and import backups (admin-level) |
+| `core.system.reset` | Reset data areas (admin-level) |
+| `core.privacy.export` | GDPR data export (admin-level) |
 
 ## Recommendations
 

@@ -1,6 +1,6 @@
 ---
 title: Benutzer, Rollen und Rechte
-description: Konten anlegen, einladen und sperren, Rollen und Einzelrechte vergeben, admin-gleiche Rechte verstehen sowie Passwörter, Sitzungen und 2FA verwalten.
+description: Konten anlegen und verwalten, Rollen und Einzelrechte vergeben und die Schutzregeln gegen Rechteausweitung verstehen.
 order: 11
 section: Administration
 source: docs/permissions.md
@@ -45,7 +45,7 @@ Markieren Sie mehrere Konten (bis zu 500), um sie gemeinsam zu aktivieren oder z
 ### Deaktivieren oder löschen
 
 - **Deaktivieren** meldet die Person sofort ab und sperrt die Anmeldung, bis das Konto wieder aktiv ist. Daten bleiben vollständig erhalten – meist die bessere Wahl.
-- **Löschen** entfernt das Konto endgültig. Module räumen dabei ihre Daten zu diesem Konto auf (Hook `onUserDeleted`); was genau mitgelöscht wird, zeigt der Bestätigungsdialog.
+- **Löschen** entfernt das Konto endgültig. Module räumen dabei ihre Daten zu diesem Konto auf (Hook `onUserDeleted`); was genau mitgelöscht wird, zeigt der Bestätigungsdialog. Was das für den Datenschutz bedeutet, steht unter [Konten löschen](/de/docs/privacy#konten-loeschen).
 
 ## Die Detailseite eines Kontos
 
@@ -78,7 +78,7 @@ Mit **Als Person handeln** sehen und ändern Sie für 15, 30 oder 60 Minuten all
 - Sie brauchen das admin-gleiche Recht `core.users.impersonate`, bestätigen mit Passwort (und 2FA-Code) und geben einen **Grund** an. Der Grund ist nur auf der Detailseite sichtbar, nicht im Audit-Log.
 - Administratoren können nie Ziel sein, ebenso wenig Konten mit mehr Rechten als Ihren.
 - Jede Aktion wird im Audit-Log mit Ihnen als handelnder Person vermerkt. Passwort, 2FA, Sitzungen, E-Mail und API-Keys der Person bleiben gesperrt.
-- Ein Banner zeigt die Restzeit und **Beenden**. Standardmäßig erhält die Person eine E-Mail (Einstellung „Person informieren, wenn die Verwaltung als sie handelt“ unter *Allgemein*).
+- Ein Banner zeigt die Restzeit und **Beenden**. Standardmäßig erhält die Person eine E-Mail (Einstellung „Person informieren, wenn die Verwaltung als sie handelt“ unter [Einstellungen → Allgemein](/de/docs/settings#allgemein)).
 
 ## Rollen
 
@@ -128,27 +128,44 @@ Zusätzlich ist `core.modules.install` privilegiert: Module installieren dürfen
 
 ## Core-Berechtigungen
 
+Diese Referenz listet alle Rechte des Core, nach Themen gegliedert. Die Rechte installierter Module erscheinen zusätzlich unter **Rollen → Berechtigungen**.
+
+**Konten und Rollen**
+
 | Schlüssel | Bedeutung |
 |---|---|
 | `core.users.view` / `.create` / `.edit` / `.delete` | Benutzer ansehen, anlegen, bearbeiten und deaktivieren, löschen |
 | `core.users.impersonate` | Als andere Person handeln (admin-gleich) |
 | `core.roles.view` / `.create` / `.edit` / `.delete` | Rollen und Berechtigungen ansehen, Rollen anlegen, bearbeiten, löschen |
 | `core.roles.assign` | Rollen und Einzelrechte an Benutzer vergeben |
+
+**Module, Einstellungen und Betrieb**
+
+| Schlüssel | Bedeutung |
+|---|---|
 | `core.modules.view` / `.manage` | Module ansehen bzw. aktivieren und deaktivieren |
 | `core.modules.install` | Module aus GitHub oder ZIP installieren und aktualisieren (nur Administratoren) |
-| `core.jobs.manage` | Hintergrundjobs ansehen und manuell auslösen |
 | `core.settings.view` / `.manage` | Systemeinstellungen ansehen bzw. ändern |
+| `core.jobs.manage` | Hintergrundjobs ansehen und manuell auslösen |
 | `core.api.view` / `.manage` | API-Keys ansehen bzw. verwalten |
+
+**Dienste: Speicher, PDF und KI**
+
+| Schlüssel | Bedeutung |
+|---|---|
 | `core.storage.read` / `.write` / `.delete` | Dateien im Core-Speicherbereich lesen, schreiben, löschen |
 | `core.storage.manage` | Speicher konfigurieren und alle Speicherbereiche verwalten |
 | `core.pdf.generate` / `.manage` | PDFs per API erzeugen bzw. PDF-Vorlagen konfigurieren |
 | `core.ai.use` / `.manage` / `.view` | KI nutzen, konfigurieren, Nutzung ansehen |
-| `core.audit.view` | Audit-Log ansehen |
-| `core.system.reset` | Datenbereiche zurücksetzen (admin-gleich) |
-| `core.system.backup` | Datensicherung exportieren und importieren (admin-gleich) |
-| `core.privacy.export` | Datenauskunft nach DSGVO (admin-gleich) |
 
-Die Rechte installierter Module erscheinen zusätzlich unter **Rollen → Berechtigungen**.
+**Audit, Sicherung und Datenschutz**
+
+| Schlüssel | Bedeutung |
+|---|---|
+| `core.audit.view` | Audit-Log ansehen |
+| `core.system.backup` | Datensicherung exportieren und importieren (admin-gleich) |
+| `core.system.reset` | Datenbereiche zurücksetzen (admin-gleich) |
+| `core.privacy.export` | Datenauskunft nach DSGVO (admin-gleich) |
 
 ## Empfehlungen
 
