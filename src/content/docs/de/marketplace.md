@@ -146,7 +146,7 @@ Neue Quellen werden per Pull Request im Repository der Website [KalypzoSolutions
 1. Stellen Sie sicher, dass Ihr Repository öffentlich auf GitHub liegt und einen gültigen [Katalog](/de/docs/modules#katalog-atrium-modules-json) enthält. Testen Sie die Installation in einer eigenen Instanz.
 2. Forken Sie `atrium-website` und ergänzen Sie in `src/lib/marketplace.ts` einen Eintrag für Ihre Quelle.
 3. Vergeben Sie eine eindeutige `id` (Kleinbuchstaben, Ziffern und Bindestriche), Beschreibungen auf **Deutsch und Englisch** sowie mindestens eine Kategorie aus der Liste oben. `official` bleibt `false` – diese Markierung ist Quellen von Kalypzo Solutions vorbehalten.
-4. Prüfen Sie lokal mit `npm run build`. Der Build bricht bei ungültigen Einträgen ab, etwa bei doppelten IDs, Links außerhalb von `https://github.com`, fehlenden Übersetzungen oder unbekannten Kategorien.
+4. Prüfen Sie lokal mit `npm run build`. Der Build bricht bei ungültigen Einträgen ab, etwa bei doppelten IDs, Links außerhalb von `https://github.com` (auch die Kurzform `github:…` ist nicht erlaubt), `official: true` außerhalb von KalypzoSolutions, fehlenden Übersetzungen oder unbekannten Kategorien.
 5. Öffnen Sie einen Pull Request mit einer kurzen Beschreibung Ihrer Module. Nach dem Merge erscheint die Quelle auf der Marktplatz-Seite und in der Registry.
 
 Ein Eintrag sieht zum Beispiel so aus:

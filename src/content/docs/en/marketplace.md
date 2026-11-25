@@ -146,7 +146,7 @@ New sources are added by pull request to the website repository [KalypzoSolution
 1. Make sure your repository is public on GitHub and contains a valid [catalog](/en/docs/modules#catalog-atrium-modules-json). Test the installation in your own instance.
 2. Fork `atrium-website` and add an entry for your source in `src/lib/marketplace.ts`.
 3. Choose a unique `id` (lowercase letters, digits and hyphens), descriptions in **German and English** and at least one category from the list above. Leave `official` set to `false` – this flag is reserved for sources from Kalypzo Solutions.
-4. Check locally with `npm run build`. The build fails on invalid entries, such as duplicate IDs, links outside `https://github.com`, missing translations or unknown categories.
+4. Check locally with `npm run build`. The build fails on invalid entries, such as duplicate IDs, links outside `https://github.com` (the short form `github:…` is not allowed either), `official: true` outside KalypzoSolutions, missing translations or unknown categories.
 5. Open a pull request with a short description of your modules. After the merge, the source appears on the marketplace page and in the registry.
 
 An entry looks like this:

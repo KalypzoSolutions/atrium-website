@@ -263,9 +263,13 @@ export function githubRepoSlug(url: string): string {
 
 const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const REPO_URL = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/;
-/** Von Atrium akzeptierte Installationslinks (siehe Doku „Module verwalten“). */
+/**
+ * Installationslinks im Marktplatz: nur https://github.com/…, weil Registry-Clients alle
+ * anderen Links verwerfen (die Kurzform github:… ist hier deshalb nicht erlaubt).
+ */
 const SOURCE_URL = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+(?:\/tree\/[^\s/]+(?:\/[^\s]+)?)?$/;
-const SOURCE_SHORT = /^github:[A-Za-z0-9-]+\/[A-Za-z0-9._-]+(?:\/[^\s#]+)?(?:#[^\s]+)?$/;
+/** GitHub-Owner, dessen Quellen als offiziell markiert werden dürfen. */
+const OFFICIAL_OWNER = 'kalypzosolutions';
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Prüft, ob alle Sprachen einen nicht leeren Text haben. */
@@ -277,7 +281,8 @@ function checkLocalized(value: Localized | undefined, where: string, errors: str
 
 /**
  * Prüft die Quellenliste und wirft beim Build einen Fehler, wenn ein Eintrag ungültig ist
- * (doppelte IDs, falsches Repository, ungültiger Installationslink, unbekannte Kategorie,
+ * (doppelte IDs, falsches Repository, ungültiger Installationslink, unberechtigte
+ * Markierung „official“, unbekannte Kategorie,
  * fehlende Übersetzung …). Alle Fehler werden gesammelt gemeldet.
  */
 export function validateSources(list: MarketSource[]): MarketSource[] {
@@ -293,11 +298,19 @@ export function validateSources(list: MarketSource[]): MarketSource[] {
 		if (!REPO_URL.test(s.repository ?? '')) {
 			errors.push(`${where}: repository muss https://github.com/owner/repo sein`);
 		}
-		if (!SOURCE_URL.test(s.source ?? '') && !SOURCE_SHORT.test(s.source ?? '')) {
-			errors.push(`${where}: source ist kein gültiger Installationslink`);
+		if (!SOURCE_URL.test(s.source ?? '')) {
+			errors.push(`${where}: source muss https://github.com/owner/repo[/tree/…] sein`);
 		} else if (REPO_URL.test(s.repository ?? '')) {
 			if (githubRepoSlug(s.source).toLowerCase() !== githubRepoSlug(s.repository).toLowerCase()) {
 				errors.push(`${where}: source zeigt nicht auf repository`);
+			}
+		}
+		if (typeof s.official !== 'boolean') {
+			errors.push(`${where}: official muss true oder false sein`);
+		} else if (s.official) {
+			const owner = REPO_URL.test(s.repository ?? '') ? githubRepoSlug(s.repository).split('/')[0] : '';
+			if (owner.toLowerCase() !== OFFICIAL_OWNER) {
+				errors.push(`${where}: official ist Repositorys von KalypzoSolutions vorbehalten`);
 			}
 		}
 		if (!s.publisher?.name?.trim()) errors.push(`${where}: publisher.name fehlt`);
