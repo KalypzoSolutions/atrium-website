@@ -122,6 +122,7 @@ export const en: typeof de = {
 			license: 'License',
 			noLicense: 'No license specified',
 			source: 'Install link',
+			sourceLabel: (name: string) => `Install link of ${name}`,
 			github: 'GitHub',
 			githubLabel: (name: string) => `Open ${name} on GitHub`,
 			homepage: 'Website',
@@ -129,7 +130,7 @@ export const en: typeof de = {
 			copied: 'Copied',
 			copyLabel: (name: string) => `Copy install link of ${name}`,
 			copiedMsg: (name: string) => `Install link of ${name} copied to the clipboard.`,
-			copyFailed: 'Copying is not possible – please select the link and copy it manually.'
+			copyFailed: 'Copying is not possible – the link in the field is selected, please copy it manually (e.g. with Ctrl+C).'
 		},
 		empty: {
 			title: 'No matching sources',
