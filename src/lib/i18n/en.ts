@@ -89,7 +89,7 @@ export const en: typeof de = {
 		registry: 'JSON registry for Atrium instances',
 		registryHint: 'The same list in machine-readable form – for Atrium instances and your own tools.',
 		listTitle: 'Module sources',
-		discover: 'Browse the marketplace',
+		discover: 'Discover modules in the marketplace',
 		filters: {
 			label: 'Filter sources',
 			search: 'Search sources',
@@ -146,8 +146,8 @@ export const en: typeof de = {
 					text: 'In Atrium, open Administration → Modules → Install, paste the link and click “Load source”.'
 				},
 				{
-					title: 'Review and install',
-					text: 'Select the modules, review the preview with version, dependencies and commit, then install.'
+					title: 'Review the preview & install',
+					text: 'Select the modules, review the preview with version, dependencies and commit, install and enable them after the rebuild.'
 				}
 			],
 			docsManagement: 'Managing modules',

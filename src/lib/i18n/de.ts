@@ -103,7 +103,7 @@ export const de = {
 			reset: 'Filter zurücksetzen'
 		},
 		categories: {
-			core: 'Kern',
+			core: 'Core',
 			organisation: 'Organisation',
 			communication: 'Kommunikation',
 			finance: 'Finanzen',
@@ -146,8 +146,8 @@ export const de = {
 					text: 'In Atrium Administration → Module → Installieren öffnen, den Link einfügen und auf „Quelle laden“ klicken.'
 				},
 				{
-					title: 'Prüfen und installieren',
-					text: 'Module auswählen, die Vorschau mit Version, Abhängigkeiten und Commit prüfen und installieren.'
+					title: 'Vorschau prüfen & installieren',
+					text: 'Module auswählen, Vorschau mit Version, Abhängigkeiten und Commit prüfen, installieren und nach dem Neubau aktivieren.'
 				}
 			],
 			docsManagement: 'Module verwalten',
