@@ -1,6 +1,6 @@
 ---
 title: Settings
-description: Every area under Administration → Settings explained – General, Design, Email delivery, Email layout, Storage, Notifications, AI, PDF and Modules.
+description: Every tab under Administration → Settings – from organization and design to email, storage, AI, PDF and modules.
 order: 12
 section: Administration
 source: docs/deployment.md
@@ -21,7 +21,9 @@ Everything business-related – email, storage, AI, PDF, appearance – is confi
 - **Secrets follow their target:** if you change the SMTP host, port or user, the AI base URL or the S3 endpoint, Atrium discards the related secret – unless you enter it again in the same save. The message names what needs to be re-entered. This prevents redirecting a stored password to a foreign server.
 - Every change is recorded in the [audit log](/en/docs/privacy#audit-log); for secrets only the fact that something changed.
 
-## General
+## Organization and appearance
+
+### General
 
 <DocShot name="05-settings" lang="en" caption="Settings → General: system and organization." />
 
@@ -36,7 +38,7 @@ Everything business-related – email, storage, AI, PDF, appearance – is confi
 
 ### Retention periods
 
-The daily job `core.housekeeping` enforces these periods. Set them to match your record of processing activities:
+Also on the **General** tab, you set how long logs are kept. The daily job `core.housekeeping` enforces these periods. Set them to match your record of processing activities (background under [Privacy → Retention periods](/en/docs/privacy#retention-periods)):
 
 | Setting | Default | Effect |
 |---|---|---|
@@ -44,7 +46,7 @@ The daily job `core.housekeeping` enforces these periods. Set them to match your
 | Keep IP addresses in the audit log | 90 days (1–3650) | the IP is removed from audit entries, the entry stays |
 | Keep audit log | 730 days (0 = never, otherwise ≥ 30) | older audit entries are deleted |
 
-## Design
+### Design
 
 <DocShot name="17-settings-design" lang="en" />
 
@@ -52,9 +54,11 @@ The daily job `core.housekeeping` enforces these periods. Set them to match your
 - **App icon background:** fill color behind the logo for app icons on the home screen (iOS, Android).
 - **Logo:** PNG, JPEG or WebP, can be cropped after upload (square works best). The logo appears in PDFs, the sidebar, the sign-in page, as the favicon and as the app icon. Uploading requires configured [storage](#storage) and write access to it.
 
-Everyone can additionally choose their own theme and accent color under *Appearance* in their profile.
+Everyone can additionally choose their own theme and accent color under *Appearance* in their profile (see [Appearance and start page](/en/docs/search-dashboard#appearance-and-start-page)).
 
-## Email delivery
+## Email
+
+### Email delivery
 
 Atrium sends all emails through this SMTP server: password links, invitations, notifications and the modules’ emails.
 
@@ -69,7 +73,7 @@ Atrium sends all emails through this SMTP server: password links, invitations, n
 
 Save first, then send a message under **Test email**. If delivery fails, the interface deliberately reports only a generic error – the details (host, port, server response) are in the server log.
 
-## Email layout
+### Email layout
 
 If you like, every outgoing email gets a consistent layout: a header with your logo and organization name, the content, a signature and a footer.
 
@@ -80,7 +84,9 @@ If you like, every outgoing email gets a consistent layout: a header with your l
 - **Signature** (e.g. “Best regards”) and **Footer** (small print, e.g. registration details) – empty means none.
 - The **preview** shows a sample email with the saved values; after saving, reload the preview. The accent color comes from *Design*.
 
-## Storage
+## Storage and services
+
+### Storage
 
 Atrium stores files, receipts, images and logos in S3-compatible object storage (AWS S3, Hetzner Object Storage, Cloudflare R2, Backblaze B2, MinIO …).
 
@@ -100,15 +106,17 @@ Atrium stores files, receipts, images and logos in S3-compatible object storage 
 
 > **Note:** If browsers upload files directly through signed URLs, the bucket’s CORS configuration must allow your `ORIGIN` for `PUT`.
 
-## Notifications
+### Notifications
 
-Here you turn **Web Push** on or off system-wide. Everyone then chooses in their profile what they get by email, push or both; with push off, everything arrives by email.
+Here you turn **Web Push** on or off system-wide and see the number of registered devices. Everyone then chooses in their profile what they get by email, push or both; with push off, everything arrives by email. How people set this up is described in [Notifications](/en/docs/search-dashboard#notifications).
 
 <DocShot name="19-settings-notifications" lang="en" />
 
-Atrium generates the **VAPID keys** automatically when first needed; the private key is stored encrypted. Only use **Regenerate keys** if the key may have fallen into the wrong hands – afterwards everyone has to re-enable push on their devices. See [Notifications](/en/docs/search-dashboard#notifications).
+- Atrium generates the **VAPID keys** automatically when first needed; the private key is stored encrypted in the database and travels with [backups](/en/docs/backup-restore).
+- Only use **Regenerate keys** if the key may have fallen into the wrong hands – afterwards everyone has to re-enable push on their devices.
+- The server needs outbound HTTPS connections to the push services (`fcm.googleapis.com`, `*.push.apple.com`, `*.push.services.mozilla.com`, `*.notify.windows.com`).
 
-## AI
+### AI
 
 Atrium connects to an OpenAI-compatible AI service that modules use, for example for the **writing assistant**.
 
@@ -130,9 +138,9 @@ Atrium connects to an OpenAI-compatible AI service that modules use, for example
 
 At the top, the page shows **usage** this month and per module. Only counters are stored (requests, tokens, estimated costs) – **no prompts and no responses**.
 
-> **Privacy:** everything modules send to the AI goes to the configured provider – possibly outside the EU. Sign a data processing agreement before turning it on and mention the writing assistant in your privacy policy. The writing assistant masks email addresses, phone numbers and IBANs before sending.
+> **Privacy:** everything modules send to the AI goes to the configured provider – possibly outside the EU. What to settle before turning it on is described under [AI and data minimization](/en/docs/privacy#ai-and-data-minimization).
 
-## PDF
+### PDF
 
 Atrium generates PDFs on the server with Chromium – for lists, letters and module exports.
 
@@ -150,7 +158,7 @@ In addition, **Modules → Install** has two settings for module installation: a
 
 ## Pre-filling on first start
 
-For automated setups, storage and email can be pre-filled once through environment variables (`S3_*`, `SMTP_*`). They are only applied while the setting in the database is still empty – afterwards only what you set here applies. Details under [Configuration](/en/docs/configuration).
+For automated setups, storage and email can be pre-filled through environment variables (`S3_*`, `SMTP_*`). This is only a **starting value**: it is applied while the setting in the database is still empty. Afterwards only the **value in the database** applies – what you set here. The variables are listed under [Configuration](/en/docs/configuration#initial-storage-and-email-settings).
 
 ## Next steps
 

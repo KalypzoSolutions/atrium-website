@@ -1,6 +1,6 @@
 ---
 title: Einstellungen
-description: Alle Bereiche unter Administration → Einstellungen erklärt: Allgemein, Design, E-Mail-Versand, E-Mail-Layout, Speicher, Benachrichtigungen, KI, PDF, Module.
+description: Alle Reiter unter Administration → Einstellungen – von Organisation und Design über E-Mail und Speicher bis zu KI, PDF und Modulen.
 order: 12
 section: Administration
 source: docs/deployment.md
@@ -21,7 +21,9 @@ Alles Fachliche – E-Mail, Speicher, KI, PDF, Erscheinungsbild – stellen Sie 
 - **Secrets folgen ihrem Ziel:** Ändern Sie SMTP-Host, -Port oder -Benutzer, die KI-Basis-URL oder den S3-Endpoint, verwirft Atrium das zugehörige Secret – außer Sie geben es im selben Speichervorgang neu ein. Die Meldung nennt, was neu einzugeben ist. So lässt sich ein gespeichertes Passwort nicht an einen fremden Server umleiten.
 - Jede Änderung landet im [Audit-Log](/de/docs/privacy#audit-log); bei Secrets nur der Hinweis, dass sich etwas geändert hat.
 
-## Allgemein
+## Organisation und Erscheinungsbild
+
+### Allgemein
 
 <DocShot name="05-settings" lang="de" caption="Einstellungen → Allgemein: System und Organisation." />
 
@@ -36,7 +38,7 @@ Alles Fachliche – E-Mail, Speicher, KI, PDF, Erscheinungsbild – stellen Sie 
 
 ### Aufbewahrungsfristen
 
-Der tägliche Job `core.housekeeping` setzt diese Fristen durch. Legen Sie sie passend zu Ihrem Verarbeitungsverzeichnis fest:
+Ebenfalls im Reiter **Allgemein** legen Sie fest, wie lange Protokolle erhalten bleiben. Der tägliche Job `core.housekeeping` setzt diese Fristen durch. Legen Sie sie passend zu Ihrem Verarbeitungsverzeichnis fest (Hintergrund unter [Datenschutz → Aufbewahrungsfristen](/de/docs/privacy#aufbewahrungsfristen)):
 
 | Einstellung | Standard | Wirkung |
 |---|---|---|
@@ -44,7 +46,7 @@ Der tägliche Job `core.housekeeping` setzt diese Fristen durch. Legen Sie sie p
 | IP-Adressen im Audit-Log aufbewahren | 90 Tage (1–3650) | die IP wird aus Audit-Einträgen entfernt, der Eintrag bleibt |
 | Audit-Log aufbewahren | 730 Tage (0 = nie, sonst ≥ 30) | ältere Audit-Einträge werden gelöscht |
 
-## Design
+### Design
 
 <DocShot name="17-settings-design" lang="de" />
 
@@ -52,9 +54,11 @@ Der tägliche Job `core.housekeeping` setzt diese Fristen durch. Legen Sie sie p
 - **Hintergrund der App-Icons:** Füllfarbe hinter dem Logo bei App-Icons auf dem Home-Bildschirm (iOS, Android).
 - **Logo:** PNG, JPEG oder WebP, nach dem Hochladen zuschneidbar (quadratisch passt am besten). Das Logo erscheint in PDFs, in der Seitenleiste, auf der Anmeldeseite, als Favicon und als App-Icon. Zum Hochladen braucht es einen eingerichteten [Speicher](#speicher) und Schreibrechte darauf.
 
-Jede Person kann zusätzlich im Profil unter *Darstellung* ein eigenes Theme und eine eigene Akzentfarbe wählen.
+Jede Person kann zusätzlich im Profil unter *Darstellung* ein eigenes Theme und eine eigene Akzentfarbe wählen (siehe [Darstellung und Startseite](/de/docs/search-dashboard#darstellung-und-startseite)).
 
-## E-Mail-Versand
+## E-Mail
+
+### E-Mail-Versand
 
 Über diesen SMTP-Server verschickt Atrium alle E-Mails: Passwort-Links, Einladungen, Benachrichtigungen und die Mails der Module.
 
@@ -69,7 +73,7 @@ Jede Person kann zusätzlich im Profil unter *Darstellung* ein eigenes Theme und
 
 Speichern Sie zuerst, dann senden Sie unter **Test-E-Mail** eine Testnachricht. Schlägt der Versand fehl, meldet die Oberfläche bewusst nur einen allgemeinen Fehler – die Details (Host, Port, Serverantwort) stehen im Server-Protokoll.
 
-## E-Mail-Layout
+### E-Mail-Layout
 
 Jede ausgehende E-Mail erhält auf Wunsch ein einheitliches Layout: Kopf mit Logo und Name der Organisation, Inhalt, Signatur und Fußzeile.
 
@@ -80,7 +84,9 @@ Jede ausgehende E-Mail erhält auf Wunsch ein einheitliches Layout: Kopf mit Log
 - **Signatur** (z. B. „Viele Grüße“) und **Fußzeile** (Kleingedrucktes, z. B. Vereinsnachweis) – leer bedeutet: keine.
 - Die **Vorschau** zeigt eine Beispiel-Mail mit gespeicherten Werten; nach dem Speichern **Vorschau neu laden**. Die Akzentfarbe stammt aus *Design*.
 
-## Speicher
+## Speicher und Dienste
+
+### Speicher
 
 Dateien, Belege, Bilder und Logos speichert Atrium in einem S3-kompatiblen Objektspeicher (AWS S3, Hetzner Object Storage, Cloudflare R2, Backblaze B2, MinIO …).
 
@@ -100,15 +106,17 @@ Mit **Verbindung testen** prüfen Sie Zugang und Bucket. Darunter zeigt *Speiche
 
 > **Hinweis:** Laden Browser Dateien direkt über signierte URLs hoch, muss die CORS-Konfiguration des Buckets Ihren `ORIGIN` für `PUT` erlauben.
 
-## Benachrichtigungen
+### Benachrichtigungen
 
-Hier schalten Sie **Web Push** systemweit ein oder aus. Jede Person wählt danach im Profil selbst, was sie per E-Mail, Push oder beidem bekommt; ist Push aus, kommt alles per E-Mail.
+Hier schalten Sie **Web Push** systemweit ein oder aus und sehen die Zahl der registrierten Geräte. Jede Person wählt danach im Profil selbst, was sie per E-Mail, Push oder beidem bekommt; ist Push aus, kommt alles per E-Mail. Wie Personen das einrichten, beschreibt [Benachrichtigungen](/de/docs/search-dashboard#benachrichtigungen).
 
 <DocShot name="19-settings-notifications" lang="de" />
 
-Die **VAPID-Schlüssel** erzeugt Atrium beim ersten Bedarf automatisch; der private Schlüssel wird verschlüsselt gespeichert. **Schlüssel neu erzeugen** nur, wenn er in falsche Hände geraten sein könnte – danach müssen alle Personen Push auf ihren Geräten neu aktivieren. Mehr dazu unter [Benachrichtigungen](/de/docs/search-dashboard#benachrichtigungen).
+- Die **VAPID-Schlüssel** erzeugt Atrium beim ersten Bedarf automatisch; der private Schlüssel wird verschlüsselt in der Datenbank gespeichert und wandert mit der [Datensicherung](/de/docs/backup-restore).
+- **Schlüssel neu erzeugen** nur, wenn er in falsche Hände geraten sein könnte – danach müssen alle Personen Push auf ihren Geräten neu aktivieren.
+- Der Server braucht ausgehende HTTPS-Verbindungen zu den Push-Diensten (`fcm.googleapis.com`, `*.push.apple.com`, `*.push.services.mozilla.com`, `*.notify.windows.com`).
 
-## KI
+### KI
 
 Atrium bindet einen OpenAI-kompatiblen KI-Dienst an, den Module z. B. für die **Schreibhilfe** nutzen.
 
@@ -130,9 +138,9 @@ Atrium bindet einen OpenAI-kompatiblen KI-Dienst an, den Module z. B. für die *
 
 Oben zeigt die Seite die **Nutzung** im laufenden Monat und je Modul. Gespeichert werden nur Zähler (Anfragen, Tokens, geschätzte Kosten), **keine Prompts und keine Antworten**.
 
-> **Datenschutz:** Alles, was Module an die KI schicken, geht an den eingetragenen Anbieter – gegebenenfalls außerhalb der EU. Schließen Sie vor dem Einschalten einen Auftragsverarbeitungsvertrag ab und nehmen Sie die Schreibhilfe in Ihre Datenschutzerklärung auf. E-Mail-Adressen, Telefonnummern und IBANs maskiert die Schreibhilfe vor dem Senden.
+> **Datenschutz:** Alles, was Module an die KI schicken, geht an den eingetragenen Anbieter – gegebenenfalls außerhalb der EU. Was Sie vor dem Einschalten regeln sollten, steht unter [KI und Datenminimierung](/de/docs/privacy#ki-und-datenminimierung).
 
-## PDF
+### PDF
 
 Atrium erzeugt PDFs serverseitig mit Chromium – für Listen, Briefe und Exporte der Module.
 
@@ -150,7 +158,7 @@ Zusätzlich gibt es unter **Module → Installieren** zwei Einstellungen zur Mod
 
 ## Vorbelegung beim ersten Start
 
-Für eine automatisierte Einrichtung lassen sich Speicher und E-Mail einmalig über Umgebungsvariablen vorbelegen (`S3_*`, `SMTP_*`). Sie werden nur übernommen, solange die Einstellung in der Datenbank noch leer ist – danach gilt ausschließlich, was Sie hier einstellen. Details unter [Konfiguration](/de/docs/configuration#vorbelegung-von-speicher-und-e-mail).
+Speicher und E-Mail lassen sich für eine automatisierte Einrichtung über Umgebungsvariablen (`S3_*`, `SMTP_*`) vorbelegen. Das ist nur ein **Startwert**: Er wird übernommen, solange die Einstellung in der Datenbank noch leer ist. Danach gilt ausschließlich der **Wert in der Datenbank**, also das, was Sie hier einstellen. Die Variablen stehen unter [Konfiguration](/de/docs/configuration#vorbelegung-von-speicher-und-e-mail).
 
 ## Nächste Schritte
 
