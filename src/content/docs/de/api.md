@@ -1,6 +1,6 @@
 ---
 title: REST-API
-description: Die REST-API von Kalypzo Atrium unter /api/v1 – API-Keys mit Scopes, Berechtigungen, Fehlerformat, Rate Limits, OpenAPI 3.1 und curl-Beispiele.
+description: Die REST-API von Kalypzo Atrium unter /api/v1 – API-Keys, Scopes, Fehlerformat, Rate Limits, OpenAPI und Beispiele.
 order: 33
 section: Entwickeln
 source: docs/api.md
@@ -87,9 +87,9 @@ Je Endpunkt und Identität (Key → Benutzer → IP) gelten standardmäßig **12
 
 | Methode | Pfad | Berechtigung |
 |---|---|---|
-| GET | `/health` | öffentlich |
-| GET | `/openapi.json` | angemeldet |
-| GET | `/me` | angemeldet – Identität und wirksame Rechte |
+| GET | `/health` | Öffentlich |
+| GET | `/openapi.json` | Angemeldet |
+| GET | `/me` | Angemeldet – Identität und wirksame Rechte |
 | GET | `/users`, `/users/:id` | `core.users.view` |
 | POST | `/users` | `core.users.create` |
 | PATCH | `/users/:id` | `core.users.edit` |
