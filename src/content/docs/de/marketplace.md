@@ -1,30 +1,28 @@
 ---
 title: Modul-Marktplatz
-description: Modulquellen im Atrium-Marktplatz finden, per GitHub-Link installieren, die öffentliche Registry für Instanzen nutzen und eigene Module eintragen.
+description: Modulquellen im Marktplatz finden, die öffentliche Registry nutzen und eigene Module eintragen.
 order: 13.5
 section: Administration
 ---
 
-Der [Marktplatz](/de/marktplatz) ist eine öffentliche Übersicht über **Modulquellen** für Atrium – also GitHub-Repositorys, die ein oder mehrere Fachmodule enthalten. Sie können dort nach Namen, Beschreibung und Schlagwörtern suchen, nach Kategorien filtern und den GitHub-Link einer Quelle mit einem Klick kopieren. Installiert wird wie gewohnt in Ihrer eigenen Atrium-Instanz unter **Administration → Module → Installieren** (siehe [Module verwalten](/de/docs/module-management)).
+Der [Marktplatz](/de/marktplatz) ist eine öffentliche Übersicht über **Modulquellen** für Atrium – GitHub-Repositorys mit einem oder mehreren Fachmodulen. Sie suchen dort nach Name, Beschreibung und Schlagwörtern, filtern nach Kategorien und kopieren den GitHub-Link einer Quelle. Dieselben Daten stehen als maschinenlesbare [Registry](#registry-fuer-atrium-instanzen) bereit, damit Atrium-Instanzen und andere Werkzeuge die Liste selbst abrufen können.
 
-Dieselben Daten stehen zusätzlich als maschinenlesbare [Registry](#registry-fuer-atrium-instanzen) bereit, damit Atrium-Instanzen und andere Werkzeuge die Liste selbst abrufen können – ähnlich wie ein App Store.
-
-> **Warnung:** Ein Eintrag im Marktplatz ist **keine Sicherheitsprüfung**. Modulcode läuft nach der Installation mit **vollen Rechten** im Server-Prozess, ohne Sandbox. Prüfen Sie jede Quelle selbst und installieren Sie nur Module, denen Sie vertrauen. Einträge mit der Markierung **Offiziell** stammen von Kalypzo Solutions.
+> **Warnung:** Ein Eintrag im Marktplatz ist **keine Sicherheitsprüfung**. Modulcode läuft nach der Installation mit vollen Rechten im Server-Prozess (siehe [Module verwalten](/de/docs/module-management)). Prüfen Sie jede Quelle selbst. Die Markierung **Offiziell** tragen nur Quellen von Kalypzo Solutions.
 
 ## Was der Marktplatz zeigt
 
 Jeder Eintrag beschreibt eine Quelle:
 
-- Name, Beschreibung und Herausgeber (mit Markierung **Offiziell** für Quellen von Kalypzo Solutions),
-- Kategorien und Schlagwörter, Lizenz und ggf. eine Projektseite,
-- die enthaltenen Module mit Namen und Kurzbeschreibung,
+- Name, Beschreibung und Herausgeber, ggf. mit der Markierung **Offiziell**,
+- Kategorien, Schlagwörter, Lizenz und ggf. eine Projektseite,
+- die enthaltenen Module mit Name und Kurzbeschreibung,
 - den GitHub-Link, den Sie in Atrium einfügen.
 
-Die Modulliste dient nur der Orientierung. Maßgeblich ist der Katalog `atrium-modules.json` der Quelle selbst: Atrium liest ihn bei der Installation und zeigt den tatsächlichen Stand mit Version und festgehaltenem Commit.
+Die Modulliste dient nur der Orientierung. Maßgeblich ist der [Katalog](/de/docs/modules#katalog-atrium-modules-json) der Quelle, den Atrium bei der Installation liest.
 
 | Kategorie | Bedeutung |
 |---|---|
-| `core` | Grundfunktionen und Erweiterungen des Kerns |
+| `core` | Grundfunktionen und Erweiterungen des Core |
 | `organisation` | Mitglieder, Termine, Gruppen, Organisation |
 | `communication` | Nachrichten, Ankündigungen, Benachrichtigungen |
 | `finance` | Kasse, Beiträge, Abrechnung |
@@ -35,18 +33,13 @@ Die Modulliste dient nur der Orientierung. Maßgeblich ist der Katalog `atrium-m
 
 ## Modul aus dem Marktplatz installieren
 
-1. Öffnen Sie den [Marktplatz](/de/marktplatz) und suchen Sie die gewünschte Quelle, z. B. über die Suche oder einen Kategorienfilter.
-2. Prüfen Sie Herausgeber, Repository und Lizenz. Öffnen Sie im Zweifel das Repository auf GitHub und sehen Sie sich den Code an.
-3. Klicken Sie auf **Link kopieren**. Der GitHub-Link der Quelle liegt jetzt in der Zwischenablage.
-4. Melden Sie sich in Ihrer Atrium-Instanz als Administrator an und öffnen Sie **Administration → Module → Installieren**.
-5. Fügen Sie den Link in das Feld für den GitHub-Link ein und klicken Sie auf **Quelle laden**.
-6. Wählen Sie die gewünschten Module aus und klicken Sie auf **Vorschau anzeigen**. Prüfen Sie Rechte, Migrationen, npm-Pakete und die Hinweise des Import-Scans.
-7. Bestätigen Sie **Ich habe die Quelle geprüft und vertraue ihr.**, geben Sie Ihr Passwort (und ggf. den 2FA-Code) ein und klicken Sie auf **Installieren**.
-8. Nach dem Neubau aktivieren Sie die Module im Reiter **Installiert**.
+1. Suchen Sie im [Marktplatz](/de/marktplatz) die gewünschte Quelle und prüfen Sie Herausgeber, Repository und Lizenz.
+2. Klicken Sie auf **Link kopieren**.
+3. Fügen Sie den Link in Ihrer Atrium-Instanz unter **Administration → Module → Installieren** ein und fahren Sie fort wie unter [Module installieren](/de/docs/module-management#module-installieren) beschrieben.
 
-Die Schritte 5 bis 8 sind ausführlich unter [Module verwalten](/de/docs/module-management) beschrieben. Der Marktplatz umgeht weder Vorschau noch Vertrauensbestätigung noch die Abfrage von Passwort und 2FA.
+Der Marktplatz liefert nur den Link; Vorschau und Bestätigung der Installation bleiben unverändert.
 
-> **Tipp:** Haben Sie unter **Erlaubte Quellen** eine Liste hinterlegt, lässt Atrium nur die dort eingetragenen Repositorys zu – auch wenn eine Quelle im Marktplatz steht. Ergänzen Sie die Quelle dann zuerst dort (siehe [GitHub-Token und erlaubte Quellen](/de/docs/module-management#github-token-und-erlaubte-quellen)).
+> **Tipp:** Haben Sie **Erlaubte Quellen** eingetragen, lässt Atrium nur diese Repositorys zu – auch wenn eine Quelle im Marktplatz steht (siehe [GitHub-Token und erlaubte Quellen](/de/docs/module-management#github-token-und-erlaubte-quellen)).
 
 ## Registry für Atrium-Instanzen
 
@@ -72,15 +65,15 @@ Die Datei ist öffentlich, ohne Anmeldung abrufbar, mit CORS für alle Ursprüng
 | `sources[].description.de` / `.en` | Text | Beschreibung je Sprache |
 | `sources[].repository` | URL | GitHub-Repository |
 | `sources[].source` | URL | Link zum Einfügen in Atrium (Repository oder Ordner) |
-| `sources[].ref` | Text | optional: Branch oder Tag |
-| `sources[].path` | Text | optional: Ordner im Repository |
+| `sources[].ref` | Text | Optional: Branch oder Tag |
+| `sources[].path` | Text | Optional: Ordner im Repository |
 | `sources[].publisher.name` / `.url` | Text / URL | Herausgeber |
 | `sources[].official` | Wahrheitswert | `true` bei Quellen von Kalypzo Solutions |
 | `sources[].categories` | Liste | Kategorien (siehe Tabelle oben) |
 | `sources[].tags` | Liste | Freie Schlagwörter |
-| `sources[].license` | Text | optional: SPDX-Lizenzkennung, z. B. `MIT` |
-| `sources[].homepage` | URL | optional: Projektseite |
-| `sources[].modules[]` | Liste | Enthaltene Module (nur zur Information) mit `id`, `name` und `description` je Sprache |
+| `sources[].license` | Text | Optional: SPDX-Lizenzkennung, z. B. `MIT` |
+| `sources[].homepage` | URL | Optional: Projektseite |
+| `sources[].modules[]` | Liste | Enthaltene Module mit `id`, `name` und `description` je Sprache (nur zur Anzeige) |
 | `sources[].addedAt` | Datum | Tag der Aufnahme in den Marktplatz |
 
 ### Beispiel
@@ -142,15 +135,15 @@ Wer die Registry in einer Atrium-Instanz oder einem anderen Werkzeug nutzt, soll
 - **Schema prüfen:** Nur Antworten mit `schema` gleich `1` verarbeiten. Bei einem anderen Wert die Liste nicht anzeigen, sondern auf ein Update des Clients hinweisen.
 - **Unbekannte Felder ignorieren:** Neue Felder sind keine inkompatible Änderung und dürfen nicht zu Fehlern führen.
 - **Nur GitHub-Links übernehmen:** Ausschließlich URLs akzeptieren, die mit `https://github.com/` beginnen. Alle anderen Einträge verwerfen.
-- **Nichts automatisch installieren:** Die Registry liefert nur Vorschläge. Die Installation läuft immer über die normale Vorschau mit Vertrauensbestätigung, Passwort und ggf. 2FA.
-- **Erlaubte Quellen gelten weiter:** Eine eingestellte Liste erlaubter Quellen (Allowlist) hat Vorrang vor dem Marktplatz.
-- **Katalog der Quelle ist maßgeblich:** Die Angaben unter `modules` dienen nur der Anzeige; verbindlich ist `atrium-modules.json` im Repository.
+- **Nichts automatisch installieren:** Die Registry liefert nur Vorschläge. Installiert wird immer über den normalen [Ablauf in Atrium](/de/docs/module-management#module-installieren).
+- **Erlaubte Quellen gelten weiter:** Eingetragene [erlaubte Quellen](/de/docs/module-management#github-token-und-erlaubte-quellen) haben Vorrang vor dem Marktplatz.
+- **Katalog der Quelle ist maßgeblich:** `modules` dient nur der Anzeige; verbindlich ist der Katalog im Repository.
 
 ## Eigenes Modul eintragen
 
 Neue Quellen werden per Pull Request im Repository der Website [KalypzoSolutions/atrium-website](https://github.com/KalypzoSolutions/atrium-website) eingetragen.
 
-1. Stellen Sie sicher, dass Ihr Repository öffentlich auf GitHub liegt und einen gültigen Katalog `atrium-modules.json` enthält (siehe [Module entwickeln](/de/docs/modules)). Testen Sie die Installation in einer eigenen Instanz.
+1. Stellen Sie sicher, dass Ihr Repository öffentlich auf GitHub liegt und einen gültigen [Katalog](/de/docs/modules#katalog-atrium-modules-json) enthält. Testen Sie die Installation in einer eigenen Instanz.
 2. Forken Sie `atrium-website` und ergänzen Sie in `src/lib/marketplace.ts` einen Eintrag für Ihre Quelle.
 3. Vergeben Sie eine eindeutige `id` (Kleinbuchstaben, Ziffern und Bindestriche), Beschreibungen auf **Deutsch und Englisch** sowie mindestens eine Kategorie aus der Liste oben. `official` bleibt `false` – diese Markierung ist Quellen von Kalypzo Solutions vorbehalten.
 4. Prüfen Sie lokal mit `npm run build`. Der Build bricht bei ungültigen Einträgen ab, etwa bei doppelten IDs, Links außerhalb von `https://github.com`, fehlenden Übersetzungen oder unbekannten Kategorien.
@@ -185,10 +178,10 @@ Ein Eintrag sieht zum Beispiel so aus:
 }
 ```
 
-> **Tipp:** Halten Sie den Eintrag aktuell. Kommen neue Module hinzu oder ändert sich der Ordner, passen Sie den Eintrag per Pull Request an. Die installierbaren Module selbst liest Atrium immer direkt aus Ihrem Repository.
+> **Tipp:** Kommen neue Module hinzu oder ändert sich der Ordner, passen Sie den Eintrag per Pull Request an. Die installierbaren Module liest Atrium immer direkt aus Ihrem Repository.
 
 ## Nächste Schritte
 
 - Module installieren und verwalten: [Module verwalten](/de/docs/module-management)
 - Eigenes Modul schreiben: [Module entwickeln](/de/docs/modules)
-- Marktplatz öffnen: [Marktplatz](/de/marktplatz)
+- Grenzen des Sicherheitsmodells: [Sicherheit](/de/docs/security)
