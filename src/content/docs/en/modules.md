@@ -12,6 +12,8 @@ Feature modules extend the core with concrete use cases. This page is for develo
 
 How administrators install, enable, update and remove modules from a GitHub link or ZIP file is described in [Managing modules](/en/docs/module-management). What matters for developers: for the preview, installation only reads static files (`atrium-modules.json`, `atrium-module.json`, migrations), checks the commit, content hash and migration checksums, and then rebuilds the application. Your module must therefore be describable without running code and must never change applied migrations.
 
+To let administrators find your module in the [marketplace](/en/marketplace), add its source by pull request – see [Module marketplace: Listing your own module](/en/docs/marketplace#listing-your-own-module).
+
 ### Bringing modules along on first start (seed)
 
 A fresh server can fetch its modules by itself. Provide a seed list in `deploy/modules.seed.json` or as JSON directly in `ATRIUM_MODULES_SEED`:
