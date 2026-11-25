@@ -88,7 +88,7 @@ const de: LandingCopy = {
 			'Selbst gehostete Verwaltungsplattform mit 2FA, Rollen & Rechten, REST-API, PDF-, KI- und S3-Diensten. Fachmodule per GitHub-Link oder ZIP installieren, mit Docker oder Dokploy betreiben.'
 	},
 	hero: {
-		badge: 'Modular · zweisprachig · mit REST-API',
+		badge: 'Modular · mehrsprachig · mit REST-API',
 		titleA: 'Ihre Verwaltungsplattform.',
 		titleB: 'Selbst gehostet.',
 		lead: 'Ein schlanker Core mit 2FA, Rollen und Rechten, REST-API sowie PDF-, KI- und S3-Diensten – erweiterbar über Module, betrieben mit Docker.',
@@ -126,7 +126,7 @@ const de: LandingCopy = {
 					{ icon: 'puzzle', title: 'Modulverwaltung', text: 'Per GitHub-Link oder ZIP, mit automatischem Rückfall.' },
 					{ icon: 'timer', title: 'Jobs, Suche & Dashboard', text: 'Hintergrundjobs, globale Suche, zentraler Einstieg.' },
 					{ icon: 'backup', title: 'Datensicherung & Reset', text: 'Sicherungen und geprüfte Wiederherstellung.' },
-					{ icon: 'languages', title: 'Zweisprachig & eigenes Branding', text: 'Deutsch/Englisch, Logo und Briefkopf per Profil-Modul.' }
+					{ icon: 'languages', title: 'Mehrsprachig & eigenes Branding', text: 'Mehrsprachige Oberfläche (derzeit Deutsch und Englisch), Logo und Briefkopf per Profil-Modul.' }
 				]
 			}
 		]
@@ -190,7 +190,7 @@ const de: LandingCopy = {
 		items: [
 			{
 				q: 'Was ist Kalypzo Atrium?',
-				a: 'Eine selbst gehostete, webbasierte Verwaltungsplattform. Ein neutraler, zweisprachiger Core stellt Anmeldung mit 2FA, Rollen und Rechte, Einstellungen, REST-API, PDF-, KI-, Bild- und S3-Dienste, Mail, Benachrichtigungen, Hintergrundjobs, Suche, Audit-Log und Datensicherung bereit. Die Fachlichkeit kommt über installierbare Module.'
+				a: 'Eine selbst gehostete, webbasierte Verwaltungsplattform. Ein neutraler, mehrsprachiger Core stellt Anmeldung mit 2FA, Rollen und Rechte, Einstellungen, REST-API, PDF-, KI-, Bild- und S3-Dienste, Mail, Benachrichtigungen, Hintergrundjobs, Suche, Audit-Log und Datensicherung bereit. Die Fachlichkeit kommt über installierbare Module.'
 			},
 			{
 				q: 'Für welche Organisationen eignet sich Atrium?',
@@ -238,7 +238,7 @@ const en: LandingCopy = {
 			'A self-hosted admin platform with 2FA, roles & permissions, a REST API, PDF, AI and S3 services. Install modules from a GitHub link or ZIP and run it with Docker or Dokploy.'
 	},
 	hero: {
-		badge: 'Modular · bilingual · REST API included',
+		badge: 'Modular · multilingual · REST API included',
 		titleA: 'Your admin platform.',
 		titleB: 'Self-hosted.',
 		lead: 'A lean core with 2FA, roles and permissions, a REST API and PDF, AI and S3 services – extended through modules, run with Docker.',
@@ -276,7 +276,7 @@ const en: LandingCopy = {
 					{ icon: 'puzzle', title: 'Module management', text: 'From a GitHub link or ZIP, with automatic rollback.' },
 					{ icon: 'timer', title: 'Jobs, search & dashboard', text: 'Background jobs, global search, one start page.' },
 					{ icon: 'backup', title: 'Backup & reset', text: 'Backups and verified restores.' },
-					{ icon: 'languages', title: 'Bilingual & your branding', text: 'German/English, logo and letterhead via a profile module.' }
+					{ icon: 'languages', title: 'Multilingual & your branding', text: 'Multilingual interface (currently German and English), logo and letterhead via a profile module.' }
 				]
 			}
 		]
@@ -340,7 +340,7 @@ const en: LandingCopy = {
 		items: [
 			{
 				q: 'What is Kalypzo Atrium?',
-				a: 'A self-hosted, web-based admin platform. A neutral, bilingual core provides sign-in with 2FA, roles and permissions, settings, a REST API, PDF, AI, image and S3 services, mail, notifications, background jobs, search, an audit log and backups. Domain features are added as installable modules.'
+				a: 'A self-hosted, web-based admin platform. A neutral, multilingual core provides sign-in with 2FA, roles and permissions, settings, a REST API, PDF, AI, image and S3 services, mail, notifications, background jobs, search, an audit log and backups. Domain features are added as installable modules.'
 			},
 			{
 				q: 'What kind of organisations is Atrium for?',
