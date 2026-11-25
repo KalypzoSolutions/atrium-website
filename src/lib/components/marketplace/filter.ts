@@ -1,5 +1,5 @@
 import type { Lang } from '$lib/config';
-import type { MarketCategory, MarketSource } from '$lib/marketplace';
+import type { MarketCategory, MarketModuleEntry, MarketSource } from '$lib/marketplace';
 
 /** Filterzustand der Marktplatz-Seite. */
 export interface MarketFilter {
@@ -49,3 +49,45 @@ export function filterSources(
 		return terms.every((t) => text.includes(t));
 	});
 }
+
+/** Durchsuchbarer Text eines Moduls: Modul selbst plus Name, Herausgeber, Schlagwörter und Kategorien der Quelle. */
+export function moduleHaystack(e: MarketModuleEntry, lang: Lang, categoryLabels: Record<MarketCategory, string>): string {
+	const { module: m, source: s } = e;
+	return normalize(
+		[
+			m.id,
+			m.name[lang],
+			m.name.de,
+			m.name.en,
+			m.description[lang],
+			s.name,
+			s.id,
+			s.publisher.name,
+			...s.tags,
+			...s.categories.map((c) => categoryLabels[c])
+		].join(' ')
+	);
+}
+
+/**
+ * Wie filterSources, aber für einzelne Module. „Nur offizielle“ und Kategorien wirken über die
+ * Quelle des Moduls; alle Suchwörter müssen vorkommen (UND).
+ */
+export function filterModules(
+	list: MarketModuleEntry[],
+	f: MarketFilter,
+	lang: Lang,
+	categoryLabels: Record<MarketCategory, string>
+): MarketModuleEntry[] {
+	const terms = normalize(f.query).split(/\s+/).filter(Boolean);
+	return list.filter((e) => {
+		if (f.official && !e.source.official) return false;
+		if (f.categories.length && !e.source.categories.some((c) => f.categories.includes(c))) return false;
+		if (!terms.length) return true;
+		const text = moduleHaystack(e, lang, categoryLabels);
+		return terms.every((t) => text.includes(t));
+	});
+}
+
+/** Ansicht des Marktplatzes: Pakete (Quellen) oder alle Module einzeln. */
+export type MarketView = 'sources' | 'modules';

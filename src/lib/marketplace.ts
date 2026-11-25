@@ -5,6 +5,8 @@
  * beim Build die öffentliche Registry unter MARKET_REGISTRY_PATH, die Atrium-Instanzen abrufen, um
  * Quellen zur Installation anzubieten. Der eigentliche Modulkatalog bleibt die Datei
  * `atrium-modules.json` der jeweiligen Quelle – die Modulliste hier ist nur informativ.
+ * Jedes Modul hat zusätzlich einen eigenen Installationslink (`moduleSource`), der auf seinen
+ * Ordner im Repository zeigt; die Registry gibt ihn als `sources[].modules[].source` aus.
  *
  * Neue Quelle eintragen: Eintrag in `marketSources` ergänzen. `validateSources` prüft die Liste
  * beim Build; ein fehlerhafter Eintrag lässt den Build fehlschlagen.
@@ -29,6 +31,8 @@ export interface MarketModule {
 	id: string;
 	name: Localized;
 	description: Localized;
+	/** Eigener Installationslink; ohne Angabe der Modulordner im Repository (siehe moduleSource) */
+	source?: string;
 }
 
 /** Eine Modulquelle, die Atrium über ihren GitHub-Link installieren kann. */
@@ -261,6 +265,16 @@ export function githubRepoSlug(url: string): string {
 	return `${m[1]}/${m[2]}`;
 }
 
+/**
+ * Installationslink eines einzelnen Moduls: `m.source`, falls gesetzt, sonst der Modulordner
+ * `<repository>/tree/<ref>/<path>/<id>`.
+ */
+export function moduleSource(s: MarketSource, m: MarketModule): string {
+	if (m.source) return m.source;
+	const dir = s.path ? s.path.replace(/^\/+|\/+$/g, '') + '/' : '';
+	return `${s.repository}/tree/${s.ref ?? 'main'}/${dir}${m.id}`;
+}
+
 const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const REPO_URL = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/;
 /**
@@ -330,6 +344,14 @@ export function validateSources(list: MarketSource[]): MarketSource[] {
 			modIds.add(m.id);
 			checkLocalized(m.name, `${where}.modules.${m.id}.name`, errors);
 			checkLocalized(m.description, `${where}.modules.${m.id}.description`, errors);
+			const install = moduleSource(s, m);
+			if (!SOURCE_URL.test(install)) {
+				errors.push(`${where}: Installationslink von Modul „${m.id}“ muss https://github.com/owner/repo[/tree/…] sein`);
+			} else if (REPO_URL.test(s.repository ?? '')) {
+				if (githubRepoSlug(install).toLowerCase() !== githubRepoSlug(s.repository).toLowerCase()) {
+					errors.push(`${where}: Installationslink von Modul „${m.id}“ zeigt nicht auf repository`);
+				}
+			}
 		}
 	}
 	if (errors.length) throw new Error(`Ungültige Marktplatz-Quellen:\n- ${errors.join('\n- ')}`);
@@ -343,6 +365,30 @@ validateSources(marketSources);
 export const sortedSources = (list: MarketSource[] = marketSources): MarketSource[] =>
 	[...list].sort((a, b) => Number(b.official) - Number(a.official) || a.name.localeCompare(b.name, 'de'));
 
+/** Ein einzelnes Modul mit seiner Quelle – für die Modulansicht des Marktplatzes. */
+export interface MarketModuleEntry {
+	module: MarketModule;
+	source: MarketSource;
+	/** Installationslink des Moduls (moduleSource) */
+	install: string;
+	/** Eindeutiger Schlüssel `<quell-id>--<modul-id>`, Anker der Karte: `#module-<key>` */
+	key: string;
+}
+
+/** Alle Module einzeln: Quellen in der Reihenfolge von sortedSources, darin nach Modulname (de). */
+export function marketModules(list: MarketSource[] = sortedSources()): MarketModuleEntry[] {
+	return list.flatMap((source) =>
+		[...source.modules]
+			.sort((a, b) => a.name.de.localeCompare(b.name.de, 'de'))
+			.map((module) => ({
+				module,
+				source,
+				install: moduleSource(source, module),
+				key: `${source.id}--${module.id}`
+			}))
+	);
+}
+
 /** Öffentliche Registry (JSON), die unter MARKET_REGISTRY_PATH ausgeliefert wird. */
 export function marketRegistry() {
 	return {
@@ -350,6 +396,10 @@ export function marketRegistry() {
 		generatedAt: new Date().toISOString(),
 		site: SITE_URL,
 		marketplace: Object.fromEntries(LANGS.map((l) => [l, `${SITE_URL}/${l}/${MARKET_SLUG[l]}`])) as Localized,
-		sources: sortedSources()
+		// Jedes Modul zusätzlich mit seinem eigenen Installationslink.
+		sources: sortedSources().map((s) => ({
+			...s,
+			modules: s.modules.map((m) => ({ ...m, source: moduleSource(s, m) }))
+		}))
 	};
 }

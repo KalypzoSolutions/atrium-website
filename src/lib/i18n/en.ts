@@ -100,7 +100,17 @@ export const en: typeof de = {
 			official: 'Official only',
 			results: (n: number, total: number) =>
 				n === total ? `${total} ${total === 1 ? 'source' : 'sources'}` : `${n} of ${total} sources`,
-			reset: 'Reset filters'
+			reset: 'Reset filters',
+			view: 'View',
+			viewSources: 'Packages',
+			viewModules: 'Individual modules',
+			labelModules: 'Filter modules',
+			searchModules: 'Search modules',
+			placeholderModules: 'Module name, feature, source or publisher …',
+			resultsModules: (n: number, total: number) =>
+				n === total
+					? `${total} ${total === 1 ? 'module' : 'modules'}`
+					: `${n} of ${total} ${total === 1 ? 'module' : 'modules'}`
 		},
 		categories: {
 			core: 'Core',
@@ -132,8 +142,20 @@ export const en: typeof de = {
 			copiedMsg: (name: string) => `Install link of ${name} copied to the clipboard.`,
 			copyFailed: 'Copying is not possible – the link in the field is selected, please copy it manually (e.g. with Ctrl+C).'
 		},
+		moduleCard: {
+			fromSource: 'from package',
+			showSource: (name: string) => `Show package ${name}`,
+			sourceLabel: (name: string) => `Install link of the module ${name}`,
+			githubLabel: (name: string) => `Open the folder of the module ${name} on GitHub`,
+			copyLabel: (name: string) => `Copy install link of the module ${name}`,
+			copiedMsg: (name: string) => `Install link of the module ${name} copied to the clipboard.`
+		},
 		empty: {
 			title: 'No matching sources',
+			text: 'Try a different search term or reset the filters.'
+		},
+		emptyModules: {
+			title: 'No matching modules',
 			text: 'Try a different search term or reset the filters.'
 		},
 		install: {

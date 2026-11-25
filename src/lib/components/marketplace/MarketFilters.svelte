@@ -1,15 +1,19 @@
 <script lang="ts">
-	import { BadgeCheck, Search, X } from '@lucide/svelte';
+	import { BadgeCheck, Boxes, Package, Search, X } from '@lucide/svelte';
 	import type { Lang } from '$lib/config';
 	import type { MarketCategory } from '$lib/marketplace';
 	import { t } from '$lib/i18n';
+	import type { MarketView } from './filter';
 
 	interface Props {
 		lang: Lang;
+		view: MarketView;
+		/** Gesamtzahl je Ansicht für den Umschalter. */
+		counts: Record<MarketView, number>;
 		query: string;
 		selected: MarketCategory[];
 		official: boolean;
-		/** Kategorien, die mindestens eine Quelle hat, mit Anzahl. */
+		/** Kategorien mit Anzahl der Quellen bzw. Module in der aktuellen Ansicht. */
 		categories: { id: MarketCategory; count: number }[];
 		results: number;
 		total: number;
@@ -17,6 +21,8 @@
 
 	let {
 		lang,
+		view = $bindable(),
+		counts,
 		query = $bindable(),
 		selected = $bindable(),
 		official = $bindable(),
@@ -30,11 +36,23 @@
 	function toggle(c: MarketCategory) {
 		selected = selected.includes(c) ? selected.filter((x) => x !== c) : [...selected, c];
 	}
+	// Zurücksetzen lässt die Ansicht bewusst unverändert.
 	function reset() {
 		query = '';
 		selected = [];
 		official = false;
 	}
+
+	const views: { id: MarketView; icon: typeof Package }[] = [
+		{ id: 'sources', icon: Package },
+		{ id: 'modules', icon: Boxes }
+	];
+	const viewLabel = (v: MarketView) => (v === 'sources' ? d.filters.viewSources : d.filters.viewModules);
+	const segment = (on: boolean) =>
+		'inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ' +
+		(on
+			? 'bg-white text-ink-900 shadow-sm dark:bg-ink-700 dark:text-white'
+			: 'text-ink-600 hover:text-ink-900 dark:text-ink-300 dark:hover:text-white');
 
 	const chip = (on: boolean) =>
 		'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-medium transition-colors ' +
@@ -43,10 +61,26 @@
 			: 'border-ink-200 text-ink-600 hover:border-ink-300 hover:text-ink-900 dark:border-ink-800 dark:text-ink-300 dark:hover:border-ink-700 dark:hover:text-white');
 </script>
 
-<div role="search" aria-label={d.filters.label} class="space-y-4">
+<div role="search" aria-label={view === 'modules' ? d.filters.labelModules : d.filters.label} class="space-y-4">
+	<div
+		class="inline-flex flex-wrap gap-1 rounded-lg bg-ink-100 p-1 dark:bg-ink-800/70"
+		role="group"
+		aria-label={d.filters.view}
+	>
+		{#each views as v (v.id)}
+			<button type="button" class={segment(view === v.id)} aria-pressed={view === v.id} onclick={() => (view = v.id)}>
+				<v.icon class="size-4" aria-hidden="true" />
+				{viewLabel(v.id)}
+				<span class="text-xs tabular-nums opacity-60">{counts[v.id]}</span>
+			</button>
+		{/each}
+	</div>
+
 	<div class="flex flex-col gap-3 sm:flex-row sm:items-center">
 		<div class="relative flex-1">
-			<label for="market-search" class="sr-only">{d.filters.search}</label>
+			<label for="market-search" class="sr-only"
+				>{view === 'modules' ? d.filters.searchModules : d.filters.search}</label
+			>
 			<Search
 				class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-400 dark:text-ink-500"
 				aria-hidden="true"
@@ -55,7 +89,7 @@
 				id="market-search"
 				type="search"
 				bind:value={query}
-				placeholder={d.filters.placeholder}
+				placeholder={view === 'modules' ? d.filters.placeholderModules : d.filters.placeholder}
 				autocomplete="off"
 				spellcheck="false"
 				class="w-full rounded-lg border border-ink-200 bg-white py-2 pr-9 pl-9 text-sm text-ink-900 placeholder:text-ink-400 focus:border-brand-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-brand-500 dark:border-ink-800 dark:bg-ink-900 dark:text-white dark:placeholder:text-ink-500 [&::-webkit-search-cancel-button]:hidden"
@@ -97,7 +131,7 @@
 	</div>
 
 	<div class="flex min-h-6 items-center justify-between gap-4 text-sm text-ink-500 dark:text-ink-400">
-		<p aria-live="polite" aria-atomic="true">{d.filters.results(results, total)}</p>
+		<p aria-live="polite" aria-atomic="true">{view === 'modules' ? d.filters.resultsModules(results, total) : d.filters.results(results, total)}</p>
 		{#if active}
 			<button type="button" class="link-arrow" onclick={reset}>{d.filters.reset}</button>
 		{/if}
