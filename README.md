@@ -85,25 +85,9 @@ source: docs/quickstart.md
 
 ## Module im Marktplatz eintragen
 
-Der Marktplatz (`/de/marktplatz`, `/en/marketplace`) listet Modulquellen – GitHub-Repositorys mit einem oder mehreren Atrium-Modulen – mit Suche, Kategorienfilter und einem Button zum Kopieren des GitHub-Links. Diesen Link fügen Administratoren in Atrium unter **Administration → Module → Installieren** ein. Die ausführliche Anleitung steht in der Doku unter `/de/docs/marketplace` bzw. `/en/docs/marketplace`.
+Die Einträge des Marktplatzes (`/de/marktplatz`, `/en/marketplace`) stehen in `src/lib/marketplace.ts`; neue Quellen kommen per Pull Request in dieses Repository. `validateSources` prüft die Liste beim Build, ein ungültiger Eintrag lässt `npm run build` abbrechen. Aus denselben Daten entsteht die Registry `/marketplace/v1/index.json`.
 
-**Einträge** stehen in `src/lib/marketplace.ts`. Neue Quellen kommen per Pull Request in dieses Repository:
-
-1. In `src/lib/marketplace.ts` einen Eintrag ergänzen: eindeutige `id`, `name`, `description` auf Deutsch und Englisch, `repository` und `source` (GitHub-URLs), `publisher`, `categories`, `tags`, `modules` und `addedAt`; optional `ref`, `path`, `license` und `homepage`.
-2. `official: true` ist Quellen von Kalypzo Solutions vorbehalten.
-3. `npm run build` ausführen und den Pull Request öffnen.
-
-Erlaubte Kategorien: `core`, `organisation`, `communication`, `finance`, `files`, `productivity`, `integration`, `other`.
-
-**Build-Validierung:** Der Build bricht ab, wenn ein Eintrag ungültig ist – etwa bei doppelten IDs, URLs außerhalb von `https://github.com`, fehlenden Übersetzungen (`de`/`en`) oder unbekannten Kategorien.
-
-**Registry:** Beim Build entsteht die statische Datei `/marketplace/v1/index.json` (öffentlich, CORS `*`, 15 Minuten Cache). Atrium-Instanzen und andere Clients können darüber die Liste der Quellen abrufen:
-
-```bash
-curl -s https://atrium.kalypzo.de/marketplace/v1/index.json
-```
-
-Das Feld `schema` (derzeit `1`) wird nur bei inkompatiblen Änderungen erhöht; Clients müssen unbekannte Felder ignorieren. Die Liste `modules` ist nur informativ – maßgeblich bleibt der Katalog `atrium-modules.json` der Quelle, und die Installation läuft weiterhin über Vorschau, Vertrauensbestätigung und Passwort/2FA in Atrium. Ein Eintrag im Marktplatz ist **keine Sicherheitsprüfung**: Modulcode läuft mit vollen Rechten.
+Felder, Kategorien, Ablauf und das Registry-Format beschreibt die Doku unter [`/de/docs/marketplace`](src/content/docs/de/marketplace.md) bzw. [`/en/docs/marketplace`](src/content/docs/en/marketplace.md).
 
 ## Screenshots neu erzeugen
 

@@ -1,26 +1,24 @@
 ---
 title: Module marketplace
-description: Find module sources in the Atrium marketplace, install them from a GitHub link, use the public registry for instances and list your own modules.
+description: Find module sources in the marketplace, use the public registry and list your own modules.
 order: 13.5
 section: Administration
 ---
 
-The [marketplace](/en/marketplace) is a public overview of **module sources** for Atrium – GitHub repositories that contain one or more business modules. You can search by name, description and tags, filter by category and copy a source's GitHub link with one click. Installation happens as usual in your own Atrium instance under **Administration → Modules → Install** (see [Managing modules](/en/docs/module-management)).
+The [marketplace](/en/marketplace) is a public overview of **module sources** for Atrium – GitHub repositories with one or more feature modules. You can search by name, description and tags, filter by category and copy a source's GitHub link. The same data is available as a machine-readable [registry](#registry-for-atrium-instances), so Atrium instances and other tools can fetch the list themselves.
 
-The same data is also published as a machine-readable [registry](#registry-for-atrium-instances), so Atrium instances and other tools can fetch the list themselves – much like an app store.
-
-> **Warning:** Being listed in the marketplace is **not a security review**. After installation, module code runs with **full privileges** in the server process, without a sandbox. Review every source yourself and only install modules you trust. Entries marked **Official** come from Kalypzo Solutions.
+> **Warning:** Being listed in the marketplace is **not a security review**. After installation, module code runs with full privileges in the server process (see [Managing modules](/en/docs/module-management)). Review every source yourself. Only sources from Kalypzo Solutions are marked **Official**.
 
 ## What the marketplace shows
 
 Each entry describes one source:
 
-- name, description and publisher (marked **Official** for sources from Kalypzo Solutions),
-- categories and tags, license and an optional project page,
+- name, description and publisher, marked **Official** where applicable,
+- categories, tags, license and an optional project page,
 - the modules it contains, with name and short description,
 - the GitHub link you paste into Atrium.
 
-The module list is for orientation only. The authoritative catalog is the source's own `atrium-modules.json`: Atrium reads it during installation and shows the actual state with version and pinned commit.
+The module list is for orientation only. The source's [catalog](/en/docs/modules#catalog-atrium-modules-json), which Atrium reads during installation, is authoritative.
 
 | Category | Meaning |
 |---|---|
@@ -35,18 +33,13 @@ The module list is for orientation only. The authoritative catalog is the source
 
 ## Installing a module from the marketplace
 
-1. Open the [marketplace](/en/marketplace) and find the source you want, e.g. with the search or a category filter.
-2. Check the publisher, repository and license. If in doubt, open the repository on GitHub and look at the code.
-3. Click **Copy link**. The source's GitHub link is now on your clipboard.
-4. Sign in to your Atrium instance as an administrator and open **Administration → Modules → Install**.
-5. Paste the link into the GitHub link field and click **Load source**.
-6. Select the modules you want and click **Show preview**. Review permissions, migrations, npm packages and the import scan notes.
-7. Confirm **I have checked the source and trust it.**, enter your password (and 2FA code, if enabled) and click **Install**.
-8. After the rebuild, enable the modules in the **Installed** tab.
+1. Find the source you want in the [marketplace](/en/marketplace) and check the publisher, repository and license.
+2. Click **Copy link**.
+3. Paste the link in your Atrium instance under **Administration → Modules → Install** and continue as described in [Installing modules](/en/docs/module-management#installing-modules).
 
-Steps 5 to 8 are described in detail under [Managing modules](/en/docs/module-management). The marketplace bypasses neither the preview, the trust confirmation nor the password and 2FA check.
+The marketplace only provides the link; the preview and confirmation of the installation stay the same.
 
-> **Tip:** If you have configured a list under **Allowed sources**, Atrium only accepts the repositories listed there – even if a source is in the marketplace. Add the source there first (see [GitHub token and allowed sources](/en/docs/module-management#github-token-and-allowed-sources)).
+> **Tip:** If you have entered **Allowed sources**, Atrium only accepts those repositories – even if a source is in the marketplace (see [GitHub token and allowed sources](/en/docs/module-management#github-token-and-allowed-sources)).
 
 ## Registry for Atrium instances
 
@@ -62,26 +55,26 @@ The file is public, needs no authentication, allows CORS from any origin (`Acces
 
 | Field | Type | Meaning |
 |---|---|---|
-| `schema` | number | Format version, currently `1` |
-| `generatedAt` | timestamp | Build time (ISO 8601, UTC) |
+| `schema` | Number | Format version, currently `1` |
+| `generatedAt` | Timestamp | Build time (ISO 8601, UTC) |
 | `site` | URL | Base URL of the website |
 | `marketplace.de` / `marketplace.en` | URL | Marketplace page per language |
-| `sources[]` | list | Listed module sources |
-| `sources[].id` | text | Unique, stable ID of the source |
-| `sources[].name` | text | Display name |
-| `sources[].description.de` / `.en` | text | Description per language |
+| `sources[]` | List | Listed module sources |
+| `sources[].id` | Text | Unique, stable ID of the source |
+| `sources[].name` | Text | Display name |
+| `sources[].description.de` / `.en` | Text | Description per language |
 | `sources[].repository` | URL | GitHub repository |
 | `sources[].source` | URL | Link to paste into Atrium (repository or folder) |
-| `sources[].ref` | text | optional: branch or tag |
-| `sources[].path` | text | optional: folder in the repository |
-| `sources[].publisher.name` / `.url` | text / URL | Publisher |
-| `sources[].official` | boolean | `true` for sources from Kalypzo Solutions |
-| `sources[].categories` | list | Categories (see table above) |
-| `sources[].tags` | list | Free-form tags |
-| `sources[].license` | text | optional: SPDX license identifier, e.g. `MIT` |
-| `sources[].homepage` | URL | optional: project page |
-| `sources[].modules[]` | list | Contained modules (informational only) with `id`, `name` and `description` per language |
-| `sources[].addedAt` | date | Day the source was added to the marketplace |
+| `sources[].ref` | Text | Optional: branch or tag |
+| `sources[].path` | Text | Optional: folder in the repository |
+| `sources[].publisher.name` / `.url` | Text / URL | Publisher |
+| `sources[].official` | Boolean | `true` for sources from Kalypzo Solutions |
+| `sources[].categories` | List | Categories (see table above) |
+| `sources[].tags` | List | Free-form tags |
+| `sources[].license` | Text | Optional: SPDX license identifier, e.g. `MIT` |
+| `sources[].homepage` | URL | Optional: project page |
+| `sources[].modules[]` | List | Contained modules with `id`, `name` and `description` per language (display only) |
+| `sources[].addedAt` | Date | Day the source was added to the marketplace |
 
 ### Example
 
@@ -142,15 +135,15 @@ If you use the registry in an Atrium instance or another tool, follow these rule
 - **Check the schema:** Only process responses where `schema` equals `1`. For any other value, do not show the list; ask the user to update the client instead.
 - **Ignore unknown fields:** New fields are not an incompatible change and must not cause errors.
 - **Only accept GitHub links:** Only accept URLs starting with `https://github.com/` and discard all other entries.
-- **Never install automatically:** The registry only provides suggestions. Installation always goes through the normal preview with trust confirmation, password and 2FA if enabled.
-- **Allowed sources still apply:** A configured list of allowed sources (allowlist) takes precedence over the marketplace.
-- **The source's catalog is authoritative:** The `modules` data is for display only; `atrium-modules.json` in the repository is binding.
+- **Never install automatically:** The registry only provides suggestions. Installation always goes through the normal [process in Atrium](/en/docs/module-management#installing-modules).
+- **Allowed sources still apply:** Configured [allowed sources](/en/docs/module-management#github-token-and-allowed-sources) take precedence over the marketplace.
+- **The source's catalog is authoritative:** `modules` is for display only; the catalog in the repository is binding.
 
 ## Listing your own module
 
 New sources are added by pull request to the website repository [KalypzoSolutions/atrium-website](https://github.com/KalypzoSolutions/atrium-website).
 
-1. Make sure your repository is public on GitHub and contains a valid `atrium-modules.json` catalog (see [Developing modules](/en/docs/modules)). Test the installation in your own instance.
+1. Make sure your repository is public on GitHub and contains a valid [catalog](/en/docs/modules#catalog-atrium-modules-json). Test the installation in your own instance.
 2. Fork `atrium-website` and add an entry for your source in `src/lib/marketplace.ts`.
 3. Choose a unique `id` (lowercase letters, digits and hyphens), descriptions in **German and English** and at least one category from the list above. Leave `official` set to `false` – this flag is reserved for sources from Kalypzo Solutions.
 4. Check locally with `npm run build`. The build fails on invalid entries, such as duplicate IDs, links outside `https://github.com`, missing translations or unknown categories.
@@ -185,10 +178,10 @@ An entry looks like this:
 }
 ```
 
-> **Tip:** Keep your entry up to date. If you add modules or the folder changes, update the entry by pull request. Atrium always reads the installable modules directly from your repository.
+> **Tip:** If you add modules or the folder changes, update the entry by pull request. Atrium always reads the installable modules directly from your repository.
 
 ## Next steps
 
 - Install and manage modules: [Managing modules](/en/docs/module-management)
 - Write your own module: [Developing modules](/en/docs/modules)
-- Open the marketplace: [Marketplace](/en/marketplace)
+- Limits of the security model: [Security](/en/docs/security)
