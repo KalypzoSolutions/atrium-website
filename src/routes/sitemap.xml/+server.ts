@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { SITE_URL, LANGS, GUIDE_SLUG, type Lang } from '$lib/config';
+import { SITE_URL, LANGS, GUIDE_SLUG, MARKET_SLUG, type Lang } from '$lib/config';
 
 export const prerender = true;
 
@@ -30,6 +30,11 @@ function pages(): Page[] {
 			variants: Object.fromEntries(LANGS.map((l) => [l, `/${l}/${GUIDE_SLUG[l]}`])),
 			priority: '0.8',
 			changefreq: 'monthly'
+		},
+		{
+			variants: Object.fromEntries(LANGS.map((l) => [l, `/${l}/${MARKET_SLUG[l]}`])),
+			priority: '0.8',
+			changefreq: 'weekly'
 		}
 	];
 	const allSlugs = [...new Set(LANGS.flatMap((l) => [...docSlugs.get(l)!]))].sort((a, b) =>
