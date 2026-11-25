@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "description": "Website und Dokumentation für Kalypzo Atrium",
+  "license": "UNLICENSED",
+  "author": "Philipp Hethey",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
