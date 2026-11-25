@@ -58,7 +58,7 @@ const config = {
 		prerender: {
 			handleHttpError: 'fail',
 			handleMissingId: 'warn',
-			entries: ['*', '/de', '/en', '/sitemap.xml', '/robots.txt']
+			entries: ['*', '/de', '/en', '/sitemap.xml', '/robots.txt', '/marketplace/v1/index.json']
 		}
 	}
 };

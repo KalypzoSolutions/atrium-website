@@ -16,5 +16,8 @@ export const DEFAULT_LANG: Lang = 'de';
 /** Pfad der Anleitung je Sprache (lokalisierte Slugs). */
 export const GUIDE_SLUG: Record<Lang, string> = { de: 'anleitung', en: 'guide' };
 
+/** Pfad des Modul-Marktplatzes je Sprache (lokalisierte Slugs). */
+export const MARKET_SLUG: Record<Lang, string> = { de: 'marktplatz', en: 'marketplace' };
+
 /** Absolute URL für einen sprachneutralen Pfad wie "/docs/quickstart". */
 export const absUrl = (path: string) => SITE_URL + path;
