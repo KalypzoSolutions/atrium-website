@@ -192,6 +192,7 @@ docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
 - `/` → `302` auf `/de` bzw. `/en` (anhand von `Accept-Language`)
 - Abschließende Schrägstriche werden per `301` entfernt (`/de/docs/` → `/de/docs`)
 - `/_app/immutable/*`: 1 Jahr Cache (`immutable`); Bilder und `/screenshots/`: 30 Tage; HTML: `no-cache`
+- `/marketplace/v1/index.json`: Registry des Marktplatzes als JSON mit CORS `*` (`GET`, `HEAD`, `OPTIONS`) und 15 Minuten Cache
 - Vorkomprimierte `.gz`-Dateien werden direkt ausgeliefert (`gzip_static`)
 - Unbekannte Pfade liefern `404.html` mit Status 404
 - Sicherheits-Header: HSTS, CSP, `X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`
