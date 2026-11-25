@@ -1,38 +1,14 @@
 ---
 title: Module entwickeln
-description: Eigene Fachmodule für Kalypzo Atrium entwickeln – Paketformat, defineModule, Seiten, erlaubte Importe, Migrationen, Rechte, Hooks und Seed-Listen.
+description: Eigene Fachmodule für Kalypzo Atrium entwickeln – Paketformat, defineModule, Seiten, Migrationen, Rechte, Hooks und Auslieferung.
 order: 31
 section: Entwickeln
 source: docs/module-development.md
 ---
 
-Fachmodule erweitern den Core um konkrete Anwendungsfälle. Diese Seite richtet sich an Entwickler; die Bedienung in der Oberfläche steht unter [Module verwalten](/de/docs/module-management). Jedes Modul bringt eigene Berechtigungen, Einstellungen, REST-Endpunkte, Datenbank-Migrationen und Seiten mit – und greift ausschließlich über das Modul-SDK (`$lib/sdk/*`) auf den Core zu.
+Fachmodule erweitern den Core um konkrete Anwendungsfälle. Diese Seite richtet sich an Entwickler; die Bedienung in der Oberfläche steht unter [Module verwalten](/de/docs/module-management). Jedes Modul bringt eigene Berechtigungen, Einstellungen, REST-Endpunkte, Datenbank-Migrationen und Seiten mit – und greift ausschließlich über das Modul-SDK (`$lib/sdk/*`) auf den Core zu. Wie Module im Gesamtsystem registriert, geroutet und aktiviert werden, erklärt die [Architektur](/de/docs/architecture#registrierung-routing-aktivierung).
 
-## Module installieren
-
-Wie Administratoren Module per GitHub-Link oder ZIP-Datei installieren, aktivieren, aktualisieren und entfernen, beschreibt [Module verwalten](/de/docs/module-management). Für Entwickler wichtig: Die Installation liest nur statische Dateien (`atrium-modules.json`, `atrium-module.json`, Migrationen) für die Vorschau, prüft Commit, Inhaltshash und Migrations-Prüfsummen und baut die Anwendung anschließend neu. Ihr Modul muss also ohne Codeausführung beschreibbar sein und darf angewendete Migrationen nie ändern.
-
-### Module beim ersten Start mitbringen (Seed)
-
-Ein frischer Server kann seine Module selbst holen. Hinterlegen Sie dazu eine Seed-Liste in `deploy/modules.seed.json` oder direkt als JSON in `ATRIUM_MODULES_SEED`:
-
-```json
-{
-  "schema": 1,
-  "sources": [
-    {
-      "source": "github:org/repo",
-      "commit": "<voller Commit, 40 Zeichen>",
-      "modules": ["members", "treasury"],
-      "contentHashes": { "members": "sha256-…" }
-    }
-  ]
-}
-```
-
-Erlaubt sind nur volle Commits, keine Branches. Fehlt `modules`, werden alle Module der Quelle installiert; `contentHashes` ist optional.
-
-## Ein eigenes Modul entwickeln
+## Aufbau eines Moduls
 
 ### Verzeichnislayout
 
@@ -72,10 +48,10 @@ Die Datei ist die einzige Quelle für Kennung, Name, Version und Abhängigkeiten
 
 | Feld | Bedeutung |
 |---|---|
-| `core` | passende Core-Versionen als SemVer-Bereich (Vorabversionen zählen mit) |
-| `dependencies` / `optionalDependencies` | je Modul ein Versionsbereich und optional `source` (`github:owner/repo[/pfad][#ref]` oder GitHub-URL); ohne `source` wird im selben Repository gesucht |
-| `permissions` | alle Rechte des Moduls – dieselbe Menge wie im Manifest |
-| `npm` | modulspezifische npm-Pakete mit **exakter** Version; alles andere liefert der Core |
+| `core` | Passende Core-Versionen als SemVer-Bereich (Vorabversionen zählen mit) |
+| `dependencies` / `optionalDependencies` | Je Modul ein Versionsbereich und optional `source` (`github:owner/repo[/pfad][#ref]` oder GitHub-URL); ohne `source` wird im selben Repository gesucht |
+| `permissions` | Alle Rechte des Moduls – dieselbe Menge wie im Manifest |
+| `npm` | Modulspezifische npm-Pakete mit **exakter** Version; alles andere liefert der Core |
 
 ### Katalog: `atrium-modules.json`
 
@@ -92,6 +68,8 @@ Der Katalog liegt im Modulverzeichnis bzw. im Repository und listet alle enthalt
   ]
 }
 ```
+
+## Modul definieren
 
 ### Manifest und Definition: `module.ts`
 
@@ -164,22 +142,24 @@ In `modules/<id>/**` erzwingt ESLint diese Oberfläche:
 
 | Ziel | Erlaubt |
 |---|---|
-| eigene Moduldateien (`./…`, `$modules/<id>/…`) | ja |
-| `$lib/sdk/*` (`server`, `client`, `types`) | ja |
-| `$lib/components/ui`, `$lib/components/layout`, `$lib/components/forms` | ja |
-| `$lib/forms`, `$lib/pdf-lists`, `$lib/utils` | ja |
-| `$modules/<anderes>/contract` | nur `import type` |
-| andere Dateien fremder Module | nein |
-| `$lib/server/*` und alle übrigen `$lib/*` | nein |
+| Eigene Moduldateien (`./…`, `$modules/<id>/…`) | Ja |
+| `$lib/sdk/*` (`server`, `client`, `types`) | Ja |
+| `$lib/components/ui`, `$lib/components/layout`, `$lib/components/forms` | Ja |
+| `$lib/forms`, `$lib/pdf-lists`, `$lib/utils` | Ja |
+| `$modules/<anderes>/contract` | Nur `import type` |
+| Andere Dateien fremder Module | Nein |
+| `$lib/server/*` und alle übrigen `$lib/*` | Nein |
 
 Zur Laufzeit nutzen Sie Dienste anderer Module über `core.modules.use` bzw. `core.modules.useOptional`. Zusätzlich meldet ESLint direkte Zugriffe auf Core-Interna wie `core.database.db` oder `core.system`. Das ist eine Leitplanke, keine Sandbox.
+
+## Daten, Rechte und Einstellungen
 
 ### Datenbank und Migrationen
 
 - Jedes Modul besitzt das Schema `mod_<id>` (Bindestriche werden zu Unterstrichen); es wird beim Aktivieren angelegt.
 - Migrationen laufen in Reihenfolge, einmalig und in einer Transaktion mit `search_path = mod_<id>`. Legen Sie Tabellen daher **unqualifiziert** an.
 - Prüfsummen werden gespeichert: Eine angewendete Migration darf sich nie mehr ändern – legen Sie stattdessen eine neue Datei an.
-- Zugriff im Code: `core.database.forModule('<id>').transaction(async (tx) => …)`, nur mit der eigenen ID. Drizzle-Tabellen definieren Sie mit `pgSchema('mod_<id>')`.
+- Zugriff im Code: `core.database.forModule('<id>').transaction(async (tx) => …)`, nur mit der eigenen ID. Drizzle-Tabellen definieren Sie mit `pgSchema('mod_<id>')`. Details: [core.database](/de/docs/core-services#core-database).
 
 ```sql
 -- modules/members/migrations/0001_init.sql
@@ -197,6 +177,11 @@ CREATE TABLE member (
 - Berechtigungen werden beim Start übernommen und der Rolle *Administrator* automatisch zugewiesen. Prüfen Sie sie mit `await core.permissions.require(ctx, 'members.users.edit')`.
 - Für Core-Dienste im Namen des Moduls deklarieren Sie Capability-Rechte: `<modul>.storage.read|write|delete` und `<modul>.ai.use`.
 - Einstellungen sind per Zod typisiert und über `core.settings.get/set` nutzbar; `secret: true` speichert verschlüsselt.
+- Die Aufrufe im Detail: [core.permissions](/de/docs/core-services#core-permissions) und [core.settings](/de/docs/core-services#core-settings).
+
+## Hooks
+
+Über weitere Felder in `defineModule` klinkt sich ein Modul in Abläufe des Core ein.
 
 ### Erscheinungsbild per Profil-Modul
 
@@ -216,19 +201,43 @@ Ein Beispiel ist das Modul `ep-stamm` in [ep-intern-modules](https://github.com/
 | Feld | Zweck |
 |---|---|
 | `provides` | Dienste für andere Module (mit `satisfies <Vertrag>`) |
-| `jobs` | Hintergrundjobs (`hourly`, `daily` oder alle n Minuten) |
+| `jobs` | Hintergrundjobs (`hourly`, `daily` oder alle n Minuten), siehe [Jobs und Suche](/de/docs/core-services#jobs-und-suche) |
 | `search` | Quelle für die globale Suche |
 | `onUserDeleted` | Pflicht, wenn das Modul Benutzer-IDs speichert |
 | `subjectExport` | Beitrag zur DSGVO-Datenauskunft |
 | `backup.rehash` | Pflicht für schlüsselgebundene Hashes, wenn eine Sicherung mit anderem `APP_SECRET` eingespielt wird |
 | `onEnable` / `onDisable` | Nacharbeiten beim Aktivieren bzw. Deaktivieren |
 
-### Checkliste
+## Module installieren
+
+Wie Administratoren Module per GitHub-Link oder ZIP-Datei installieren, aktivieren, aktualisieren und entfernen, beschreibt [Module verwalten](/de/docs/module-management). Für Entwickler wichtig: Die Installation liest nur statische Dateien (`atrium-modules.json`, `atrium-module.json`, Migrationen) für die Vorschau, prüft Commit, Inhaltshash und Migrations-Prüfsummen und baut die Anwendung anschließend neu. Ihr Modul muss also ohne Codeausführung beschreibbar sein und darf angewendete Migrationen nie ändern.
+
+### Module beim ersten Start mitbringen (Seed)
+
+Ein frischer Server kann seine Module selbst holen. Hinterlegen Sie dazu eine Seed-Liste in `deploy/modules.seed.json` oder direkt als JSON in `ATRIUM_MODULES_SEED`:
+
+```json
+{
+  "schema": 1,
+  "sources": [
+    {
+      "source": "github:org/repo",
+      "commit": "<voller Commit, 40 Zeichen>",
+      "modules": ["members", "treasury"],
+      "contentHashes": { "members": "sha256-…" }
+    }
+  ]
+}
+```
+
+Erlaubt sind nur volle Commits, keine Branches. Fehlt `modules`, werden alle Module der Quelle installiert; `contentHashes` ist optional.
+
+## Checkliste
 
 - [ ] Manifest valide, Berechtigungen mit Modulpräfix
-- [ ] nur erlaubte Importe (`npm run lint`)
+- [ ] Nur erlaubte Importe (`npm run lint`)
 - [ ] Migrationen im Modulschema, nie nachträglich geändert
-- [ ] jede Operation mit `ctx` und `core.permissions.require`
+- [ ] Jede Operation mit `ctx` und `core.permissions.require`
 - [ ] Tests für Rechte und Modulstatus
 - [ ] `onUserDeleted`, wenn das Modul Benutzer-IDs speichert
 - [ ] `subjectExport` bei personenbezogenen Daten
