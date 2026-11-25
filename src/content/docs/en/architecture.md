@@ -1,12 +1,12 @@
 ---
 title: Architecture
-description: How Kalypzo Atrium is built – modular monolith, layers, request flow for pages and the REST API, module registration and activation, jobs and key decisions.
+description: How Kalypzo Atrium is built – modular monolith, layers, request flow, module activation, jobs and key decisions.
 order: 30
 section: Development
 source: docs/architecture.md
 ---
 
-Atrium is a **modular monolith**: one SvelteKit process, one PostgreSQL database and clearly separated layers. The core provides neutral services, business modules build on top of them – and access the core exclusively through the module SDK.
+Atrium is a **modular monolith**: one SvelteKit process, one PostgreSQL database and clearly separated layers. The core provides neutral services, feature modules build on top of them – and access the core exclusively through the module SDK.
 
 ## Overview
 
@@ -33,7 +33,7 @@ Browser / external services
 | **Modules** | `modules/<id>` | Manifest, endpoints, migrations, UI |
 | **Administration** | `src/routes/(internal)/admin`, URLs under `/admin` | Uses the core services directly in load functions and actions with `locals.ctx`. Sidebar, overview, tabs and command palette come from a shared registry. |
 
-The core knows **no business modules in advance**. A Vite plugin (`tools/vite-plugin-atrium-modules.ts`) pulls in every `modules/*/module.ts` at build time – through virtual modules for the server definitions and UIs, plus a Tailwind source for their classes. `ATRIUM_MODULES_DIR` changes the module directory.
+The core knows **no feature modules in advance**. A Vite plugin (`tools/vite-plugin-atrium-modules.ts`) pulls in every `modules/*/module.ts` at build time – through virtual modules for the server definitions and UIs, plus a Tailwind source for their classes. `ATRIUM_MODULES_DIR` changes the module directory.
 
 ## Request flow for pages
 
@@ -82,22 +82,24 @@ Modules pass through three separate levels:
 
 | Level | When | Effect |
 |---|---|---|
-| **Registration** | build and startup | The module is known to the build and its manifest is validated. An invalid module is not loaded and shows up as “Broken”. |
-| **Routing** | build | Static catch-all routes `/modules/[moduleId]/[...path]` and `/api/v1/modules/<id>/…`, resolved at runtime |
-| **Activation** | runtime | The `module_state` table decides reachability, navigation and effective permissions (with a 3 s cache) |
+| **Registration** | Build and startup | The module is known to the build and its manifest is validated. An invalid module is not loaded and shows up as “Broken” ([checks](/en/docs/modules#manifest-and-definition-module-ts)). |
+| **Routing** | Build | Static catch-all routes `/modules/[moduleId]/[...path]` and `/api/v1/modules/<id>/…`, resolved at runtime |
+| **Activation** | Runtime | The `module_state` table decides reachability, navigation and effective permissions (with a 3 s cache) |
 
 At startup `syncModules()` creates missing `module_state` rows (disabled), reconciles permissions and applies the migrations of already enabled modules.
 
 ## Database
 
 - PostgreSQL 17 with Drizzle ORM; core tables in the `public` schema, migrations in `drizzle/`.
-- **One schema per module** (`mod_<id>`). `core.database.forModule(id).transaction(…)` sets the `search_path` to it. Core tables and other modules’ schemas are therefore only unreachable **unqualified** – a convention, not a security mechanism.
+- **One schema per module** (`mod_<id>`). `core.database.forModule(id).transaction(…)` sets the `search_path` to it. Core tables and other modules’ schemas are therefore only unreachable **unqualified** – a convention, not a security mechanism. How modules create tables and migrations is described under [Database and migrations](/en/docs/modules#database-and-migrations).
 - A database trigger makes the audit log immutable.
 - An advisory lock ensures every migration runs exactly once.
 
 ## Background jobs
 
-Modules (and the core) declare jobs with the schedule `hourly`, `daily` or `{ everyMinutes: n }`. The runner starts after initialization, checks **every minute** and runs due jobs of **enabled** modules in the system context:
+Modules (and the core) declare jobs with the schedule `hourly`, `daily` or `{ everyMinutes: n }`. The runner starts after initialization, checks **every minute** and runs due jobs of **enabled** modules in the system context. How a module declares jobs is shown in [Jobs and search](/en/docs/core-services#jobs-and-search).
+
+The runner works as follows:
 
 - `daily` runs once per calendar day within the `JOBS_DAILY_WINDOW` window (default `6-20`, Europe/Berlin).
 - After a failure, a retry follows after 15 minutes.
@@ -108,7 +110,7 @@ Core jobs include `core.housekeeping` (retention periods) and `core.notification
 
 ## Installing modules at runtime
 
-The Docker image doesn’t start `node build` but `scripts/supervisor.mjs`. The supervisor runs the app as a child process and rebuilds it when modules are installed:
+The Docker image doesn’t start `node build` but `scripts/supervisor.mjs`. The supervisor runs the app as a child process and rebuilds it when modules are installed (for the UI, see [Managing modules](/en/docs/module-management)):
 
 1. Copy the modules of the running generation, add the new content (must match the content hash of the preview), install the modules’ own npm packages,
 2. `svelte-kit sync` and `vite build` into a new **generation** under `/data/atrium/gen/<id>`,

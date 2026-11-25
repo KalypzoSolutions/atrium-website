@@ -1,6 +1,6 @@
 ---
 title: Development
-description: Contribute to the Kalypzo Atrium core – npm scripts, project structure, migrations and tests with Vitest, PGlite and Playwright.
+description: Contribute to the Kalypzo Atrium core – npm scripts, project structure, tests and migrations.
 order: 34
 section: Development
 source: README.md
@@ -12,19 +12,19 @@ This page is for everyone working on the Atrium core. Set up your local environm
 
 | Command | Purpose |
 |---|---|
-| `npm run dev` | development server (Vite) |
-| `npm run build` / `npm start` | production build / start (`node build`) |
+| `npm run dev` | Development server (Vite) |
+| `npm run build` / `npm start` | Production build / start (`node build`) |
 | `npm run check` | `svelte-kit sync` and `svelte-check` |
-| `npm run lint` / `npm run format` | check / write ESLint and Prettier |
+| `npm run lint` / `npm run format` | Check / write ESLint and Prettier |
 | `npm test` | Vitest (unit and integration) with fixture modules |
-| `npm run test:unit` / `npm run test:integration` | subsets of the tests |
-| `npm run test:core` | core tests with the fixture modules from `tests/fixtures/modules` |
-| `npm run check:core` | type check with the fixture modules |
+| `npm run test:unit` / `npm run test:integration` | Subsets of the tests |
+| `npm run test:core` | Core tests with the fixture modules from `tests/fixtures/modules` |
+| `npm run check:core` | Type check with the fixture modules |
 | `npm run test:e2e` | Playwright end-to-end tests |
-| `npm run db:generate` | generate a Drizzle migration from the schema |
-| `npm run db:migrate` | apply migrations manually |
+| `npm run db:generate` | Generate a Drizzle migration from the schema |
+| `npm run db:migrate` | Apply migrations manually |
 | `npm run db:studio` | Drizzle Studio |
-| `npm run openapi` | generate `docs/openapi.json` |
+| `npm run openapi` | Generate `docs/openapi.json` |
 
 ## Project structure
 
@@ -51,7 +51,7 @@ tests/{unit,integration,e2e,helpers,fixtures}
 docs/                            documentation
 ```
 
-The core doesn't know any feature modules: a Vite plugin (`tools/vite-plugin-atrium-modules.ts`) includes the modules from the module directory at build time. The directory can be changed via `ATRIUM_MODULES_DIR`.
+Feature modules are not part of the repository; a Vite plugin includes them from the module directory (`ATRIUM_MODULES_DIR`) at build time (see [Architecture](/en/docs/architecture#layers)).
 
 ## Tests
 
