@@ -1,12 +1,21 @@
 <script lang="ts">
+	import { tick } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
 	import { ArrowRight, Braces, GitPullRequest, SearchX, TriangleAlert } from '@lucide/svelte';
 	import { MARKET_SLUG, SITE_NAME, SITE_URL } from '$lib/config';
-	import { MARKET_CATEGORIES, MARKET_REGISTRY_PATH, sortedSources, type MarketCategory } from '$lib/marketplace';
+	import {
+		MARKET_CATEGORIES,
+		MARKET_REGISTRY_PATH,
+		marketModules,
+		sortedSources,
+		type MarketCategory
+	} from '$lib/marketplace';
 	import { t } from '$lib/i18n';
 	import Seo from '$lib/seo/Seo.svelte';
 	import MarketCard from '$lib/components/marketplace/MarketCard.svelte';
 	import MarketFilters from '$lib/components/marketplace/MarketFilters.svelte';
-	import { filterSources } from '$lib/components/marketplace/filter';
+	import MarketModuleCard from '$lib/components/marketplace/MarketModuleCard.svelte';
+	import { filterModules, filterSources, type MarketView } from '$lib/components/marketplace/filter';
 
 	/** Repository der Website – neue Quellen kommen per Pull Request in src/lib/marketplace.ts. */
 	const WEBSITE_REPO = 'https://github.com/KalypzoSolutions/atrium-website';
@@ -20,12 +29,19 @@
 	const path = $derived(`/${lang}/${MARKET_SLUG[lang]}`);
 
 	const sources = sortedSources();
-	const moduleCount = sources.reduce((n, s) => n + s.modules.length, 0);
-	/** Nur Kategorien anbieten, die mindestens eine Quelle hat. */
-	const categories = MARKET_CATEGORIES.map((id) => ({
-		id,
-		count: sources.filter((s) => s.categories.includes(id)).length
-	})).filter((c) => c.count > 0);
+	const modules = marketModules(sources);
+	const moduleCount = modules.length;
+	/** Nur Kategorien anbieten, die mindestens eine Quelle hat; Zähler je Ansicht (Quellen bzw. Module). */
+	const categoryCounts = {
+		sources: MARKET_CATEGORIES.map((id) => ({
+			id,
+			count: sources.filter((s) => s.categories.includes(id)).length
+		})).filter((c) => c.count > 0),
+		modules: MARKET_CATEGORIES.map((id) => ({
+			id,
+			count: modules.filter((e) => e.source.categories.includes(id)).length
+		})).filter((c) => c.count > 0)
+	};
 
 	// Filter: Progressive Enhancement – ohne JS bleiben alle Karten sichtbar und die Filter ausgeblendet.
 	let ready = $state(false);
@@ -35,12 +51,55 @@
 	let query = $state('');
 	let selected = $state<MarketCategory[]>([]);
 	let official = $state(false);
-	const filtered = $derived(filterSources(sources, { query, categories: selected, official }, lang, d.categories));
+	/** Ansicht: Pakete (Quellen) oder einzelne Module. Ohne JS gibt es nur die Paketansicht. */
+	let view = $state<MarketView>('sources');
+	const filter = $derived({ query, categories: selected, official });
+	const filtered = $derived(filterSources(sources, filter, lang, d.categories));
+	const filteredModules = $derived(filterModules(modules, filter, lang, d.categories));
+	const showModules = $derived(ready && view === 'modules');
 
 	function resetFilters() {
 		query = '';
 		selected = [];
 		official = false;
+	}
+
+	/** Passende Ansicht zum Anker wählen (#module-… oder #source-…) und nach dem Rendern hinscrollen. */
+	async function followHash() {
+		const hash = decodeURIComponent(location.hash.slice(1));
+		if (hash.startsWith('module-')) view = 'modules';
+		else if (hash.startsWith('source-')) view = 'sources';
+		else return;
+		// Ist die Karte durch Filter ausgeblendet, Filter zurücksetzen.
+		await tick();
+		if (!document.getElementById(hash)) {
+			resetFilters();
+			await tick();
+		}
+		document.getElementById(hash)?.scrollIntoView();
+	}
+
+	// Beim Laden und nach Navigationen (auch goto aus der Website-Suche) sowie bei hashchange.
+	afterNavigate(() => void followHash());
+	$effect(() => {
+		window.addEventListener('hashchange', followHash);
+		return () => window.removeEventListener('hashchange', followHash);
+	});
+
+	/** Von einer Modulkarte zur Karte ihrer Quelle in der Paketansicht wechseln. */
+	async function showSource(id: string) {
+		view = 'sources';
+		await tick();
+		if (!document.getElementById(`source-${id}`)) {
+			resetFilters();
+			await tick();
+		}
+		const el = document.getElementById(`source-${id}`);
+		history.pushState(history.state, '', `#source-${id}`);
+		el?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+		// Fokus auf die Karte, damit Tastatur- und Screenreader-Nutzende dort weitermachen.
+		el?.setAttribute('tabindex', '-1');
+		el?.focus({ preventScroll: true });
 	}
 
 	const jsonLd = $derived([
@@ -128,14 +187,34 @@
 				bind:query
 				bind:selected
 				bind:official
-				{categories}
-				results={filtered.length}
-				total={sources.length}
+				bind:view
+				counts={{ sources: sources.length, modules: moduleCount }}
+				categories={categoryCounts[view]}
+				results={view === 'modules' ? filteredModules.length : filtered.length}
+				total={view === 'modules' ? moduleCount : sources.length}
 			/>
 		</div>
 	{/if}
 
-	{#if filtered.length}
+	{#if showModules}
+		{#if filteredModules.length}
+			<ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{#each filteredModules as e (e.key)}
+					<li class="flex"><MarketModuleCard entry={e} {lang} onShowSource={showSource} /></li>
+				{/each}
+			</ul>
+		{:else}
+			<div
+				class="rounded-xl border border-dashed border-ink-300 px-6 py-14 text-center dark:border-ink-700"
+				role="status"
+			>
+				<SearchX class="mx-auto size-8 text-ink-400 dark:text-ink-500" aria-hidden="true" />
+				<h3 class="mt-4 text-base font-semibold">{d.emptyModules.title}</h3>
+				<p class="mt-1 text-sm text-ink-500 dark:text-ink-400">{d.emptyModules.text}</p>
+				<button type="button" class="btn-ghost mt-6" onclick={resetFilters}>{d.filters.reset}</button>
+			</div>
+		{/if}
+	{:else if filtered.length}
 		<ul class="grid gap-6 md:grid-cols-2">
 			{#each filtered as s (s.id)}
 				<li class="flex"><MarketCard source={s} {lang} /></li>

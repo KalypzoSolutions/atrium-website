@@ -3,7 +3,7 @@ import pages from 'virtual:docs-search';
 import { GUIDE_SLUG, LANGS, MARKET_SLUG, type Lang } from '$lib/config';
 import { docHref } from '$lib/docs';
 import { guide } from '$lib/content/guide';
-import { sortedSources } from '$lib/marketplace';
+import { marketModules, sortedSources } from '$lib/marketplace';
 import { t } from '$lib/i18n';
 import type { SearchEntry } from '$lib/components/search/search';
 import type { EntryGenerator, RequestHandler } from './$types';
@@ -86,7 +86,10 @@ function guideEntries(lang: Lang): SearchEntry[] {
 	return out;
 }
 
-/** Marktplatz: die Seite selbst und je Quelle ein Eintrag mit Anker auf ihre Karte. */
+/**
+ * Marktplatz: die Seite selbst, je Quelle ein Eintrag mit Anker auf ihre Karte (#source-<id>) und
+ * direkt danach je Modul der Quelle ein Eintrag mit Anker auf die Modulkarte (#module-<quelle>--<modul>).
+ */
 function marketEntries(lang: Lang): SearchEntry[] {
 	const m = t(lang).market;
 	const base = `/${lang}/${MARKET_SLUG[lang]}`;
@@ -95,6 +98,7 @@ function marketEntries(lang: Lang): SearchEntry[] {
 	const out: SearchEntry[] = [
 		{ url: base, page, heading: '', group, text: plain(`${m.meta.description} ${m.lead}`), code: '' }
 	];
+	const modules = marketModules();
 	for (const s of sortedSources()) {
 		out.push({
 			url: `${base}#source-${s.id}`,
@@ -112,6 +116,16 @@ function marketEntries(lang: Lang): SearchEntry[] {
 			),
 			code: s.source
 		});
+		for (const e of modules.filter((x) => x.source.id === s.id)) {
+			out.push({
+				url: `${base}#module-${e.key}`,
+				page,
+				heading: e.module.name[lang],
+				group,
+				text: plain([e.module.description[lang], s.name, s.publisher.name].join(' ')),
+				code: e.install
+			});
+		}
 	}
 	out.push({
 		url: `${base}#install`,
