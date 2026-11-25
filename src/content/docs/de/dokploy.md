@@ -1,6 +1,6 @@
 ---
 title: Deployment mit Dokploy
-description: Kalypzo Atrium mit Dokploy aus Git deployen – mit externem S3 (empfohlen) oder MinIO im Stack, Schritt für Schritt inklusive Domain, Sicherung und Umzug.
+description: Atrium mit Dokploy aus Git deployen – externer S3 (empfohlen) oder MinIO im Stack, Domain, Sicherung und Umzug.
 order: 21
 section: Betrieb
 source: docs/deployment.md
@@ -80,6 +80,8 @@ Klicken Sie auf **Deploy**. Beim ersten Start laufen Migrationen, Modul-Synchron
 3. Unter **Administration → Module** die gewünschten Module installieren und aktivieren.
 4. `INITIAL_ADMIN_EMAIL` und `INITIAL_ADMIN_PASSWORD` aus der Environment entfernen und neu deployen.
 
+Ausführlich: [Erste Schritte nach der Installation](/de/docs/first-steps).
+
 ## Variante B: mit MinIO im Stack
 
 Das Vorgehen entspricht Variante A, mit diesen Unterschieden:
@@ -108,7 +110,7 @@ Im Log von `storage-init` erscheint nach erfolgreichem Deploy „Bucket … und 
 
 > **Wichtig:** Die Datenbank-Backups von Dokploy gelten nur für Datenbanken, die Dokploy selbst verwaltet – **nicht** für `db` in diesem Stack. Aktivieren Sie deshalb den Sicherungsdienst von Atrium.
 
-Ergänzen Sie in der Environment:
+Der Dienst `db-backup` arbeitet wie unter [Installation – Automatische Sicherung](/de/docs/installation#automatische-sicherung-profil-backup) beschrieben. Ergänzen Sie in der Environment:
 
 ```ini
 COMPOSE_PROFILES=backup
@@ -123,7 +125,7 @@ BACKUP_REPO_SECRET_ACCESS_KEY=
 - Legen Sie `RESTIC_REPOSITORY` nie in den App-Bucket – idealerweise zu einem anderen Anbieter oder Standort.
 - Bewahren Sie `RESTIC_PASSWORD` und `APP_SECRET` getrennt vom Server auf.
 
-Befehle wie `snapshots` oder `restore` führen Sie auf dem Server im Projektverzeichnis mit dem Projektnamen aus (`docker compose -p <projekt> …`) oder per `docker exec` im laufenden Container (`ep-backup snapshots`). Details zur Wiederherstellung stehen unter [Installation](/de/docs/installation#wiederherstellung).
+Befehle wie `snapshots` oder `restore` führen Sie auf dem Server im Projektverzeichnis mit dem Projektnamen aus (`docker compose -p <projekt> …`) oder per `docker exec` im laufenden Container (`ep-backup snapshots`). Den Ablauf der Wiederherstellung beschreibt [Installation – Wiederherstellung](/de/docs/installation#wiederherstellung); alle Variablen stehen unter [Konfiguration](/de/docs/configuration#automatische-sicherung).
 
 ## Mehrere Stacks auf einem Server
 
@@ -145,7 +147,7 @@ Betreiben Sie z. B. Staging und Produktion auf demselben Dokploy-Server, setzen 
 - **Uploads:** Traefik begrenzt die Body-Größe nicht; es gilt die Grenze von Node (`BODY_SIZE_LIMIT=110M` im `Dockerfile`) und danach die fachlichen Grenzen.
 - **Browser-Uploads per signierter URL** brauchen CORS am Bucket für den eigenen `ORIGIN` (Methode `PUT`).
 - **Modulinstallation:** Die Stacks setzen `ATRIUM_MODULE_INSTALL=supervisor` und speichern Builds im Volume `atrium-data`. Ausgehend nötig sind `api.github.com`, `codeload.github.com` und ggf. `registry.npmjs.org`.
-- **Autodeploy:** Dokploy deployt bei jedem Push auf den gewählten Branch.
+- **Autodeploy:** Dokploy deployt bei jedem Push auf den gewählten Branch. Worauf Sie bei Updates achten sollten, steht unter [Updates](/de/docs/updates#mit-dokploy).
 
 ## Nächste Schritte
 
@@ -153,3 +155,4 @@ Betreiben Sie z. B. Staging und Produktion auf demselben Dokploy-Server, setzen 
 - Nach dem ersten Start: [Erste Schritte nach der Installation](/de/docs/first-steps)
 - Module installieren: [Module verwalten](/de/docs/module-management)
 - Sicherungen: [Datensicherung und Wiederherstellung](/de/docs/backup-restore)
+- Sicher aktualisieren: [Updates](/de/docs/updates)

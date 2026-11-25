@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: Every Kalypzo Atrium environment variable in tables – plus SMTP, S3 storage, AI and PDF layout, which you configure in the UI.
+description: Every Atrium environment variable as a reference – and which settings you make in the UI instead.
 order: 22
 section: Operations
 source: docs/deployment.md
@@ -89,6 +89,8 @@ These variables are only applied on the **first** start, as long as the setting 
 | `NGINX_MEM_LIMIT` / `NGINX_CPUS` | `128m` / `0.5` | nginx |
 | `BACKUP_MEM_LIMIT` / `BACKUP_CPUS` | `512m` / `0.5` | backup service |
 
+`cpus` must not exceed the number of host cores, otherwise the service won't start. On larger servers, e.g. `APP_CPUS=2` and `DB_CPUS=2` make sense. Monitor with `docker stats`.
+
 For servers with **2 GB RAM** we recommend `APP_MEM_LIMIT=1024m`, `DB_MEM_LIMIT=512m`, `STORAGE_MEM_LIMIT=256m`, `BACKUP_MEM_LIMIT=256m`, plus 1–2 GB of swap; don't run large PDF batches and backups in parallel. This isn't enough for the rebuild during module installation (about 3.5 GB).
 
 ## Automatic backups
@@ -137,4 +139,4 @@ Good to know:
 
 - Every setting in the interface in detail: [Settings](/en/docs/settings)
 - Security model and secrets: [Security](/en/docs/security)
-- When something doesn’t work: [Troubleshooting](/en/docs/troubleshooting)
+- When something doesn't work: [Troubleshooting](/en/docs/troubleshooting)
