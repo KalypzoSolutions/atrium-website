@@ -1,6 +1,6 @@
 ---
 title: First steps after installation
-description: Sign in, change the password, set up two-factor authentication and configure your organization – the first things to do in a fresh Atrium installation.
+description: The first things to do in a fresh installation: sign in, change the password, set up 2FA and configure your organization.
 order: 10
 section: Administration
 source: docs/deployment.md
@@ -62,18 +62,16 @@ Two-factor authentication (2FA) is strongly recommended for administrators – t
 
 ## Setting up your organization
 
-You configure everything business-related in the interface under **Administration → Settings** – not through environment variables. We recommend this order:
+You configure everything business-related in the interface under **Administration** – not through environment variables. We recommend this order; the linked pages have the details:
 
-| Step | Where | What |
-|---|---|---|
-| 1 | Settings → **General** | system name, language, the organization’s name, address and contact, links to the legal notice and privacy policy |
-| 2 | Settings → **Email delivery** | enter the SMTP server and send a test email |
-| 3 | Settings → **Storage** | enter the S3 bucket and **Test connection** |
-| 4 | Settings → **Design** | upload a logo and choose the accent color |
-| 5 | **Modules** | install and enable business modules |
-| 6 | **Users** and **Roles** | create accounts and assign roles following the principle of least privilege |
-
-[Settings](/en/docs/settings) explains every area in detail.
+| Step | Where | What | Details |
+|---|---|---|---|
+| 1 | Settings → **General** | enter the system name, language and organization, link the legal notice and privacy policy | [General](/en/docs/settings#general) |
+| 2 | Settings → **Email delivery** | enter the SMTP server and send a test email | [Email delivery](/en/docs/settings#email-delivery) |
+| 3 | Settings → **Storage** | enter the S3 bucket and **Test connection** | [Storage](/en/docs/settings#storage) |
+| 4 | Settings → **Design** | upload a logo and choose the accent color | [Design](/en/docs/settings#design) |
+| 5 | **Modules** | install and enable feature modules | [Managing modules](/en/docs/module-management) |
+| 6 | **Users** and **Roles** | create accounts and assign roles following the principle of least privilege | [Users, roles and permissions](/en/docs/users-roles) |
 
 <DocShot name="02b-admin-overview" lang="en" caption="The Administration overview: key figures and all admin areas. The search box at the top finds individual settings directly." />
 
@@ -83,22 +81,22 @@ Under **Profile** (user menu at the top right), everyone maintains their own acc
 
 - **Account:** profile picture (PNG, JPEG or WebP; requires configured storage), name and email address. A new address only takes effect after clicking the confirmation link sent to it.
 - **Security:** password, two-factor authentication, signed-in sessions and your own API keys.
-- **Appearance:** theme, light/dark/system, accent color, language, density, entries per page and the start page after signing in.
+- **Appearance:** theme, light/dark/system, accent color, language, density, entries per page and the start page after signing in (see [Appearance and start page](/en/docs/search-dashboard#appearance-and-start-page)).
 - **Notifications:** push on this device and the channel per notification (see [Dashboard, search and notifications](/en/docs/search-dashboard#notifications)).
 
 <DocShot name="28-profile" lang="en" />
 
 ## Checklist
 
-- [ ] Initial password changed, 2FA enabled for all administrators
 - [ ] `INITIAL_ADMIN_*` removed from the environment
+- [ ] Initial password changed
+- [ ] 2FA enabled for all administrators
 - [ ] System name and organization entered, legal notice and privacy policy linked
 - [ ] Test email sent successfully
 - [ ] Storage connection tested successfully
-- [ ] Backups set up (see [Backup and restore](/en/docs/backup-restore))
 
 ## Next steps
 
 - Create accounts and roles: [Users, roles and permissions](/en/docs/users-roles)
-- All settings at a glance: [Settings](/en/docs/settings)
-- Add business modules: [Managing modules](/en/docs/module-management)
+- Add feature modules: [Managing modules](/en/docs/module-management)
+- Set up backups: [Backup and restore](/en/docs/backup-restore)
