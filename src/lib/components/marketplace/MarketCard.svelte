@@ -14,6 +14,7 @@
 	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
 	let message = $state('');
 	let timer: ReturnType<typeof setTimeout> | undefined;
+	let sourceField = $state<HTMLInputElement>();
 
 	async function copy() {
 		clearTimeout(timer);
@@ -24,6 +25,9 @@
 		} catch {
 			copyState = 'failed';
 			message = d.card.copyFailed;
+			// Fallback: Link im Feld markieren, damit er per Tastatur kopiert werden kann.
+			sourceField?.focus();
+			sourceField?.select();
 		}
 		timer = setTimeout(() => {
 			copyState = 'idle';
@@ -111,10 +115,15 @@
 			<div>
 				<dt class={label}>{d.card.source}</dt>
 				<dd class="mt-1">
-					<code
-						class="block overflow-x-auto rounded-md bg-ink-50 px-2.5 py-1.5 font-mono text-xs whitespace-nowrap text-ink-700 select-all [scrollbar-width:thin] dark:bg-ink-900 dark:text-ink-200"
-						>{s.source}</code
-					>
+					<input
+						bind:this={sourceField}
+						type="text"
+						readonly
+						value={s.source}
+						aria-label={d.card.sourceLabel(s.name)}
+						onfocus={(e) => e.currentTarget.select()}
+						class="block w-full rounded-md border-0 bg-ink-50 px-2.5 py-1.5 font-mono text-xs text-ink-700 dark:bg-ink-900 dark:text-ink-200"
+					/>
 				</dd>
 			</div>
 		</dl>

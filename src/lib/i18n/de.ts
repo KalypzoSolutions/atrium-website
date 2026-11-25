@@ -122,6 +122,7 @@ export const de = {
 			license: 'Lizenz',
 			noLicense: 'Keine Lizenz angegeben',
 			source: 'Installationslink',
+			sourceLabel: (name: string) => `Installationslink von ${name}`,
 			github: 'GitHub',
 			githubLabel: (name: string) => `${name} auf GitHub öffnen`,
 			homepage: 'Projektseite',
@@ -129,7 +130,7 @@ export const de = {
 			copied: 'Kopiert',
 			copyLabel: (name: string) => `Installationslink von ${name} kopieren`,
 			copiedMsg: (name: string) => `Installationslink von ${name} in die Zwischenablage kopiert.`,
-			copyFailed: 'Kopieren nicht möglich – bitte den Link markieren und manuell kopieren.'
+			copyFailed: 'Kopieren nicht möglich – der Link im Feld ist markiert, bitte manuell kopieren (z. B. mit Strg+C).'
 		},
 		empty: {
 			title: 'Keine passenden Quellen',
