@@ -277,6 +277,30 @@ export function moduleSource(s: MarketSource, m: MarketModule): string {
 	return `${s.repository}/tree/${s.ref ?? 'main'}/${dir}${m.id}`;
 }
 
+/** Pfad der Detailseite einer Quelle, z. B. /de/marktplatz/<quell-id>. */
+export const marketSourcePath = (lang: Lang, sourceId: string): string => `/${lang}/${MARKET_SLUG[lang]}/${sourceId}`;
+
+/** Pfad der Detailseite eines Moduls, z. B. /de/marktplatz/<quell-id>/<modul-id>. */
+export const marketModulePath = (lang: Lang, sourceId: string, moduleId: string): string =>
+	`${marketSourcePath(lang, sourceId)}/${moduleId}`;
+
+/**
+ * Zerlegt https://github.com/owner/repo[/tree/<ref>/<pfad>] in seine Teile. `path` hat weder
+ * führenden noch abschließenden Slash und ist '' für das Repository-Root; `ref` fehlt ohne /tree/….
+ */
+export function githubLocation(url: string): { owner: string; repo: string; ref?: string; path: string } {
+	const m = url.match(
+		/^https:\/\/github\.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9._-]+?)(?:\.git)?(?:\/tree\/([^\s/?#]+)(?:\/([^\s?#]*))?)?\/?(?:[?#].*)?$/
+	);
+	if (!m) throw new Error(`Keine gültige GitHub-URL: ${url}`);
+	const path = (m[4] ?? '').split('/').filter(Boolean).join('/');
+	return { owner: m[1]!, repo: m[2]!, ...(m[3] ? { ref: m[3] } : {}), path };
+}
+
+/** Absolute URLs einer Detailseite in allen Sprachen. */
+const localizedPage = (path: (l: Lang) => string): Localized =>
+	Object.fromEntries(LANGS.map((l) => [l, SITE_URL + path(l)])) as Localized;
+
 const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const REPO_URL = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/;
 /**
@@ -423,10 +447,16 @@ export function marketRegistry() {
 		generatedAt: new Date().toISOString(),
 		site: SITE_URL,
 		marketplace: Object.fromEntries(LANGS.map((l) => [l, `${SITE_URL}/${l}/${MARKET_SLUG[l]}`])) as Localized,
-		// Jedes Modul zusätzlich mit seinem eigenen Installationslink.
+		// Jedes Modul zusätzlich mit seinem eigenen Installationslink; Quellen und Module mit der
+		// absoluten URL ihrer Detailseite je Sprache (`page`).
 		sources: sortedSources().map((s) => ({
 			...s,
-			modules: s.modules.map((m) => ({ ...m, source: moduleSource(s, m) }))
+			page: localizedPage((l) => marketSourcePath(l, s.id)),
+			modules: s.modules.map((m) => ({
+				...m,
+				source: moduleSource(s, m),
+				page: localizedPage((l) => marketModulePath(l, s.id, m.id))
+			}))
 		}))
 	};
 }
