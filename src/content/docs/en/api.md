@@ -1,6 +1,6 @@
 ---
 title: REST API
-description: The Kalypzo Atrium REST API under /api/v1 – API keys with scopes, permissions, error format, rate limits, OpenAPI 3.1 and curl examples.
+description: The Kalypzo Atrium REST API under /api/v1 – API keys, scopes, error format, rate limits, OpenAPI and examples.
 order: 33
 section: Development
 source: docs/api.md
@@ -12,8 +12,8 @@ Atrium exposes all approved core functions and the endpoints of enabled modules 
 
 | Method | Use |
 |---|---|
-| **API key** | header `Authorization: Bearer epk_…` – for scripts and external services |
-| **Session cookie** | sign-in through the UI; write requests need a matching `Origin` header |
+| **API key** | Header `Authorization: Bearer epk_…` – for scripts and external services |
+| **Session cookie** | Sign-in through the UI; write requests need a matching `Origin` header |
 
 Invalid, revoked or expired keys result in `401 unauthenticated`. If a bearer header is present, the session is ignored.
 
@@ -87,9 +87,9 @@ Per endpoint and identity (key → user → IP), the default is **120 requests p
 
 | Method | Path | Permission |
 |---|---|---|
-| GET | `/health` | public |
-| GET | `/openapi.json` | signed in |
-| GET | `/me` | signed in – identity and effective permissions |
+| GET | `/health` | Public |
+| GET | `/openapi.json` | Signed in |
+| GET | `/me` | Signed in – identity and effective permissions |
 | GET | `/users`, `/users/:id` | `core.users.view` |
 | POST | `/users` | `core.users.create` |
 | PATCH | `/users/:id` | `core.users.edit` |

@@ -12,19 +12,19 @@ This page is for everyone working on the Atrium core. Set up your local environm
 
 | Command | Purpose |
 |---|---|
-| `npm run dev` | development server (Vite) |
-| `npm run build` / `npm start` | production build / start (`node build`) |
+| `npm run dev` | Development server (Vite) |
+| `npm run build` / `npm start` | Production build / start (`node build`) |
 | `npm run check` | `svelte-kit sync` and `svelte-check` |
-| `npm run lint` / `npm run format` | check / write ESLint and Prettier |
+| `npm run lint` / `npm run format` | Check / write ESLint and Prettier |
 | `npm test` | Vitest (unit and integration) with fixture modules |
-| `npm run test:unit` / `npm run test:integration` | subsets of the tests |
-| `npm run test:core` | core tests with the fixture modules from `tests/fixtures/modules` |
-| `npm run check:core` | type check with the fixture modules |
+| `npm run test:unit` / `npm run test:integration` | Subsets of the tests |
+| `npm run test:core` | Core tests with the fixture modules from `tests/fixtures/modules` |
+| `npm run check:core` | Type check with the fixture modules |
 | `npm run test:e2e` | Playwright end-to-end tests |
-| `npm run db:generate` | generate a Drizzle migration from the schema |
-| `npm run db:migrate` | apply migrations manually |
+| `npm run db:generate` | Generate a Drizzle migration from the schema |
+| `npm run db:migrate` | Apply migrations manually |
 | `npm run db:studio` | Drizzle Studio |
-| `npm run openapi` | generate `docs/openapi.json` |
+| `npm run openapi` | Generate `docs/openapi.json` |
 
 ## Project structure
 
