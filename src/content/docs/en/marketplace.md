@@ -5,18 +5,40 @@ order: 13.5
 section: Administration
 ---
 
-The [marketplace](/en/marketplace) is a public overview of **module sources** for Atrium – GitHub repositories with one or more feature modules. You can search by name, description and tags, filter by category and copy a source's GitHub link. The same data is available as a machine-readable [registry](#registry-for-atrium-instances), so Atrium instances and other tools can fetch the list themselves.
+The [marketplace](/en/marketplace) is a public overview of **module sources** for Atrium – GitHub repositories with one or more feature modules. You can browse whole **packages** (module sources) or **individual modules**, search by name, description and tags, filter by category and copy the GitHub link of a package or of a single module. The same data is available as a machine-readable [registry](#registry-for-atrium-instances), so Atrium instances and other tools can fetch the list themselves.
 
 > **Warning:** Being listed in the marketplace is **not a security review**. After installation, module code runs with full privileges in the server process (see [Managing modules](/en/docs/module-management)). Review every source yourself. Only sources from Kalypzo Solutions are marked **Official**.
 
 ## What the marketplace shows
 
-Each entry describes one source:
+Above the list, you choose between two views:
+
+| View | Shows |
+|---|---|
+| **Packages** | Each module source (a repository with several modules) as its own card |
+| **Individual modules** | Each module of all sources as its own card |
+
+Search, categories and **Official only** apply in both views. Without JavaScript, the page only shows the package view.
+
+### Packages
+
+Each card describes one source:
 
 - name, description and publisher, marked **Official** where applicable,
 - categories, tags, license and an optional project page,
 - the modules it contains, with name and short description,
 - the GitHub link you paste into Atrium.
+
+### Individual modules
+
+Each card describes one module:
+
+- the module's name and description and a **from package** reference with the source's name,
+- the publisher, the **Official** mark where applicable, and the categories – the module inherits both from its source,
+- its own installation link with **Copy link**,
+- a link to the module's folder on GitHub.
+
+Here, search covers the module ID, module name and description, package name, publisher, tags and categories. The website search also finds individual modules and opens the module view at the matching card.
 
 The module list is for orientation only. The source's [catalog](/en/docs/modules#catalog-atrium-modules-json), which Atrium reads during installation, is authoritative.
 
@@ -33,11 +55,20 @@ The module list is for orientation only. The source's [catalog](/en/docs/modules
 
 ## Installing a module from the marketplace
 
-1. Find the source you want in the [marketplace](/en/marketplace) and check the publisher, repository and license.
-2. Click **Copy link**.
+You can install either a **whole package** or an **individual module**:
+
+| Link | Atrium offers |
+|---|---|
+| Package (**Packages** view) | All modules of the source; you select the ones you want |
+| Individual module (**Individual modules** view) | Only this module |
+
+1. Find the package or module you want in the [marketplace](/en/marketplace) and check the publisher, repository and license.
+2. Click **Copy link** on its card.
 3. Paste the link in your Atrium instance under **Administration → Modules → Install** and continue as described in [Installing modules](/en/docs/module-management#installing-modules).
 
-The marketplace only provides the link; the preview and confirmation of the installation stay the same.
+The marketplace only provides the link; the preview and confirmation of the installation stay the same. If a module needs other modules, the preview shows these dependencies. If a dependency cannot be resolved, the installation is blocked and the preview states the reason.
+
+> **Tip:** If a module depends on other modules from the same package, use the package link instead and select the required modules together.
 
 > **Tip:** If you have entered **Allowed sources**, Atrium only accepts those repositories – even if a source is in the marketplace (see [GitHub token and allowed sources](/en/docs/module-management#github-token-and-allowed-sources)).
 
@@ -73,7 +104,8 @@ The file is public, needs no authentication, allows CORS from any origin (`Acces
 | `sources[].tags` | List | Free-form tags |
 | `sources[].license` | Text | Optional: SPDX license identifier, e.g. `MIT` |
 | `sources[].homepage` | URL | Optional: project page |
-| `sources[].modules[]` | List | Contained modules with `id`, `name` and `description` per language (display only) |
+| `sources[].modules[]` | List | Contained modules with `id`, `name` and `description` per language plus `source` (display only) |
+| `sources[].modules[].source` | URL | Link to paste into Atrium for this individual module (the module's folder) |
 | `sources[].addedAt` | Date | Day the source was added to the marketplace |
 
 ### Example
@@ -108,7 +140,8 @@ The file is public, needs no authentication, allows CORS from any origin (`Acces
         {
           "id": "events",
           "name": { "de": "Termine", "en": "Events" },
-          "description": { "de": "Termine und Kalender.", "en": "Events and calendar." }
+          "description": { "de": "Termine und Kalender.", "en": "Events and calendar." },
+          "source": "https://github.com/KalypzoSolutions/atrium-basic-modules/tree/main/modules/events"
         }
       ],
       "addedAt": "2026-11-25"
@@ -125,6 +158,10 @@ curl -s https://atrium.kalypzo.de/marketplace/v1/index.json
 # only IDs and links of the sources (with jq)
 curl -s https://atrium.kalypzo.de/marketplace/v1/index.json \
   | jq -r '.sources[] | "\(.id)\t\(.source)"'
+
+# IDs and links of all individual modules (with jq)
+curl -s https://atrium.kalypzo.de/marketplace/v1/index.json \
+  | jq -r '.sources[].modules[] | "\(.id)\t\(.source)"'
 ```
 
 ### Rules for clients
@@ -146,7 +183,7 @@ New sources are added by pull request to the website repository [KalypzoSolution
 1. Make sure your repository is public on GitHub and contains a valid [catalog](/en/docs/modules#catalog-atrium-modules-json). Test the installation in your own instance.
 2. Fork `atrium-website` and add an entry for your source in `src/lib/marketplace.ts`.
 3. Choose a unique `id` (lowercase letters, digits and hyphens), descriptions in **German and English** and at least one category from the list above. Leave `official` set to `false` – this flag is reserved for sources from Kalypzo Solutions.
-4. Check locally with `npm run build`. The build fails on invalid entries, such as duplicate IDs, links outside `https://github.com` (the short form `github:…` is not allowed either), `official: true` outside KalypzoSolutions, missing translations or unknown categories.
+4. Check locally with `npm run build`. The build fails on invalid entries, such as duplicate IDs, links outside `https://github.com` (the short form `github:…` is not allowed either), `official: true` outside KalypzoSolutions, missing translations, unknown categories or a module `source` that does not start with `https://github.com/` or does not point into the source's repository.
 5. Open a pull request with a short description of your modules. After the merge, the source appears on the marketplace page and in the registry.
 
 An entry looks like this:
@@ -175,6 +212,17 @@ An entry looks like this:
 		}
 	],
 	addedAt: '2026-11-25'
+}
+```
+
+The website builds the installation links of individual modules automatically from `repository`, `ref` (default `main`), `path` and the module ID: `<repository>/tree/<ref>/<path>/<module-id>`. In the example without `path`, this gives `https://github.com/example-org/atrium-treasury/tree/main/treasury`. If a module lives in a different folder, set a `source` field in the module entry:
+
+```ts
+{
+	id: 'treasury',
+	name: { de: 'Kasse', en: 'Treasury' },
+	description: { de: 'Einnahmen und Ausgaben erfassen.', en: 'Track income and expenses.' },
+	source: 'https://github.com/example-org/atrium-treasury/tree/main/packages/treasury'
 }
 ```
 
