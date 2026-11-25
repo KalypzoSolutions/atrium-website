@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ArrowRight } from '@lucide/svelte';
-	import type { Lang } from '$lib/config';
+	import { MARKET_SLUG, type Lang } from '$lib/config';
+	import { t } from '$lib/i18n';
 	import { landing, MODULE_JSON_SAMPLE } from '$lib/content/landing';
 	import SectionHeading from './SectionHeading.svelte';
 	import CodePanel from './CodePanel.svelte';
@@ -30,10 +31,16 @@
 				{/each}
 			</ol>
 
-			<a href="/{lang}/docs/modules" class="link-arrow mt-8">
-				{c.modules.cta}
-				<ArrowRight class="size-4" aria-hidden="true" />
-			</a>
+			<div class="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+				<a href="/{lang}/docs/modules" class="link-arrow">
+					{c.modules.cta}
+					<ArrowRight class="size-4" aria-hidden="true" />
+				</a>
+				<a href="/{lang}/{MARKET_SLUG[lang]}" class="link-arrow">
+					{t(lang).market.discover}
+					<ArrowRight class="size-4" aria-hidden="true" />
+				</a>
+			</div>
 		</div>
 
 		<div class="min-w-0">

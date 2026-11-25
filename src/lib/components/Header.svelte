@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { Menu, X, Languages } from '@lucide/svelte';
-	import { GITHUB_URL, GUIDE_SLUG, type Lang } from '$lib/config';
+	import { GITHUB_URL, GUIDE_SLUG, MARKET_SLUG, type Lang } from '$lib/config';
 	import { t, otherLang, switchLangPath } from '$lib/i18n';
 	import Logo from './Logo.svelte';
 	import GithubIcon from './GithubIcon.svelte';
@@ -39,10 +39,12 @@
 		}
 	}
 
-	const links = $derived([
+	const links: { href: string; label: string; xl?: boolean }[] = $derived([
 		{ href: `/${lang}#features`, label: d.nav.features },
 		{ href: `/${lang}#modules`, label: d.nav.modules },
-		{ href: `/${lang}/docs/quickstart`, label: d.nav.quickstart },
+		{ href: `/${lang}/${MARKET_SLUG[lang]}`, label: d.nav.marketplace },
+		// Auf lg ist die Leiste knapp – der Schnellstart erscheint dort erst ab xl (im Menü und Footer immer).
+		{ href: `/${lang}/docs/quickstart`, label: d.nav.quickstart, xl: true },
 		{ href: `/${lang}/docs`, label: d.nav.docs },
 		{ href: `/${lang}/${GUIDE_SLUG[lang]}`, label: d.nav.guide }
 	]);
@@ -79,7 +81,7 @@
 
 		<ul class="ml-4 hidden items-center gap-1 lg:flex">
 			{#each links as l (l.href)}
-				<li>
+				<li class={l.xl ? 'hidden xl:block' : undefined}>
 					<a
 						href={l.href}
 						aria-current={isActive(l.href) ? 'page' : undefined}

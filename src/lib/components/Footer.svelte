@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { GITHUB_URL, GUIDE_SLUG, type Lang } from '$lib/config';
+	import { GITHUB_URL, GUIDE_SLUG, MARKET_SLUG, type Lang } from '$lib/config';
 	import { OPERATOR, legalHref } from '$lib/legal';
 	import { page } from '$app/state';
 	import { t } from '$lib/i18n';
@@ -21,6 +21,7 @@
 			links: [
 				{ href: `/${lang}#features`, label: d.nav.features },
 				{ href: `/${lang}#modules`, label: d.nav.modules },
+				{ href: `/${lang}/${MARKET_SLUG[lang]}`, label: d.nav.marketplace },
 				{ href: `/${lang}/${GUIDE_SLUG[lang]}`, label: d.nav.guide }
 			]
 		},
