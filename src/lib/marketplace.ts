@@ -271,7 +271,9 @@ export function githubRepoSlug(url: string): string {
  */
 export function moduleSource(s: MarketSource, m: MarketModule): string {
 	if (m.source) return m.source;
-	const dir = s.path ? s.path.replace(/^\/+|\/+$/g, '') + '/' : '';
+	// Leere Segmente entfernen, damit weder „//“ noch ein führender „/“ entsteht (z. B. path: '/').
+	const segments = (s.path ?? '').split('/').filter(Boolean);
+	const dir = segments.length ? segments.join('/') + '/' : '';
 	return `${s.repository}/tree/${s.ref ?? 'main'}/${dir}${m.id}`;
 }
 
@@ -282,6 +284,31 @@ const REPO_URL = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/;
  * anderen Links verwerfen (die Kurzform github:… ist hier deshalb nicht erlaubt).
  */
 const SOURCE_URL = /^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+(?:\/tree\/[^\s/]+(?:\/[^\s]+)?)?$/;
+/**
+ * Prüft einen Installationslink, der SOURCE_URL erfüllt, gegen das Repository: leere
+ * Pfadsegmente sowie „.“/„..“ (auch kodiert) sind verboten, und nach der Normalisierung per
+ * URL muss der Link weiterhin auf `owner/repo` des Repositorys zeigen.
+ */
+function sourceMatchesRepo(source: string, repository: string): boolean {
+	for (const seg of source.slice('https://github.com/'.length).split('/')) {
+		let decoded: string;
+		try {
+			decoded = decodeURIComponent(seg);
+		} catch {
+			return false;
+		}
+		if (!seg || decoded === '.' || decoded === '..' || /[/\\]/.test(decoded)) return false;
+	}
+	let url: URL;
+	try {
+		url = new URL(source);
+	} catch {
+		return false;
+	}
+	if (url.origin !== 'https://github.com') return false;
+	const [owner, repo] = url.pathname.split('/').slice(1);
+	return `${owner}/${repo}`.toLowerCase() === githubRepoSlug(repository).toLowerCase();
+}
 /** GitHub-Owner, dessen Quellen als offiziell markiert werden dürfen. */
 const OFFICIAL_OWNER = 'kalypzosolutions';
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -315,8 +342,8 @@ export function validateSources(list: MarketSource[]): MarketSource[] {
 		if (!SOURCE_URL.test(s.source ?? '')) {
 			errors.push(`${where}: source muss https://github.com/owner/repo[/tree/…] sein`);
 		} else if (REPO_URL.test(s.repository ?? '')) {
-			if (githubRepoSlug(s.source).toLowerCase() !== githubRepoSlug(s.repository).toLowerCase()) {
-				errors.push(`${where}: source zeigt nicht auf repository`);
+			if (!sourceMatchesRepo(s.source, s.repository)) {
+				errors.push(`${where}: source zeigt nicht auf repository (oder enthält leere, „.“- bzw. „..“-Pfadsegmente)`);
 			}
 		}
 		if (typeof s.official !== 'boolean') {
@@ -348,8 +375,8 @@ export function validateSources(list: MarketSource[]): MarketSource[] {
 			if (!SOURCE_URL.test(install)) {
 				errors.push(`${where}: Installationslink von Modul „${m.id}“ muss https://github.com/owner/repo[/tree/…] sein`);
 			} else if (REPO_URL.test(s.repository ?? '')) {
-				if (githubRepoSlug(install).toLowerCase() !== githubRepoSlug(s.repository).toLowerCase()) {
-					errors.push(`${where}: Installationslink von Modul „${m.id}“ zeigt nicht auf repository`);
+				if (!sourceMatchesRepo(install, s.repository)) {
+					errors.push(`${where}: Installationslink von Modul „${m.id}“ zeigt nicht auf repository (oder enthält leere, „.“- bzw. „..“-Pfadsegmente)`);
 				}
 			}
 		}

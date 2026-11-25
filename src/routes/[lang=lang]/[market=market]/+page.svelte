@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, pushState } from '$app/navigation';
 	import { ArrowRight, Braces, GitPullRequest, SearchX, TriangleAlert } from '@lucide/svelte';
 	import { MARKET_SLUG, SITE_NAME, SITE_URL } from '$lib/config';
 	import {
@@ -95,7 +95,8 @@
 			await tick();
 		}
 		const el = document.getElementById(`source-${id}`);
-		history.pushState(history.state, '', `#source-${id}`);
+		// Über SvelteKit (Shallow Routing), damit der History-Index des Routers stimmt.
+		pushState(`#source-${id}`, {});
 		el?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 		// Fokus auf die Karte, damit Tastatur- und Screenreader-Nutzende dort weitermachen.
 		el?.setAttribute('tabindex', '-1');
