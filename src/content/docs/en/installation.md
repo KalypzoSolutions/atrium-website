@@ -1,6 +1,6 @@
 ---
 title: Installation with Docker Compose
-description: Run Kalypzo Atrium in production with Docker Compose – including nginx with HTTPS, automatic backups, hardening, updates and restore.
+description: Run Atrium in production with Docker Compose – first start, nginx with HTTPS, automatic backups and restore.
 order: 20
 section: Operations
 source: docs/deployment.md
@@ -73,6 +73,8 @@ On first start, migrations and module synchronization run automatically, then th
 4. Under **Administration → Settings**, configure the system name, email delivery (SMTP), storage (S3), AI and PDF.
 5. Under **Administration → Modules**, install and enable the modules you need.
 
+In detail: [First steps after installation](/en/docs/first-steps).
+
 ## nginx and HTTPS (profile `proxy`)
 
 ```bash
@@ -94,7 +96,7 @@ HSTS and the remaining security headers are set by the application itself.
 
 ### Using your own reverse proxy
 
-Atrium reads the client IP from `X-Forwarded-For`. The shipped configuration sets `ADDRESS_HEADER=X-Forwarded-For`, `XFF_DEPTH=1`, `PROTOCOL_HEADER=X-Forwarded-Proto` and `HOST_HEADER=X-Forwarded-Host`.
+Atrium reads the client IP from `X-Forwarded-For`. The shipped configuration sets `ADDRESS_HEADER=X-Forwarded-For`, `XFF_DEPTH=1`, `PROTOCOL_HEADER=X-Forwarded-Proto` and `HOST_HEADER=X-Forwarded-Host` (see [Configuration](/en/docs/configuration#proxy-headers)).
 
 | Proxy | Setting |
 |---|---|
@@ -176,42 +178,22 @@ The Compose files are already hardened:
 - app port on `127.0.0.1` only, database without a published port
 - memory, CPU and process limits per service, log rotation (at most 5 × 10 MB per container)
 
-Also check:
-
-- [ ] HTTPS enforced, `ORIGIN` with `https://`
-- [ ] `APP_SECRET` random, stored securely and separately from the server
-- [ ] `INITIAL_ADMIN_*` removed, administrator using 2FA
-- [ ] `XFF_DEPTH` matches your proxy setup
-- [ ] S3 bucket private, access key limited to that bucket
-- [ ] backups stored off the server and restore tested
+What you should additionally check as an operator is summarized in the [hardening checklist](/en/docs/security#hardening-checklist).
 
 ### Resources
 
-| Service | Memory (variable) | CPU (variable) |
-|---|---|---|
-| `app` | 4g (`APP_MEM_LIMIT`) | 1.0 (`APP_CPUS`) |
-| `db` | 1g (`DB_MEM_LIMIT`) | 1.0 (`DB_CPUS`) |
-| `nginx` | 128m (`NGINX_MEM_LIMIT`) | 0.5 (`NGINX_CPUS`) |
-| `db-backup` | 512m (`BACKUP_MEM_LIMIT`) | 0.5 (`BACKUP_CPUS`) |
-
-`cpus` must not exceed the number of host cores, otherwise the service won't start. On larger servers, e.g. `APP_CPUS=2` and `DB_CPUS=2` make sense. Monitor with `docker stats`.
+By default, `app` may use up to 4 GB of memory and 1 CPU, `db` 1 GB and 1 CPU, `nginx` and `db-backup` 0.5 CPU each. All limits, their variables and a recommendation for small servers are listed under [Configuration](/en/docs/configuration#resources).
 
 ## Updates and shutdown
 
-```bash
-git pull
-docker compose build app
-docker compose up -d app     # migrations run at startup
-```
-
-Create a backup first – migrations are not automatically reversible. Rollback, pinned images, module rebuilds and shutdown behavior are covered in [Updates](/en/docs/updates).
+An update consists of `git pull`, rebuilding `app` and restarting it; migrations run automatically. Create a backup first – migrations are not automatically reversible. The commands, rollback, pinned images, module rebuilds and shutdown behavior are covered in [Updates](/en/docs/updates#with-docker-compose).
 
 ## Health checks
 
 - **App:** `GET /api/v1/health` checks the database connection and responds with `200` or `503`.
-- **Database:** `pg_isready`; the app only starts once the database is healthy.
+- **Database:** `pg_isready`; the app only starts once the database is "healthy".
 
-> **Note:** Atrium is designed for **one** app instance. Rate limiter, login lockout and live editing work in process memory.
+> **Note:** Atrium is designed for **one** app instance – see [Updates – Only one instance](/en/docs/updates#only-one-instance).
 
 ## Next steps
 
@@ -219,3 +201,4 @@ Create a backup first – migrations are not automatically reversible. Rollback,
 - Look up variables: [Configuration](/en/docs/configuration)
 - Security model and hardening: [Security](/en/docs/security)
 - Install modules: [Managing modules](/en/docs/module-management)
+- If something doesn't start: [Troubleshooting](/en/docs/troubleshooting)

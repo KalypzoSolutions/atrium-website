@@ -1,6 +1,6 @@
 ---
 title: Updates
-description: Atrium sicher aktualisieren – mit Docker Compose oder Dokploy, gepinnten Images, automatischen Migrationen, Modul-Neubau, Rollback und Herunterfahren.
+description: Atrium sicher aktualisieren – Ablauf mit Docker Compose oder Dokploy, Modul-Neubau, gepinnte Images, Rollback und Herunterfahren.
 order: 24
 section: Betrieb
 source: docs/deployment.md
@@ -14,7 +14,7 @@ Ein Update von Atrium besteht aus einem neuen Image der Anwendung. Datenbank-Mig
 2. **Änderungen lesen** – Release-Hinweise bzw. Commits im [Repository](https://github.com/KalypzoSolutions/kalypzo-atrium).
 3. **Zeitpunkt wählen** – nicht während laufender Massenvorgänge (z. B. Mail-Versand an viele Empfänger) oder einer Wiederherstellung. Hintergrundjobs reagieren noch nicht auf das Herunterfahren.
 
-> **Wichtig:** Migrationen sind nicht automatisch umkehrbar. Ein Rollback bedeutet: Image der Vorversion starten **und** die Datenbank aus der Sicherung wiederherstellen.
+> **Wichtig:** Migrationen sind nicht automatisch umkehrbar. Ein Rollback bedeutet: Image der Vorversion starten **und** die Datenbank aus der Sicherung wiederherstellen. Die Befehle dafür stehen unter [Installation – Wiederherstellung](/de/docs/installation#wiederherstellung).
 
 ## Mit Docker Compose
 
@@ -29,7 +29,7 @@ Beim Start wendet Atrium zuerst die Core-Migrationen an, synchronisiert dann die
 
 ## Mit Dokploy
 
-Dokploy deployt bei jedem Push auf den gewählten Branch automatisch (Autodeploy) oder auf Knopfdruck mit **Deploy**. Das Vorgehen ist dasselbe: vorher sichern, danach im Log von `app` prüfen, dass Migrationen und Start durchgelaufen sind.
+Dokploy deployt bei jedem Push auf den gewählten Branch automatisch (Autodeploy) oder auf Knopfdruck mit **Deploy**. Das Vorgehen ist dasselbe: vorher sichern ([Sicherung unter Dokploy](/de/docs/dokploy#sicherung-unter-dokploy)), danach im Log von `app` prüfen, dass Migrationen und Start durchgelaufen sind.
 
 > **Tipp:** Wer Updates erst nach einer grünen CI einspielen möchte, lässt Pushes auf den Deploy-Branch nur über geschützte Pull Requests zu oder löst Dokploy per Webhook aus der CI aus.
 

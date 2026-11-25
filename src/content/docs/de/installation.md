@@ -1,6 +1,6 @@
 ---
 title: Installation mit Docker Compose
-description: Kalypzo Atrium produktiv mit Docker Compose betreiben – inklusive nginx mit HTTPS, automatischer Sicherung, Härtung, Updates und Wiederherstellung.
+description: Atrium produktiv mit Docker Compose betreiben – Erststart, nginx mit HTTPS, automatische Sicherung und Wiederherstellung.
 order: 20
 section: Betrieb
 source: docs/deployment.md
@@ -73,6 +73,8 @@ Beim ersten Start laufen die Migrationen und die Modul-Synchronisation automatis
 4. Unter **Administration → Einstellungen** Systemname, E-Mail-Versand (SMTP), Speicher (S3), KI und PDF einrichten.
 5. Unter **Administration → Module** die gewünschten Module installieren und aktivieren.
 
+Ausführlich: [Erste Schritte nach der Installation](/de/docs/first-steps).
+
 ## nginx und HTTPS (Profil `proxy`)
 
 ```bash
@@ -94,7 +96,7 @@ HSTS und die übrigen Sicherheits-Header setzt die Anwendung selbst.
 
 ### Eigener Reverse Proxy
 
-Atrium liest die Client-IP aus `X-Forwarded-For`. Die mitgelieferte Konfiguration setzt `ADDRESS_HEADER=X-Forwarded-For`, `XFF_DEPTH=1`, `PROTOCOL_HEADER=X-Forwarded-Proto` und `HOST_HEADER=X-Forwarded-Host`.
+Atrium liest die Client-IP aus `X-Forwarded-For`. Die mitgelieferte Konfiguration setzt `ADDRESS_HEADER=X-Forwarded-For`, `XFF_DEPTH=1`, `PROTOCOL_HEADER=X-Forwarded-Proto` und `HOST_HEADER=X-Forwarded-Host` (siehe [Konfiguration](/de/docs/configuration#proxy-header)).
 
 | Proxy | Einstellung |
 |---|---|
@@ -176,42 +178,22 @@ Die Compose-Dateien sind bereits gehärtet:
 - App-Port nur auf `127.0.0.1`, Datenbank ohne veröffentlichten Port
 - Speicher-, CPU- und Prozessgrenzen je Dienst, Log-Rotation (höchstens 5 × 10 MB je Container)
 
-Prüfen Sie zusätzlich:
-
-- [ ] HTTPS erzwungen, `ORIGIN` mit `https://`
-- [ ] `APP_SECRET` zufällig, sicher und getrennt vom Server aufbewahrt
-- [ ] `INITIAL_ADMIN_*` entfernt, Administrator mit 2FA
-- [ ] `XFF_DEPTH` passend zum Proxy
-- [ ] S3-Bucket privat, Zugangsschlüssel nur mit Rechten auf diesen Bucket
-- [ ] Sicherung mit Ziel außerhalb des Servers und getestete Wiederherstellung
+Was Sie als Betreiber zusätzlich prüfen sollten, fasst die [Härtungs-Checkliste](/de/docs/security#haertungs-checkliste) zusammen.
 
 ### Ressourcen
 
-| Dienst | Speicher (Variable) | CPU (Variable) |
-|---|---|---|
-| `app` | 4g (`APP_MEM_LIMIT`) | 1.0 (`APP_CPUS`) |
-| `db` | 1g (`DB_MEM_LIMIT`) | 1.0 (`DB_CPUS`) |
-| `nginx` | 128m (`NGINX_MEM_LIMIT`) | 0.5 (`NGINX_CPUS`) |
-| `db-backup` | 512m (`BACKUP_MEM_LIMIT`) | 0.5 (`BACKUP_CPUS`) |
-
-`cpus` darf die Kernzahl des Hosts nicht übersteigen, sonst startet der Dienst nicht. Auf größeren Servern sind z. B. `APP_CPUS=2` und `DB_CPUS=2` sinnvoll. Kontrolle mit `docker stats`.
+Standardmäßig darf `app` bis zu 4 GB Speicher und 1 CPU belegen, `db` 1 GB und 1 CPU, `nginx` und `db-backup` jeweils 0,5 CPU. Alle Grenzen, die zugehörigen Variablen und eine Empfehlung für kleine Server stehen unter [Konfiguration](/de/docs/configuration#ressourcen).
 
 ## Updates und Herunterfahren
 
-```bash
-git pull
-docker compose build app
-docker compose up -d app     # Migrationen laufen beim Start
-```
-
-Erstellen Sie vorher eine Sicherung – Migrationen sind nicht automatisch umkehrbar. Rollback, gepinnte Images, Modul-Neubau und das Verhalten beim Herunterfahren beschreibt [Updates](/de/docs/updates).
+Ein Update besteht aus `git pull`, einem Neubau von `app` und einem Neustart; die Migrationen laufen dabei automatisch. Erstellen Sie vorher eine Sicherung – Migrationen sind nicht automatisch umkehrbar. Die Befehle, Rollback, gepinnte Images, Modul-Neubau und das Verhalten beim Herunterfahren beschreibt [Updates](/de/docs/updates#mit-docker-compose).
 
 ## Healthchecks
 
 - **App:** `GET /api/v1/health` prüft die Datenbankverbindung und antwortet mit `200` oder `503`.
 - **Datenbank:** `pg_isready`; die App startet erst, wenn die Datenbank „healthy“ ist.
 
-> **Hinweis:** Atrium ist für **eine** App-Instanz ausgelegt. Rate Limiter, Login-Sperre und Live-Bearbeitung arbeiten im Prozessspeicher.
+> **Hinweis:** Atrium ist für **eine** App-Instanz ausgelegt – siehe [Updates – Nur eine Instanz](/de/docs/updates#nur-eine-instanz).
 
 ## Nächste Schritte
 
@@ -219,3 +201,4 @@ Erstellen Sie vorher eine Sicherung – Migrationen sind nicht automatisch umkeh
 - Variablen nachschlagen: [Konfiguration](/de/docs/configuration)
 - Sicherheitsmodell und Härtung: [Sicherheit](/de/docs/security)
 - Module installieren: [Module verwalten](/de/docs/module-management)
+- Wenn etwas nicht startet: [Fehlerbehebung](/de/docs/troubleshooting)
