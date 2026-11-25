@@ -1,6 +1,6 @@
 ---
 title: Quick start (local)
-description: Run Kalypzo Atrium locally in minutes – Node.js 24, Docker for PostgreSQL and MinIO, a .env file and npm run dev.
+description: Run Kalypzo Atrium locally in development mode – with Node.js, Docker for PostgreSQL and MinIO, and npm run dev.
 order: 2
 section: Getting started
 source: README.md
@@ -68,9 +68,26 @@ On startup, Atrium automatically applies database migrations, registers and sync
 
 ### 5. Sign in
 
-Open [http://localhost:5173/login](http://localhost:5173/login) and sign in with the credentials from your `.env`. Then change the password in your profile.
+Open [http://localhost:5173/login](http://localhost:5173/login) and sign in with the credentials from your `.env`. Then change the password in your profile (see [Changing your password](/en/docs/first-steps#changing-your-password)).
 
-## Install Chromium for PDF
+## Set up storage and email
+
+SMTP, S3, AI and the PDF layout are configured **in the interface**, not through environment variables. For the local MinIO instance, enter the following under **Administration → Settings → Storage**:
+
+| Field | Value |
+|---|---|
+| Endpoint | `http://localhost:9000` |
+| Bucket | `ep-intern-dev` |
+| Access key / secret | `minioadmin` / `minioadmin` |
+| Path style | enabled |
+
+Use **Test connection** to verify the settings. If needed, enter an SMTP server under **Settings → Email delivery**; without it, invitations and password links by email don’t work. All fields are described in [Settings](/en/docs/settings#storage).
+
+## Optional follow-up steps
+
+Atrium is now running. You only need the following steps for PDFs and your own modules.
+
+### Install Chromium for PDF
 
 The PDF service renders HTML with Chromium. Locally, install the browser once via Playwright:
 
@@ -80,20 +97,7 @@ npx playwright install chromium
 
 The Docker image already includes Chromium.
 
-## Set up storage and email
-
-SMTP, S3, AI and the PDF layout are configured **in the UI**, not through environment variables. For the local MinIO instance, enter the following under **Administration → Settings → Storage**:
-
-| Field | Value |
-|---|---|
-| Endpoint | `http://localhost:9000` |
-| Bucket | `ep-intern-dev` |
-| Access key / secret | `minioadmin` / `minioadmin` |
-| Path style | enabled |
-
-Use **Test connection** to verify the settings. All settings are described under [Configuration](/en/docs/configuration).
-
-## Try modules locally
+### Try modules locally
 
 The repository contains no feature modules; the `modules/` directory is empty and ignored by Git. Put a module into `modules/<id>/` and it appears under **Administration → Modules** after a restart – disabled at first. How modules are structured is explained in [Developing modules](/en/docs/modules).
 

@@ -1,6 +1,6 @@
 ---
 title: Schnellstart (lokal)
-description: Kalypzo Atrium in wenigen Minuten lokal starten – mit Node.js 24, Docker für PostgreSQL und MinIO, einer .env-Datei und npm run dev.
+description: Kalypzo Atrium lokal im Entwicklungsmodus starten – mit Node.js, Docker für PostgreSQL und MinIO und npm run dev.
 order: 2
 section: Erste Schritte
 source: README.md
@@ -68,9 +68,26 @@ Beim Start wendet Atrium automatisch die Datenbank-Migrationen an, registriert u
 
 ### 5. Anmelden
 
-Öffnen Sie [http://localhost:5173/login](http://localhost:5173/login) und melden Sie sich mit den Zugangsdaten aus der `.env` an. Ändern Sie anschließend das Passwort im Profil.
+Öffnen Sie [http://localhost:5173/login](http://localhost:5173/login) und melden Sie sich mit den Zugangsdaten aus der `.env` an. Ändern Sie anschließend das Passwort im Profil (siehe [Passwort ändern](/de/docs/first-steps#passwort-aendern)).
 
-## Chromium für PDF installieren
+## Speicher und E-Mail einrichten
+
+SMTP, S3, KI und PDF-Layout richten Sie **in der Oberfläche** ein, nicht über Umgebungsvariablen. Für die lokale MinIO-Instanz tragen Sie unter **Administration → Einstellungen → Speicher** ein:
+
+| Feld | Wert |
+|---|---|
+| Endpoint | `http://localhost:9000` |
+| Bucket | `ep-intern-dev` |
+| Access Key / Secret | `minioadmin` / `minioadmin` |
+| Path-Style | aktiviert |
+
+Mit **Verbindung testen** prüfen Sie die Einstellungen. Einen SMTP-Server tragen Sie bei Bedarf unter **Einstellungen → E-Mail-Versand** ein; ohne ihn funktionieren Einladungen und Passwort-Links per E-Mail nicht. Alle Felder beschreibt [Einstellungen](/de/docs/settings#speicher).
+
+## Optionale Nacharbeiten
+
+Atrium läuft jetzt. Die folgenden Schritte brauchen Sie nur für PDFs und eigene Module.
+
+### Chromium für PDF installieren
 
 Der PDF-Service rendert HTML mit Chromium. Lokal installieren Sie den Browser einmalig über Playwright:
 
@@ -80,20 +97,7 @@ npx playwright install chromium
 
 Im Docker-Image ist Chromium bereits enthalten.
 
-## Speicher und E-Mail einrichten
-
-SMTP, S3, KI und PDF-Layout werden **in der Oberfläche** konfiguriert, nicht über Umgebungsvariablen. Für die lokale MinIO-Instanz tragen Sie unter **Administration → Einstellungen → Speicher** ein:
-
-| Feld | Wert |
-|---|---|
-| Endpoint | `http://localhost:9000` |
-| Bucket | `ep-intern-dev` |
-| Access Key / Secret | `minioadmin` / `minioadmin` |
-| Path-Style | aktiviert |
-
-Mit **Verbindung testen** prüfen Sie die Einstellungen. Details zu allen Einstellungen finden Sie unter [Konfiguration](/de/docs/configuration).
-
-## Module lokal ausprobieren
+### Module lokal ausprobieren
 
 Das Repository enthält keine Fachmodule; das Verzeichnis `modules/` ist leer und von Git ausgenommen. Legen Sie ein Modul als `modules/<id>/` ab, erscheint es nach dem Neustart unter **Administration → Module** – zunächst deaktiviert. Wie Module aufgebaut sind, erklärt [Module entwickeln](/de/docs/modules).
 
