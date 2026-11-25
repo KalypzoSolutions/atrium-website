@@ -117,7 +117,7 @@ On registration, Atrium checks, among other things:
 - **Setting keys** prefixed with `<module>.`, navigation paths under `/modules/<module>`
 - `atrium-module.json` matches the manifest, and `migrations` contains all files from `migrations/` in name order
 
-A violation doesn't stop startup: the module is not loaded and shows up as "Defective" with a reason under **Administration → Modules**.
+A violation doesn't stop startup: the module is not loaded and shows up as “Broken” with a reason under **Administration → Modules**.
 
 ### Pages: `ui.ts`
 
