@@ -1,8 +1,9 @@
 import { json } from '@sveltejs/kit';
 import pages from 'virtual:docs-search';
-import { GUIDE_SLUG, LANGS, type Lang } from '$lib/config';
+import { GUIDE_SLUG, LANGS, MARKET_SLUG, type Lang } from '$lib/config';
 import { docHref } from '$lib/docs';
 import { guide } from '$lib/content/guide';
+import { sortedSources } from '$lib/marketplace';
 import { t } from '$lib/i18n';
 import type { SearchEntry } from '$lib/components/search/search';
 import type { EntryGenerator, RequestHandler } from './$types';
@@ -85,7 +86,45 @@ function guideEntries(lang: Lang): SearchEntry[] {
 	return out;
 }
 
+/** Marktplatz: die Seite selbst und je Quelle ein Eintrag mit Anker auf ihre Karte. */
+function marketEntries(lang: Lang): SearchEntry[] {
+	const m = t(lang).market;
+	const base = `/${lang}/${MARKET_SLUG[lang]}`;
+	const page = t(lang).nav.marketplace;
+	const group = page;
+	const out: SearchEntry[] = [
+		{ url: base, page, heading: '', group, text: plain(`${m.meta.description} ${m.lead}`), code: '' }
+	];
+	for (const s of sortedSources()) {
+		out.push({
+			url: `${base}#source-${s.id}`,
+			page,
+			heading: s.name,
+			group,
+			text: plain(
+				[
+					s.description[lang],
+					s.publisher.name,
+					...s.categories.map((c) => m.categories[c]),
+					...s.tags,
+					...s.modules.map((x) => x.name[lang])
+				].join(' ')
+			),
+			code: s.source
+		});
+	}
+	out.push({
+		url: `${base}#install`,
+		page,
+		heading: m.install.title,
+		group,
+		text: plain(m.install.steps.map((x) => `${x.title} ${x.text}`).join(' ')),
+		code: ''
+	});
+	return out;
+}
+
 export const GET: RequestHandler = ({ params }) => {
 	const lang = params.lang as Lang;
-	return json({ lang, entries: [...docEntries(lang), ...guideEntries(lang)] });
+	return json({ lang, entries: [...docEntries(lang), ...guideEntries(lang), ...marketEntries(lang)] });
 };

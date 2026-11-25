@@ -8,13 +8,14 @@ export const t = (lang: Lang): Dict => dicts[lang];
 export const otherLang = (lang: Lang): Lang => (lang === 'de' ? 'en' : 'de');
 
 /**
- * Übersetzt einen Pfad in die andere Sprache. Berücksichtigt lokalisierte Slugs (anleitung ↔ guide).
+ * Übersetzt einen Pfad in die andere Sprache. Berücksichtigt lokalisierte Slugs (anleitung ↔ guide, marktplatz ↔ marketplace).
  */
 export function switchLangPath(pathname: string, to: Lang): string {
 	const parts = pathname.split('/').filter(Boolean);
 	if (parts[0] === 'de' || parts[0] === 'en') parts.shift();
 	const slugPairs: [string, string][] = [
 		['anleitung', 'guide'],
+		['marktplatz', 'marketplace'],
 		['impressum', 'legal-notice'],
 		['datenschutz', 'privacy']
 	];
