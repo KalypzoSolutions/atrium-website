@@ -1,6 +1,6 @@
 ---
 title: Dashboard, Suche und Benachrichtigungen
-description: Das Dashboard anpassen, mit Strg+K alles finden, Benachrichtigungen per E-Mail oder Web Push einstellen und Atrium als App auf dem Handy nutzen.
+description: Das Dashboard anpassen, mit Strg+K alles finden und Benachrichtigungen per E-Mail oder Web Push einrichten.
 order: 16
 section: Administration
 source: docs/core-services.md
@@ -67,11 +67,11 @@ Voraussetzungen und Besonderheiten:
 
 ### Für Administratoren
 
-Unter **Einstellungen → Benachrichtigungen** schalten Sie Push systemweit ein oder aus und sehen die Zahl registrierter Geräte (siehe [Einstellungen](/de/docs/settings#benachrichtigungen)). Die VAPID-Schlüssel erzeugt Atrium selbst; sie liegen verschlüsselt in der Datenbank und wandern mit der Datensicherung. Ausgehende HTTPS-Verbindungen zu den Push-Diensten (`fcm.googleapis.com`, `*.push.apple.com`, `*.push.services.mozilla.com`, `*.notify.windows.com`) müssen erlaubt sein.
+Push lässt sich systemweit unter **Einstellungen → Benachrichtigungen** ein- und ausschalten. Ist es aus, kommen alle Benachrichtigungen per E-Mail. Schlüssel, Geräteanzahl und die nötigen ausgehenden Verbindungen beschreibt [Einstellungen → Benachrichtigungen](/de/docs/settings#benachrichtigungen).
 
 ## Darstellung und Startseite
 
-Im **Profil → Darstellung** passt jede Person Atrium an: Theme (Vorschläge oder eigene Themes mit Hintergrund und Akzentfarbe), Hell/Dunkel/System, Akzentfarbe, Sprache der Oberfläche und der E-Mails, Dichte (Normal oder Kompakt), Einträge pro Seite (10 bis 100) und die **Startseite** nach der Anmeldung.
+Die Darstellung gehört zum eigenen Profil (Überblick über alle Bereiche unter [Das eigene Profil](/de/docs/first-steps#das-eigene-profil)). Im **Profil → Darstellung** passt jede Person Atrium an: Theme (Vorschläge oder eigene Themes mit Hintergrund und Akzentfarbe), Hell/Dunkel/System, Akzentfarbe, Sprache der Oberfläche und der E-Mails, Dichte (Normal oder Kompakt), Einträge pro Seite (10 bis 100) und die **Startseite** nach der Anmeldung.
 
 <DocShot name="29b-profile-appearance" lang="de" crop="900" />
 

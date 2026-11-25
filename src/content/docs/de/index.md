@@ -1,6 +1,6 @@
 ---
 title: Einführung
-description: Was Kalypzo Atrium ist, wie Core und Module zusammenspielen und wo Sie in der Dokumentation was finden – der Einstieg in Betrieb und Entwicklung.
+description: Was Kalypzo Atrium ist, wie Core und Module zusammenspielen und wo Sie in der Dokumentation was finden.
 order: 1
 section: Erste Schritte
 source: README.md
@@ -10,7 +10,7 @@ source: README.md
 	import DocsOverview from '$lib/components/docs/DocsOverview.svelte';
 </script>
 
-Kalypzo Atrium ist eine **selbst gehostete, webbasierte Verwaltungsplattform**. Sie besteht aus einem neutralen, zweisprachigen (Deutsch/Englisch) **Core** und **Fachmodulen**, die Sie im laufenden Betrieb unter **Administration → Module** per GitHub-Link oder ZIP-Datei installieren. Technisch ist Atrium ein *modularer Monolith*: ein SvelteKit-Prozess, eine PostgreSQL-Datenbank, klar getrennte Schichten.
+Kalypzo Atrium ist eine **selbst gehostete, webbasierte Verwaltungsplattform**. Sie besteht aus einem neutralen, mehrsprachigen (derzeit Deutsch und Englisch) **Core** und **Fachmodulen**, die Sie im laufenden Betrieb unter **Administration → Module** per GitHub-Link oder ZIP-Datei installieren.
 
 <DocsOverview lang="de" />
 
@@ -29,13 +29,15 @@ Der Core bringt alles mit, was jede Verwaltungsanwendung braucht – aber keine 
 
 **Fachmodule** liefern die eigentlichen Anwendungsfälle (z. B. Mitglieder, Kasse, Termine). Sie liegen in eigenen Repositories; das Atrium-Repository enthält bewusst **keine** Fachmodule. Ein Beispiel ist [ep-intern-modules](https://github.com/Stamm-Edelweisspiraten/ep-intern-modules), die Fachmodule der Edelweißpiraten inklusive eines Profil-Moduls für das Erscheinungsbild der Organisation.
 
-> **Hinweis:** Module sind vertrauenswürdiger Code. Sie laufen mit vollen Rechten im Server-Prozess – es gibt keine Sandbox. Installieren Sie nur Module aus Quellen, denen Sie vertrauen.
+> **Hinweis:** Module sind vertrauenswürdiger Code. Sie laufen mit vollen Rechten im Server-Prozess – es gibt keine Sandbox. Installieren Sie nur Module aus Quellen, denen Sie vertrauen. Wie Sie Module installieren und aktivieren, beschreibt [Module verwalten](/de/docs/module-management).
 
 ## Architektur in einem Satz
 
 Atrium ist ein *modularer Monolith*: ein SvelteKit-Prozess, eine PostgreSQL-Datenbank, klar getrennte Schichten. Der Core entdeckt Module zur Build-Zeit, jedes Modul erhält ein eigenes Datenbankschema `mod_<id>`, und seine Rechte wirken nur, solange es aktiv ist. Mehr dazu unter [Architektur](/de/docs/architecture).
 
 ## Technologie
+
+Die wichtigsten Bausteine im Überblick; wie sie zusammenspielen, erklärt [Architektur](/de/docs/architecture).
 
 | Bereich | Technologie |
 |---|---|

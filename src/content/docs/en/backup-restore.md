@@ -1,6 +1,6 @@
 ---
 title: Backup and restore
-description: Create and import encrypted backups in the interface, use the automatic restic backup service, and delete data areas selectively with “Reset”.
+description: Create and import encrypted backups in the interface, understand the automatic restic backup, and reset data areas.
 order: 14
 section: Administration
 source: docs/security.md
@@ -20,7 +20,7 @@ Atrium offers two complementary ways to back up your data:
 | **Content** | all or selected areas, files optional | the whole database (`pg_dump`) and the S3 bucket |
 | **Best for** | moving to another server, partial restores, merging | disaster recovery, versions over weeks and months |
 
-We recommend both: the automatic backup with a target **outside** the server, plus an occasional backup from the interface that you keep separately.
+We recommend both: the automatic backup with a target **outside** the server, plus an occasional backup from the interface that you keep separately. [Reset](#reset) at the end of this page, by contrast, is not a backup – it deletes data.
 
 ## Backup in the interface
 
@@ -70,22 +70,16 @@ Good to know:
 
 ## Automatic backup with restic
 
-For ongoing operation the `db-backup` service runs daily (default 02:30, time zone Europe/Berlin):
+For ongoing operation the `db-backup` service runs daily (default 02:30, time zone Europe/Berlin). This section gives an overview; setup and commands are part of running the server.
 
 1. `pg_dump` of the database,
 2. `rclone sync` of the S3 bucket (if `BACKUP_S3_*` is set),
 3. `restic backup` into an encrypted, deduplicated repository,
 4. pruning to 7 daily, 4 weekly and 6 monthly snapshots; on Sundays also `restic check`.
 
-Enable it with `COMPOSE_PROFILES=backup` and at least `RESTIC_PASSWORD` plus a target in `RESTIC_REPOSITORY`. The container becomes `unhealthy` if the last successful backup is older than 26 hours; optionally it reports success to `BACKUP_HEARTBEAT_URL` and failures to `BACKUP_NOTIFY_URL`.
+The service runs with the Compose profile `backup` and needs at least `RESTIC_PASSWORD` and a target in `RESTIC_REPOSITORY`. The container becomes `unhealthy` if the last successful backup is older than 26 hours.
 
-```bash
-docker compose run --rm db-backup run          # back up now
-docker compose run --rm db-backup snapshots    # list snapshots
-docker compose logs db-backup                  # failures show up as "SICHERUNG FEHLGESCHLAGEN"
-```
-
-Setup and all variables: [Installation – automatic backups](/en/docs/installation#automatic-backups-profile-backup) and [Configuration](/en/docs/configuration#automatic-backups). On Dokploy, note that its own database backups do **not** cover this stack’s database – enable `db-backup` (see [Dokploy](/en/docs/dokploy#backups-on-dokploy)).
+Setup and commands: [Installation – automatic backups](/en/docs/installation#automatic-backups-profile-backup); all variables: [Configuration](/en/docs/configuration#automatic-backups). On Dokploy, note that its own database backups do **not** cover this stack’s database – enable `db-backup` (see [Dokploy](/en/docs/dokploy#backups-on-dokploy)).
 
 ### Restoring from restic
 
@@ -105,6 +99,8 @@ Test restoring regularly, e.g. every six months, on a separate test server:
 - [ ] Delete the test server and data afterwards.
 
 ## Reset
+
+> **Caution:** Reset is **not a restore**. It deletes data permanently; the data only comes back through the mandatory backup that Atrium creates during the reset.
 
 **Administration → Reset** **permanently** deletes the data of individual areas – or the whole system – for example to start fresh after a trial period. The permission `core.system.reset` is admin-level and only usable with a session.
 

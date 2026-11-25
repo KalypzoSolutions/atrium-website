@@ -1,6 +1,6 @@
 ---
 title: Privacy and audit log
-description: GDPR data export (Art. 15/20), the immutable audit log, retention periods, deleting accounts and which data Atrium sends to third parties.
+description: GDPR data export, the immutable audit log, retention periods and which data Atrium sends to third parties.
 order: 15
 section: Administration
 source: docs/security.md
@@ -52,19 +52,13 @@ Properties:
 
 ## Retention periods
 
-Logs with IP addresses are only kept as long as you set under **Settings → General → Retention periods**. The daily job `core.housekeeping` deletes older entries:
-
-| Data | Default |
-|---|---|
-| API access log | 30 days |
-| IP addresses in the audit log (the entry stays) | 90 days |
-| Audit log | 730 days (0 = never delete) |
+Logs with IP addresses are only kept as long as you set under **Settings → General → Retention periods**; the daily job `core.housekeeping` deletes older entries. This covers the API access log, IP addresses in the audit log (the entry itself stays) and the audit log. Defaults and allowed ranges are listed under [Settings → Retention periods](/en/docs/settings#retention-periods).
 
 Your organization sets the actual periods and records them in its record of processing activities. Backups contain the logs as they were at export time.
 
 ## Deleting accounts
 
-When an account is deleted, every module cleans up its data for that account: personal data is deleted, shared content is handed over depending on the module. Disabling an account, by contrast, deletes nothing. See [Users, roles and permissions](/en/docs/users-roles#disabling-or-deleting).
+When an account is deleted, every module cleans up its data for that account: personal data is deleted, shared content is handed over depending on the module. Disabling an account, by contrast, deletes nothing. How to disable or delete accounts is described in [Users, roles and permissions](/en/docs/users-roles#disabling-or-deleting).
 
 ## Data sent to third parties
 
@@ -82,7 +76,14 @@ Sign a data processing agreement with mail, storage and AI providers unless you 
 
 ## AI and data minimization
 
-Prompts and responses are neither stored nor logged; Atrium only counts requests, tokens and estimated costs. Module and model allow-lists, rate limits and monthly limits cap usage (see [Settings → AI](/en/docs/settings#ai)).
+Everything modules send to the AI goes to the configured provider – possibly outside the EU. For data protection:
+
+- Sign a data processing agreement before turning it on and mention the writing assistant in your privacy policy.
+- The writing assistant masks email addresses, phone numbers and IBANs before sending.
+- Received emails for reply drafts and gallery images for image descriptions are only sent if you turn on the corresponding switches; they are off by default.
+- Prompts and responses are neither stored nor logged; Atrium only counts requests, tokens and estimated costs.
+
+Module and model allow-lists, rate limits and monthly limits cap usage. How to configure this is described in [Settings → AI](/en/docs/settings#ai).
 
 ## Next steps
 

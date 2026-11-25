@@ -1,6 +1,6 @@
 ---
 title: Erste Schritte nach der Installation
-description: Anmelden, Passwort ändern, Zwei-Faktor-Anmeldung einrichten und die Organisation konfigurieren – die ersten Handgriffe in einer frischen Atrium-Installation.
+description: Die ersten Handgriffe in einer frischen Installation: anmelden, Passwort ändern, 2FA einrichten und die Organisation konfigurieren.
 order: 10
 section: Administration
 source: docs/deployment.md
@@ -62,18 +62,16 @@ Für Administratoren ist die Zwei-Faktor-Anmeldung (2FA) dringend empfohlen. Die
 
 ## Die Organisation einrichten
 
-Alles Fachliche konfigurieren Sie in der Oberfläche unter **Administration → Einstellungen** – nicht über Umgebungsvariablen. Für den Start empfehlen wir diese Reihenfolge:
+Alles Fachliche konfigurieren Sie in der Oberfläche unter **Administration** – nicht über Umgebungsvariablen. Für den Start empfehlen wir diese Reihenfolge; die Einzelheiten stehen jeweils auf der verlinkten Seite:
 
-| Schritt | Wo | Was |
-|---|---|---|
-| 1 | Einstellungen → **Allgemein** | Systemname, Sprache, Name, Anschrift und Kontakt der Organisation, Links zu Impressum und Datenschutzerklärung |
-| 2 | Einstellungen → **E-Mail-Versand** | SMTP-Server eintragen und eine Test-E-Mail senden |
-| 3 | Einstellungen → **Speicher** | S3-Bucket eintragen und **Verbindung testen** |
-| 4 | Einstellungen → **Design** | Logo hochladen und Akzentfarbe wählen |
-| 5 | **Module** | Fachmodule installieren und aktivieren |
-| 6 | **Benutzer** und **Rollen** | Konten anlegen, Rollen nach dem Prinzip der geringsten Rechte vergeben |
-
-Was die einzelnen Bereiche bedeuten, beschreibt [Einstellungen](/de/docs/settings) im Detail.
+| Schritt | Wo | Was | Details |
+|---|---|---|---|
+| 1 | Einstellungen → **Allgemein** | Systemname, Sprache und Organisation eintragen, Impressum und Datenschutzerklärung verlinken | [Allgemein](/de/docs/settings#allgemein) |
+| 2 | Einstellungen → **E-Mail-Versand** | SMTP-Server eintragen und eine Test-E-Mail senden | [E-Mail-Versand](/de/docs/settings#e-mail-versand) |
+| 3 | Einstellungen → **Speicher** | S3-Bucket eintragen und **Verbindung testen** | [Speicher](/de/docs/settings#speicher) |
+| 4 | Einstellungen → **Design** | Logo hochladen und Akzentfarbe wählen | [Design](/de/docs/settings#design) |
+| 5 | **Module** | Fachmodule installieren und aktivieren | [Module verwalten](/de/docs/module-management) |
+| 6 | **Benutzer** und **Rollen** | Konten anlegen, Rollen nach dem Prinzip der geringsten Rechte vergeben | [Benutzer, Rollen und Rechte](/de/docs/users-roles) |
 
 <DocShot name="02b-admin-overview" lang="de" caption="Die Übersicht unter Administration: Kennzahlen und alle Verwaltungsbereiche. Das Suchfeld oben findet einzelne Einstellungen direkt." />
 
@@ -83,22 +81,22 @@ Unter **Profil** (Benutzermenü oben rechts) pflegt jede Person ihr eigenes Kont
 
 - **Konto:** Profilbild (PNG, JPEG oder WebP; braucht einen eingerichteten Speicher), Name und E-Mail-Adresse. Eine neue Adresse wird erst nach Klick auf den Bestätigungslink übernommen, der an die neue Adresse geht.
 - **Sicherheit:** Passwort, Zwei-Faktor-Anmeldung, angemeldete Sitzungen und eigene API-Schlüssel.
-- **Darstellung:** Theme, Hell/Dunkel/System, Akzentfarbe, Sprache, Dichte, Einträge pro Seite und Startseite nach der Anmeldung.
+- **Darstellung:** Theme, Hell/Dunkel/System, Akzentfarbe, Sprache, Dichte, Einträge pro Seite und Startseite nach der Anmeldung (siehe [Darstellung und Startseite](/de/docs/search-dashboard#darstellung-und-startseite)).
 - **Benachrichtigungen:** Push auf diesem Gerät und je Benachrichtigung der Kanal (siehe [Dashboard, Suche und Benachrichtigungen](/de/docs/search-dashboard#benachrichtigungen)).
 
 <DocShot name="28-profile" lang="de" />
 
 ## Checkliste
 
-- [ ] Startpasswort geändert, 2FA für alle Administratoren aktiv
 - [ ] `INITIAL_ADMIN_*` aus der Umgebung entfernt
+- [ ] Startpasswort geändert
+- [ ] 2FA für alle Administratoren aktiv
 - [ ] Systemname und Organisation eingetragen, Impressum und Datenschutzerklärung verlinkt
 - [ ] Test-E-Mail erfolgreich versendet
 - [ ] Speicherverbindung erfolgreich getestet
-- [ ] Datensicherung eingerichtet (siehe [Datensicherung und Wiederherstellung](/de/docs/backup-restore))
 
 ## Nächste Schritte
 
 - Konten und Rollen anlegen: [Benutzer, Rollen und Rechte](/de/docs/users-roles)
-- Alle Einstellungen im Überblick: [Einstellungen](/de/docs/settings)
 - Fachmodule hinzufügen: [Module verwalten](/de/docs/module-management)
+- Datensicherung einrichten: [Datensicherung und Wiederherstellung](/de/docs/backup-restore)

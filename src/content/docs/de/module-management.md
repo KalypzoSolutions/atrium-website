@@ -1,6 +1,6 @@
 ---
 title: Module verwalten
-description: Fachmodule per GitHub-Link oder ZIP installieren, aktivieren, aktualisieren und entfernen – mit Vorschau, erlaubten Quellen, Verlauf und Wiederherstellung.
+description: Fachmodule per GitHub-Link oder ZIP-Datei installieren, aktivieren, aktualisieren und entfernen.
 order: 13
 section: Administration
 source: docs/deployment.md
@@ -24,27 +24,9 @@ Der Core von Atrium bringt bewusst **keine Fachmodule** mit. Mitglieder, Termine
 
 Außerdem muss der Server das Installieren erlauben: Die mitgelieferten Docker-Images setzen `ATRIUM_MODULE_INSTALL=supervisor`. Steht der Wert auf `off`, funktioniert nur die Vorschau (siehe [Konfiguration](/de/docs/configuration#modulinstallation)).
 
-## Installierte Module
-
-Der Reiter **Installiert** listet alle Module im aktuellen Build mit Version, Herkunft, Abhängigkeiten und Berechtigungen. In einer frischen Installation ist die Liste leer.
-
-<DocShot name="03-modules" lang="de" />
-
-- **Aktivieren:** Neu installierte Module sind zunächst **deaktiviert**. Beim Aktivieren legt Atrium das Datenbankschema des Moduls an und führt seine Migrationen aus. Danach erscheint das Modul in der Navigation und in der API, und seine Rechte wirken (die Rolle *Administrator* erhält sie automatisch).
-- **Deaktivieren:** Das Modul verschwindet aus Navigation und API, seine Rechte wirken nicht mehr – **Daten bleiben erhalten**. Ein Modul, von dem andere aktive Module abhängen, lässt sich erst deaktivieren, wenn diese deaktiviert sind.
-
-### Zustände „Defekt“ und „Nicht installiert“
-
-Unter **Nicht geladen** zeigt Atrium Module, die nicht laufen – Ihre Daten bleiben dabei erhalten:
-
-- **Defekt:** Das Modul ist vorhanden, verletzt aber eine Regel (z. B. ungültiges Manifest oder fehlende Migration). Es wird nicht geladen; die Begründung steht dabei. Abhilfe ist meist ein Update des Moduls.
-- **Nicht installiert:** Laut Datenbank war das Modul da (ggf. „war aktiv“), der Code fehlt aber im laufenden Stand – etwa nach einer Wiederherstellung auf einem neuen Server. Installieren Sie es erneut oder löschen Sie mit **Daten löschen** seine Reste.
-
-Fehlen nach einer Wiederherstellung oder dem Verlust des Daten-Volumes mehrere installierte Module, bietet die Seite oben **Aus der Datenbank wiederherstellen** an: GitHub-Module werden am gespeicherten Commit neu geladen; ZIP-Module nur, solange die Datei noch auf dem Server liegt.
-
 ## Module installieren
 
-Die Installation läuft in drei Schritten im Reiter **Installieren**.
+Die Installation läuft in drei Schritten im Reiter **Installieren**; danach baut der Server die Anwendung neu.
 
 ### 1. Quelle wählen
 
@@ -87,23 +69,41 @@ Die Installation ist **gesperrt**, wenn zum Beispiel die Core-Version nicht pass
 
 Nach dem Bestätigen baut der Server die Anwendung mit den neuen Modulen neu: Dateien kopieren, Pakete installieren, bauen, probeweise starten und erst nach erfolgreicher Health-Prüfung umschalten. Die Seite zeigt den Fortschritt (Wartet, Baut, Prüft, Startet neu) und aktualisiert sich selbst. Die Ausfallzeit entspricht einem Neustart von wenigen Sekunden; schlägt die Prüfung fehl, bleibt die vorige Version in Betrieb.
 
-Anschließend stehen die Module unter **Installiert** bereit – zunächst deaktiviert. Aktivieren Sie sie dort.
+Anschließend stehen die Module unter **Installiert** bereit – zunächst deaktiviert. Aktivieren Sie sie dort (siehe [Installierte Module](#installierte-module)).
 
 > **Tipp:** Der Neubau braucht Arbeitsspeicher (rund 3,5 GB). Die mitgelieferten Compose-Dateien erlauben der App deshalb bis zu 4 GB. Für ausgehende Verbindungen müssen `api.github.com`, `codeload.github.com` und bei Modulen mit eigenen Paketen `registry.npmjs.org` erreichbar sein.
 
-## GitHub-Token und erlaubte Quellen
+### GitHub-Token und erlaubte Quellen
 
-Unterhalb des Quellen-Formulars finden Sie zwei Einstellungen:
+Unterhalb des Quellen-Formulars im Reiter **Installieren** finden Sie zwei Einstellungen:
 
 - **GitHub-Token:** nur für private Repositorys oder höhere Abruflimits nötig – Lesezugriff genügt. Das Token wird verschlüsselt gespeichert und nur an die GitHub-API gesendet.
 - **Erlaubte Quellen:** je Zeile `owner/repo` oder `owner/*`. Leer bedeutet: alle GitHub-Quellen und ZIP-Dateien sind erlaubt. Sobald Sie Quellen eintragen, sind **ZIP-Dateien gesperrt** und nur die gelisteten Repositorys zulässig.
 
-## Was Atrium bei der Installation prüft
+### Was Atrium bei der Installation prüft
 
 - GitHub-Refs werden auf einen festen **Commit** aufgelöst; gespeichert werden Quelle, Commit und Inhaltshash. Abgerufen wird nur von `api.github.com` und `codeload.github.com`.
 - Archive werden nur im Speicher entpackt: keine Symlinks, keine Pfade mit `..`, keine versteckten Dateien, kein `.git` und kein `node_modules`, höchstens 5000 Dateien und 50 MB (je Datei höchstens 10 MB).
 - Bereits angewendete Migrationen dürfen sich nicht ändern; neue müssen hinter den angewendeten einsortiert sein.
 - Eine Vorschau ist 15 Minuten gültig und an Person und Inhalt gebunden. Jede Installation wird im Audit-Log protokolliert.
+
+## Installierte Module
+
+Der Reiter **Installiert** listet alle Module im aktuellen Build mit Version, Herkunft, Abhängigkeiten und Berechtigungen. In einer frischen Installation ist die Liste leer.
+
+<DocShot name="03-modules" lang="de" />
+
+- **Aktivieren:** Neu installierte Module sind zunächst **deaktiviert**. Beim Aktivieren legt Atrium das Datenbankschema des Moduls an und führt seine Migrationen aus. Danach erscheint das Modul in der Navigation und in der API, und seine Rechte wirken (die Rolle *Administrator* erhält sie automatisch).
+- **Deaktivieren:** Das Modul verschwindet aus Navigation und API, seine Rechte wirken nicht mehr – **Daten bleiben erhalten**. Ein Modul, von dem andere aktive Module abhängen, lässt sich erst deaktivieren, wenn diese deaktiviert sind.
+
+### Zustände „Defekt“ und „Nicht installiert“
+
+Unter **Nicht geladen** zeigt Atrium Module, die nicht laufen – Ihre Daten bleiben dabei erhalten:
+
+- **Defekt:** Das Modul ist vorhanden, verletzt aber eine Regel (z. B. ungültiges Manifest oder fehlende Migration). Es wird nicht geladen; die Begründung steht dabei. Abhilfe ist meist ein Update des Moduls.
+- **Nicht installiert:** Laut Datenbank war das Modul da (ggf. „war aktiv“), der Code fehlt aber im laufenden Stand – etwa nach einer Wiederherstellung auf einem neuen Server. Installieren Sie es erneut oder löschen Sie mit **Daten löschen** seine Reste.
+
+Fehlen nach einer Wiederherstellung oder dem Verlust des Daten-Volumes mehrere installierte Module, bietet die Seite oben **Aus der Datenbank wiederherstellen** an: GitHub-Module werden am gespeicherten Commit neu geladen; ZIP-Module nur, solange die Datei noch auf dem Server liegt.
 
 ## Aktualisieren
 
