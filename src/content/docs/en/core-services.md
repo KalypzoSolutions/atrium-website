@@ -1,6 +1,6 @@
 ---
 title: Core services
-description: The services of the core object in the module SDK: permissions, settings, database, PDF, AI, images, storage, mail, notifications, jobs, search and audit.
+description: The services of the core object in the module SDK – permissions, data, documents, AI, communication, audit and jobs.
 order: 32
 section: Development
 source: docs/core-services.md
@@ -14,22 +14,22 @@ import { core } from '$lib/sdk/server';
 
 Every operation receives a **RequestContext** (`ctx`) and checks permissions itself – endpoints get it as an argument, pages as `locals.ctx` (see [Architecture](/en/docs/architecture#requestcontext)).
 
+| Area | Services |
+|---|---|
+| [Permissions and settings](#permissions-and-settings) | `core.permissions`, `core.settings` |
+| [Data and files](#data-and-files) | `core.database`, `core.crypto`, `core.storage` |
+| [Documents, images and AI](#documents-images-and-ai) | `core.pdf`, `core.ai`, `core.images` |
+| [Communication](#communication) | `core.mail`, `core.notifications` |
+| [Audit and integration](#audit-and-integration) | `core.audit`, `core.modules`, jobs and search |
+| [Further helpers](#further-helpers) | `core.users`, `core.roles`, `core.qr`, `core.app` |
+
 ## Errors
 
-Services throw a `CoreError` with `code`, `status`, `message` and `details`. The API router automatically turns it into the [uniform error format](/en/docs/api#responses-and-errors).
+Services throw a `CoreError` with `code`, `status`, `message` and `details`. The API router automatically turns it into the [uniform error format](/en/docs/api#responses-and-errors), where you'll also find the table of all error codes with their HTTP status.
 
-| Code | Status |
-|---|---|
-| `bad_request` | 400 |
-| `unauthenticated` / `forbidden` | 401 / 403 |
-| `not_found`, `module_disabled` | 404 |
-| `conflict` | 409 |
-| `payload_too_large` | 413 |
-| `validation_failed` | 422 |
-| `rate_limited` | 429 |
-| `unavailable` / `internal_error` | 503 / 500 |
+## Permissions and settings
 
-## core.permissions
+### core.permissions
 
 ```ts
 await core.permissions.require(ctx, 'members.users.edit'); // throws unauthenticated/forbidden
@@ -40,7 +40,7 @@ core.permissions.assertCanGrant(ctx, ['members.users.view']); // privilege escal
 
 Check in every endpoint and action. The interface only hides things – the server is what counts.
 
-## core.settings
+### core.settings
 
 ```ts
 const name = await core.settings.get<string>('core.system.name');
@@ -53,7 +53,9 @@ await core.settings.setMany(ctx, { 'members.a': 1, 'members.b': 2 }); // atomic
 - `secret: true` stores encrypted (AES-256-GCM). An empty value when setting keeps the old one, `null` deletes it.
 - Global settings require their write permission (default `core.settings.manage`); user-specific ones (`scope: 'user'`) only for your own account.
 
-## core.database
+## Data and files
+
+### core.database
 
 ```ts
 await core.database.forModule('members').transaction(async (tx) => {
@@ -63,7 +65,7 @@ await core.database.forModule('members').transaction(async (tx) => {
 
 Only with your **own** module ID – ESLint reports foreign IDs. Never call other core services (storage, audit, mail, notifications) inside this transaction; call them before or after.
 
-## core.crypto
+### core.crypto
 
 ```ts
 const c = core.crypto.forModule('treasury');  // your own module ID only
@@ -74,7 +76,7 @@ const h = c.hash(normalizedIban);              // HMAC-SHA256, e.g. for duplicat
 
 `hash` is key-bound: after a restore on a server with a different `APP_SECRET`, stored hashes no longer match. Every `*_hash` column therefore needs the `backup.rehash` hook (see [Developing modules](/en/docs/modules#more-hooks-selection)).
 
-## core.storage
+### core.storage
 
 | Function | Description |
 |---|---|
@@ -87,7 +89,9 @@ const h = c.hash(normalizedIban);              // HMAC-SHA256, e.g. for duplicat
 
 To access storage on behalf of the module, declare the capability permissions `<module>.storage.read`, `.write` and `.delete`. Limits come from **Max. file size** and **Allowed file types** in the settings; objects are stored under non-derivable keys in the bucket.
 
-## core.pdf
+## Documents, images and AI
+
+### core.pdf
 
 ```ts
 const pdf = await core.pdf.generate(ctx, {
@@ -110,7 +114,7 @@ const pdf = await core.pdf.generate(ctx, {
 - Letter templates (`brief`, `briefkopf`, `briefkopf-quer`) with fold marks and an address field; `recipient` sets the address lines. Profile modules can replace them through `pdfTemplates`.
 - Chromium renders without JavaScript and with external requests blocked. Header, footer and logo come from the [PDF settings](/en/docs/settings#pdf).
 
-## core.ai
+### core.ai
 
 ```ts
 const r = await core.ai.generate(ctx, { module: 'members', prompt: '…' });
@@ -126,7 +130,7 @@ for await (const chunk of core.ai.stream(ctx, { module: 'members', prompt: '…'
 - `files: [{ module, path }]` passes files from storage (images, text, CSV, JSON, PDF) – read with the permissions of the same context.
 - For the writing assistant, modules register purposes via `defineModule({ assist })`; the UI provides matching input components.
 
-## core.images
+### core.images
 
 ```ts
 const img = await core.images.process(bytes, {
@@ -140,7 +144,9 @@ const img = await core.images.process(bytes, {
 
 Detects JPEG, PNG, WebP, AVIF and GIF by content (up to 50 megapixels and 25 MB), rotates according to EXIF and **strips all metadata** including GPS. Variants are never upscaled. HEIC is not supported. Store the results afterwards with `core.storage`.
 
-## core.mail
+## Communication
+
+### core.mail
 
 ```ts
 await core.mail.send({ to: 'person@example.org', subject: 'Hello', text: 'Text …' });
@@ -150,7 +156,7 @@ await core.mail.send({ to: 'person@example.org', subject: 'Hello', text: 'Text �
 - Address and subject are checked against header injection. There is no outbox: if sending fails, the caller decides about retries.
 - For notifications to accounts, prefer `core.notifications`.
 
-## core.notifications
+### core.notifications
 
 Notifications to **user accounts** by email or Web Push – the person chooses the channel in their profile.
 
@@ -172,7 +178,9 @@ const r = await core.notifications.send(ctx, 'tasks', [
 - Per-type options: `mandatory` (cannot be turned off), `pushOnly`, `defaultChannel`, `digest` (immediately/daily) and `scoped` (per area, visible through `forUser`).
 - Several entries of one call are bundled into **one** email per person. If push is chosen but can’t be delivered, Atrium falls back to email.
 
-## core.audit
+## Audit and integration
+
+### core.audit
 
 ```ts
 await core.audit.logFromContext(ctx, 'members.member.created', { target: id, metadata: { count: 1 } });
@@ -181,7 +189,7 @@ await core.audit.listForModule(ctx, 'members', { targets: [id], limit: 50 });
 
 Metadata is sanitized: keys such as `password`, `secret`, `token` or `apiKey` become `[redacted]`, personal fields are removed or masked. Only write people as an ID in `target`. Action names follow the `module.resource.action` scheme.
 
-## core.modules – services of other modules
+### core.modules – services of other modules
 
 ```ts
 // provider: defineModule({ provides: membersService satisfies MembersService })
@@ -191,7 +199,7 @@ const offices = await core.modules.useOptional<OfficesService>('offices', 'actio
 
 `use` checks that the provider is listed in the dependencies and enabled. Contracts live as pure types in `modules/<id>/contract.ts` and are only imported with `import type`. Never call other modules’ services inside an open transaction.
 
-## Jobs and search
+### Jobs and search
 
 Modules declare background jobs and search sources directly in `defineModule`:
 
