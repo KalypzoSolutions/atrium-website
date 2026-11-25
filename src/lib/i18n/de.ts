@@ -100,7 +100,17 @@ export const de = {
 			official: 'Nur offizielle',
 			results: (n: number, total: number) =>
 				n === total ? `${total} ${total === 1 ? 'Quelle' : 'Quellen'}` : `${n} von ${total} Quellen`,
-			reset: 'Filter zurücksetzen'
+			reset: 'Filter zurücksetzen',
+			view: 'Ansicht',
+			viewSources: 'Pakete',
+			viewModules: 'Einzelne Module',
+			labelModules: 'Module filtern',
+			searchModules: 'Module durchsuchen',
+			placeholderModules: 'Modulname, Funktion, Quelle oder Herausgeber …',
+			resultsModules: (n: number, total: number) =>
+				n === total
+					? `${total} ${total === 1 ? 'Modul' : 'Module'}`
+					: `${n} von ${total} ${total === 1 ? 'Modul' : 'Modulen'}`
 		},
 		categories: {
 			core: 'Core',
@@ -132,8 +142,20 @@ export const de = {
 			copiedMsg: (name: string) => `Installationslink von ${name} in die Zwischenablage kopiert.`,
 			copyFailed: 'Kopieren nicht möglich – der Link im Feld ist markiert, bitte manuell kopieren (z. B. mit Strg+C).'
 		},
+		moduleCard: {
+			fromSource: 'aus Paket',
+			showSource: (name: string) => `Paket ${name} anzeigen`,
+			sourceLabel: (name: string) => `Installationslink des Moduls ${name}`,
+			githubLabel: (name: string) => `Ordner des Moduls ${name} auf GitHub öffnen`,
+			copyLabel: (name: string) => `Installationslink des Moduls ${name} kopieren`,
+			copiedMsg: (name: string) => `Installationslink des Moduls ${name} in die Zwischenablage kopiert.`
+		},
 		empty: {
 			title: 'Keine passenden Quellen',
+			text: 'Versuchen Sie einen anderen Suchbegriff oder setzen Sie die Filter zurück.'
+		},
+		emptyModules: {
+			title: 'Keine passenden Module',
 			text: 'Versuchen Sie einen anderen Suchbegriff oder setzen Sie die Filter zurück.'
 		},
 		install: {

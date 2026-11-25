@@ -4,6 +4,7 @@
 	import { githubRepoSlug, type MarketSource } from '$lib/marketplace';
 	import { t } from '$lib/i18n';
 	import GithubIcon from '$lib/components/GithubIcon.svelte';
+	import { LinkCopy } from './copy.svelte';
 
 	let { source: s, lang }: { source: MarketSource; lang: Lang } = $props();
 	const d = $derived(t(lang).market);
@@ -11,31 +12,11 @@
 	const titleId = $derived(`source-${s.id}-title`);
 
 	// Kopierstatus: kurzes visuelles Feedback plus Meldung für Screenreader.
-	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
-	let message = $state('');
-	let timer: ReturnType<typeof setTimeout> | undefined;
+	const copier = new LinkCopy();
 	let sourceField = $state<HTMLInputElement>();
+	const copy = () => copier.copy(s.source, sourceField, d.card.copiedMsg(s.name), d.card.copyFailed);
 
-	async function copy() {
-		clearTimeout(timer);
-		try {
-			await navigator.clipboard.writeText(s.source);
-			copyState = 'copied';
-			message = d.card.copiedMsg(s.name);
-		} catch {
-			copyState = 'failed';
-			message = d.card.copyFailed;
-			// Fallback: Link im Feld markieren, damit er per Tastatur kopiert werden kann.
-			sourceField?.focus();
-			sourceField?.select();
-		}
-		timer = setTimeout(() => {
-			copyState = 'idle';
-			message = '';
-		}, 2500);
-	}
-
-	$effect(() => () => clearTimeout(timer));
+	$effect(() => () => copier.destroy());
 
 	const label = 'text-xs font-medium text-ink-500 dark:text-ink-400';
 </script>
@@ -130,7 +111,7 @@
 
 		<div class="mt-4 flex flex-wrap items-center gap-2">
 			<button type="button" class="btn-primary" aria-label={d.card.copyLabel(s.name)} onclick={copy}>
-				{#if copyState === 'copied'}
+				{#if copier.state === 'copied'}
 					<Check class="size-4" aria-hidden="true" />{d.card.copied}
 				{:else}
 					<Copy class="size-4" aria-hidden="true" />{d.card.copy}
@@ -153,8 +134,8 @@
 				</a>
 			{/if}
 		</div>
-		<p class="sr-only" role="status" aria-live="polite">{message}</p>
-		{#if copyState === 'failed'}
+		<p class="sr-only" role="status" aria-live="polite">{copier.message}</p>
+		{#if copier.state === 'failed'}
 			<p class="mt-2 text-xs text-amber-700 dark:text-amber-400" aria-hidden="true">{d.card.copyFailed}</p>
 		{/if}
 	</div>
