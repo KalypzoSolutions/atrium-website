@@ -44,6 +44,8 @@ github:org/repo/modules/kasse#v2.0.0
 
 Public sources include [atrium-basic-modules](https://github.com/KalypzoSolutions/atrium-basic-modules) (events, files, notes, tasks, whiteboards) and [ep-intern-modules](https://github.com/Stamm-Edelweisspiraten/ep-intern-modules).
 
+> **Tip:** You can find more sources in the [marketplace](/en/marketplace). Copy a source's GitHub link there and paste it here – see [Module marketplace](/en/docs/marketplace) for details.
+
 ### 2. Select modules
 
 Atrium reads the source’s `atrium-modules.json` catalog and lists every module with ID, version and description plus the **pinned commit**. Tick the modules you want and click **Show preview**.

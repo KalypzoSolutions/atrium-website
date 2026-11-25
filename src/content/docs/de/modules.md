@@ -212,6 +212,8 @@ Ein Beispiel ist das Modul `ep-stamm` in [ep-intern-modules](https://github.com/
 
 Wie Administratoren Module per GitHub-Link oder ZIP-Datei installieren, aktivieren, aktualisieren und entfernen, beschreibt [Module verwalten](/de/docs/module-management). Für Entwickler wichtig: Die Installation liest nur statische Dateien (`atrium-modules.json`, `atrium-module.json`, Migrationen) für die Vorschau, prüft Commit, Inhaltshash und Migrations-Prüfsummen und baut die Anwendung anschließend neu. Ihr Modul muss also ohne Codeausführung beschreibbar sein und darf angewendete Migrationen nie ändern.
 
+Damit Administratoren Ihr Modul im [Marktplatz](/de/marktplatz) finden, tragen Sie die Quelle per Pull Request ein – siehe [Modul-Marktplatz: Eigenes Modul eintragen](/de/docs/marketplace#eigenes-modul-eintragen).
+
 ### Module beim ersten Start mitbringen (Seed)
 
 Ein frischer Server kann seine Module selbst holen. Hinterlegen Sie dazu eine Seed-Liste in `deploy/modules.seed.json` oder direkt als JSON in `ATRIUM_MODULES_SEED`:
