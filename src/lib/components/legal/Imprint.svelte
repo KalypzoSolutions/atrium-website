@@ -38,6 +38,9 @@
 		Texte, Grafiken und Screenshots dieser Website unterliegen dem deutschen Urheberrecht. Die gezeigten Daten in
 		Screenshots sind fiktive Beispieldaten. Für den Quellcode von Kalypzo Atrium gelten die Angaben im
 		<a href="https://github.com/KalypzoSolutions/kalypzo-atrium" rel="noopener" target="_blank">GitHub-Repository</a>.
+		Der Quellcode dieser Website ist nicht frei lizenziert; alle Rechte bleiben vorbehalten, Einzelheiten regelt die
+		<a href="https://github.com/KalypzoSolutions/atrium-website/blob/main/LICENSE" rel="noopener" target="_blank">LICENSE</a>
+		im Repository der Website.
 	</p>
 
 	<p>Informationen zur Verarbeitung personenbezogener Daten finden Sie in der <a href={legalHref('de', 'privacy')}>Datenschutzerklärung</a>.</p>
@@ -77,6 +80,9 @@
 		Texts, graphics and screenshots on this website are subject to German copyright law. Data shown in screenshots is
 		fictitious sample data. The source code of Kalypzo Atrium is governed by the information in the
 		<a href="https://github.com/KalypzoSolutions/kalypzo-atrium" rel="noopener" target="_blank">GitHub repository</a>.
+		The source code of this website is not openly licensed; all rights are reserved as set out in the
+		<a href="https://github.com/KalypzoSolutions/atrium-website/blob/main/LICENSE" rel="noopener" target="_blank">LICENSE</a>
+		in the website repository.
 	</p>
 
 	<p>For information on how personal data is processed, see the <a href={legalHref('en', 'privacy')}>privacy policy</a>.</p>

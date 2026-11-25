@@ -174,7 +174,7 @@ docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
 
 ## Lizenz
 
-Siehe das [Atrium-Repository](https://github.com/KalypzoSolutions/kalypzo-atrium).
+Für Code und Inhalte dieser Website gilt die proprietäre [LICENSE](LICENSE) („Alle Rechte vorbehalten“, `UNLICENSED`), Copyright (c) 2026 Philipp Hethey. Die Namen „Kalypzo“ und „Kalypzo Atrium“, das Logo und das Vorschaubild sind zusätzlich als Marken ausgenommen, siehe [TRADEMARKS.md](TRADEMARKS.md). Der Quellcode von Kalypzo Atrium selbst unterliegt den Lizenzangaben im [Atrium-Repository](https://github.com/KalypzoSolutions/kalypzo-atrium).
 
 ## Impressum und Datenschutz
 
