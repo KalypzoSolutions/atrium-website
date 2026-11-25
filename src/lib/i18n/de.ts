@@ -1,3 +1,5 @@
+import type { MarketCategory } from '$lib/marketplace';
+
 export const de = {
 	meta: {
 		title: 'Kalypzo Atrium – modulare, selbst gehostete Verwaltungsplattform',
@@ -10,6 +12,7 @@ export const de = {
 		docs: 'Dokumentation',
 		quickstart: 'Schnellstart',
 		guide: 'Anleitung',
+		marketplace: 'Marktplatz',
 		github: 'GitHub',
 		skip: 'Zum Inhalt springen',
 		menu: 'Menü',
@@ -71,5 +74,94 @@ export const de = {
 		notFoundText: 'Die angeforderte Seite existiert nicht oder wurde verschoben.',
 		enlarge: 'Vergrößern',
 		starOnGithub: 'Auf GitHub ansehen'
+	},
+	market: {
+		meta: {
+			title: 'Modul-Marktplatz für Kalypzo Atrium',
+			description:
+				'Modulquellen für Kalypzo Atrium finden: Termine, Dateien, Mitglieder, Kasse und mehr. GitHub-Link kopieren und in Ihrer Instanz unter Administration → Module installieren.'
+		},
+		eyebrow: 'Marktplatz',
+		title: 'Module für Ihre Atrium-Instanz',
+		lead: 'Modulquellen aus GitHub-Repositorys – offiziell von Kalypzo Solutions oder aus der Community. Link kopieren, in Atrium einfügen, Vorschau prüfen und installieren.',
+		stats: (sources: number, modules: number) =>
+			`${sources} ${sources === 1 ? 'Quelle' : 'Quellen'} · ${modules} ${modules === 1 ? 'Modul' : 'Module'}`,
+		registry: 'JSON-Registry für Atrium-Instanzen',
+		registryHint: 'Dieselbe Liste maschinenlesbar – zum Abruf durch Atrium-Instanzen und eigene Werkzeuge.',
+		listTitle: 'Modulquellen',
+		discover: 'Module im Marktplatz entdecken',
+		filters: {
+			label: 'Quellen filtern',
+			search: 'Quellen durchsuchen',
+			placeholder: 'Name, Modul, Schlagwort oder Herausgeber …',
+			clear: 'Suche löschen',
+			categories: 'Kategorien',
+			all: 'Alle',
+			official: 'Nur offizielle',
+			results: (n: number, total: number) =>
+				n === total ? `${total} ${total === 1 ? 'Quelle' : 'Quellen'}` : `${n} von ${total} Quellen`,
+			reset: 'Filter zurücksetzen'
+		},
+		categories: {
+			core: 'Kern',
+			organisation: 'Organisation',
+			communication: 'Kommunikation',
+			finance: 'Finanzen',
+			files: 'Dateien',
+			productivity: 'Produktivität',
+			integration: 'Integration',
+			other: 'Sonstiges'
+		} satisfies Record<MarketCategory, string>,
+		card: {
+			official: 'Offiziell',
+			officialHint: 'Veröffentlicht von Kalypzo Solutions',
+			by: 'von',
+			categories: 'Kategorien',
+			tags: 'Schlagwörter',
+			modules: (n: number) => `Enthaltene Module (${n})`,
+			license: 'Lizenz',
+			noLicense: 'Keine Lizenz angegeben',
+			source: 'Installationslink',
+			github: 'GitHub',
+			githubLabel: (name: string) => `${name} auf GitHub öffnen`,
+			homepage: 'Projektseite',
+			copy: 'Link kopieren',
+			copied: 'Kopiert',
+			copyLabel: (name: string) => `Installationslink von ${name} kopieren`,
+			copiedMsg: (name: string) => `Installationslink von ${name} in die Zwischenablage kopiert.`,
+			copyFailed: 'Kopieren nicht möglich – bitte den Link markieren und manuell kopieren.'
+		},
+		empty: {
+			title: 'Keine passenden Quellen',
+			text: 'Versuchen Sie einen anderen Suchbegriff oder setzen Sie die Filter zurück.'
+		},
+		install: {
+			eyebrow: 'Installation',
+			title: 'In Atrium installieren',
+			lead: 'Installiert wird in Ihrer eigenen Instanz – der Marktplatz liefert nur den Link.',
+			steps: [
+				{ title: 'Link kopieren', text: 'Bei der gewünschten Quelle auf „Link kopieren“ klicken.' },
+				{
+					title: 'Quelle laden',
+					text: 'In Atrium Administration → Module → Installieren öffnen, den Link einfügen und auf „Quelle laden“ klicken.'
+				},
+				{
+					title: 'Prüfen und installieren',
+					text: 'Module auswählen, die Vorschau mit Version, Abhängigkeiten und Commit prüfen und installieren.'
+				}
+			],
+			docsManagement: 'Module verwalten',
+			docsMarket: 'Marktplatz & Registry'
+		},
+		security: {
+			title: 'Sicherheitshinweis',
+			text: 'Ein Eintrag im Marktplatz ist keine Sicherheitsprüfung. Modulcode läuft nach der Installation mit vollen Rechten im Server-Prozess, ohne Sandbox. Prüfen Sie jede Quelle und installieren Sie nur Module, denen Sie vertrauen.'
+		},
+		submit: {
+			title: 'Eigenes Modul eintragen',
+			text: 'Sie pflegen eine Modulquelle für Atrium? Ergänzen Sie sie in src/lib/marketplace.ts und öffnen Sie einen Pull Request im Website-Repository.',
+			cta: 'Eigenes Modul eintragen',
+			docs: 'Anleitung zum Eintragen'
+		}
 	}
 };
