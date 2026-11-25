@@ -44,6 +44,8 @@ github:org/repo/modules/kasse#v2.0.0
 
 Öffentliche Quellen sind etwa [atrium-basic-modules](https://github.com/KalypzoSolutions/atrium-basic-modules) (Termine, Dateien, Notizen, Aufgaben, Whiteboards) und [ep-intern-modules](https://github.com/Stamm-Edelweisspiraten/ep-intern-modules).
 
+> **Tipp:** Weitere Quellen finden Sie im [Marktplatz](/de/marktplatz). Dort kopieren Sie den GitHub-Link einer Quelle und fügen ihn hier ein – mehr dazu unter [Modul-Marktplatz](/de/docs/marketplace).
+
 ### 2. Module auswählen
 
 Atrium liest den Katalog `atrium-modules.json` der Quelle und zeigt alle enthaltenen Module mit ID, Version und Beschreibung sowie den **festgehaltenen Commit**. Kreuzen Sie die gewünschten Module an und klicken Sie auf **Vorschau anzeigen**.
