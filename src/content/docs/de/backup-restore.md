@@ -1,6 +1,6 @@
 ---
 title: Datensicherung und Wiederherstellung
-description: Verschlüsselte Sicherungen in der Oberfläche erstellen und einspielen, die automatische Sicherung mit restic nutzen und Datenbereiche gezielt zurücksetzen.
+description: Verschlüsselte Sicherungen in der Oberfläche erstellen und einspielen, die automatische Sicherung mit restic einordnen und Datenbereiche zurücksetzen.
 order: 14
 section: Administration
 source: docs/security.md
@@ -20,7 +20,7 @@ Atrium bietet zwei sich ergänzende Wege, Ihre Daten zu sichern:
 | **Inhalt** | alle oder ausgewählte Bereiche, optional Dateien | ganze Datenbank (`pg_dump`) und der S3-Bucket |
 | **Ideal für** | Umzug auf einen anderen Server, Teil-Wiederherstellung, Zusammenführen | Katastrophenschutz, Versionsstände über Wochen und Monate |
 
-Wir empfehlen beides: die automatische Sicherung mit einem Ziel **außerhalb** des Servers und gelegentlich eine Sicherung aus der Oberfläche, die Sie getrennt aufbewahren.
+Wir empfehlen beides: die automatische Sicherung mit einem Ziel **außerhalb** des Servers und gelegentlich eine Sicherung aus der Oberfläche, die Sie getrennt aufbewahren. Das [Zurücksetzen](#zuruecksetzen) am Ende dieser Seite ist dagegen keine Sicherung, sondern löscht Daten.
 
 ## Datensicherung in der Oberfläche
 
@@ -70,22 +70,16 @@ Gut zu wissen:
 
 ## Automatische Sicherung mit restic
 
-Für den Dauerbetrieb sichert der Dienst `db-backup` täglich (Standard 02:30 Uhr, Zeitzone Europe/Berlin):
+Für den Dauerbetrieb sichert der Dienst `db-backup` täglich (Standard 02:30 Uhr, Zeitzone Europe/Berlin). Dieser Abschnitt gibt einen Überblick; Einrichtung und Befehle gehören zum Betrieb des Servers.
 
 1. `pg_dump` der Datenbank,
 2. `rclone sync` des S3-Buckets (wenn `BACKUP_S3_*` gesetzt ist),
 3. `restic backup` in ein verschlüsseltes, dedupliziertes Repository,
 4. Aufräumen nach 7 täglichen, 4 wöchentlichen und 6 monatlichen Ständen; sonntags zusätzlich `restic check`.
 
-Sie aktivieren ihn mit `COMPOSE_PROFILES=backup` und mindestens `RESTIC_PASSWORD` sowie einem Ziel in `RESTIC_REPOSITORY`. Der Container wird `unhealthy`, wenn die letzte erfolgreiche Sicherung älter als 26 Stunden ist; optional meldet er Erfolge an `BACKUP_HEARTBEAT_URL` und Fehler an `BACKUP_NOTIFY_URL`.
+Der Dienst läuft mit dem Compose-Profil `backup` und braucht mindestens `RESTIC_PASSWORD` und ein Ziel in `RESTIC_REPOSITORY`. Der Container wird `unhealthy`, wenn die letzte erfolgreiche Sicherung älter als 26 Stunden ist.
 
-```bash
-docker compose run --rm db-backup run          # sofort sichern
-docker compose run --rm db-backup snapshots    # Snapshots auflisten
-docker compose logs db-backup                  # Fehler: "SICHERUNG FEHLGESCHLAGEN"
-```
-
-Einrichtung und alle Variablen: [Installation – Automatische Sicherung](/de/docs/installation#automatische-sicherung-profil-backup) und [Konfiguration](/de/docs/configuration#automatische-sicherung). Unter Dokploy gilt: Dessen eigene Datenbank-Backups erfassen die Datenbank dieses Stacks **nicht** – aktivieren Sie `db-backup` (siehe [Dokploy](/de/docs/dokploy#sicherung-unter-dokploy)).
+Einrichtung und Befehle: [Installation – Automatische Sicherung](/de/docs/installation#automatische-sicherung-profil-backup), alle Variablen: [Konfiguration](/de/docs/configuration#automatische-sicherung). Unter Dokploy gilt: Dessen eigene Datenbank-Backups erfassen die Datenbank dieses Stacks **nicht** – aktivieren Sie `db-backup` (siehe [Dokploy](/de/docs/dokploy#sicherung-unter-dokploy)).
 
 ### Aus restic wiederherstellen
 
@@ -105,6 +99,8 @@ Testen Sie die Wiederherstellung regelmäßig, z. B. halbjährlich, auf einem se
 - [ ] Testserver und Daten danach löschen.
 
 ## Zurücksetzen
+
+> **Achtung:** Zurücksetzen ist **keine Wiederherstellung**. Es löscht Daten endgültig; zurück kommen sie nur über die Pflicht-Sicherung, die Atrium dabei erstellt.
 
 **Administration → Zurücksetzen** löscht die Daten einzelner Bereiche – oder des ganzen Systems – **endgültig**, etwa um nach einer Testphase sauber zu starten. Das Recht `core.system.reset` ist admin-gleich und nur mit einer Sitzung nutzbar.
 
