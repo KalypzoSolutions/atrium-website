@@ -1,6 +1,6 @@
 ---
 title: Datenschutz und Audit-Log
-description: Datenauskunft nach Art. 15/20 DSGVO, das unveränderliche Audit-Log, Aufbewahrungsfristen, Löschen von Konten und welche Daten Atrium an Dritte übermittelt.
+description: Datenauskunft nach DSGVO, das unveränderliche Audit-Log, Aufbewahrungsfristen und welche Daten Atrium an Dritte übermittelt.
 order: 15
 section: Administration
 source: docs/security.md
@@ -52,19 +52,13 @@ Eigenschaften:
 
 ## Aufbewahrungsfristen
 
-Protokolle mit IP-Adressen bleiben nur so lange erhalten, wie Sie unter **Einstellungen → Allgemein → Aufbewahrungsfristen** festlegen. Der tägliche Job `core.housekeeping` löscht ältere Einträge:
-
-| Daten | Standard |
-|---|---|
-| API-Zugriffsprotokoll | 30 Tage |
-| IP-Adressen im Audit-Log (der Eintrag bleibt) | 90 Tage |
-| Audit-Log | 730 Tage (0 = nie löschen) |
+Protokolle mit IP-Adressen bleiben nur so lange erhalten, wie Sie unter **Einstellungen → Allgemein → Aufbewahrungsfristen** festlegen; der tägliche Job `core.housekeeping` löscht ältere Einträge. Betroffen sind das API-Zugriffsprotokoll, die IP-Adressen im Audit-Log (der Eintrag selbst bleibt) und das Audit-Log. Standardwerte und erlaubte Bereiche stehen unter [Einstellungen → Aufbewahrungsfristen](/de/docs/settings#aufbewahrungsfristen).
 
 Die konkreten Fristen legt Ihre Organisation fest und trägt sie ins Verzeichnis der Verarbeitungstätigkeiten ein. Sicherungen enthalten die Protokolle im Zustand zum Exportzeitpunkt.
 
 ## Konten löschen
 
-Beim Löschen eines Kontos räumen alle Module ihre Daten zu diesem Konto auf: Persönliches wird gelöscht, gemeinsam genutzte Inhalte werden je nach Modul übergeben. Das Deaktivieren eines Kontos löscht dagegen nichts. Mehr dazu unter [Benutzer, Rollen und Rechte](/de/docs/users-roles#deaktivieren-oder-loeschen).
+Beim Löschen eines Kontos räumen alle Module ihre Daten zu diesem Konto auf: Persönliches wird gelöscht, gemeinsam genutzte Inhalte werden je nach Modul übergeben. Das Deaktivieren eines Kontos löscht dagegen nichts. Wie Sie Konten deaktivieren oder löschen, beschreibt [Benutzer, Rollen und Rechte](/de/docs/users-roles#deaktivieren-oder-loeschen).
 
 ## Übermittlung an Dritte
 
@@ -82,7 +76,14 @@ Schließen Sie mit Mail-, Speicher- und KI-Anbieter, sofern Sie sie nicht selbst
 
 ## KI und Datenminimierung
 
-Prompts und Antworten werden weder gespeichert noch protokolliert; Atrium zählt nur Anfragen, Tokens und geschätzte Kosten. Modul- und Modell-Freigaben, Rate Limits und Monatslimits begrenzen den Verbrauch (siehe [Einstellungen → KI](/de/docs/settings#ki)).
+Alles, was Module an die KI schicken, geht an den eingetragenen Anbieter – gegebenenfalls außerhalb der EU. Für den Datenschutz gilt:
+
+- Schließen Sie vor dem Einschalten einen Auftragsverarbeitungsvertrag ab und nehmen Sie die Schreibhilfe in Ihre Datenschutzerklärung auf.
+- E-Mail-Adressen, Telefonnummern und IBANs maskiert die Schreibhilfe vor dem Senden.
+- Eingegangene Mails für Antwortentwürfe und Galeriebilder für Bildbeschreibungen werden nur übermittelt, wenn Sie die zugehörigen Schalter einschalten; standardmäßig sind sie aus.
+- Prompts und Antworten werden weder gespeichert noch protokolliert; Atrium zählt nur Anfragen, Tokens und geschätzte Kosten.
+
+Modul- und Modell-Freigaben, Rate Limits und Monatslimits begrenzen den Verbrauch. Wie Sie das einstellen, beschreibt [Einstellungen → KI](/de/docs/settings#ki).
 
 ## Nächste Schritte
 
