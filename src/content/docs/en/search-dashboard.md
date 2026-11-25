@@ -1,6 +1,6 @@
 ---
 title: Dashboard, search and notifications
-description: Customize the dashboard, find anything with Ctrl+K, choose notifications by email or Web Push, and use Atrium as an app on your phone.
+description: Customize the dashboard, find anything with Ctrl+K and set up notifications by email or Web Push.
 order: 16
 section: Administration
 source: docs/core-services.md
@@ -67,11 +67,11 @@ Requirements and specifics:
 
 ### For administrators
 
-Under **Settings → Notifications** you turn push on or off system-wide and see the number of registered devices (see [Settings](/en/docs/settings#notifications)). Atrium generates the VAPID keys itself; they are stored encrypted in the database and travel with backups. Outbound HTTPS connections to the push services (`fcm.googleapis.com`, `*.push.apple.com`, `*.push.services.mozilla.com`, `*.notify.windows.com`) must be allowed.
+Push can be turned on or off system-wide under **Settings → Notifications**. When it is off, all notifications arrive by email. Keys, the device count and the required outbound connections are described under [Settings → Notifications](/en/docs/settings#notifications).
 
 ## Appearance and start page
 
-In **Profile → Appearance**, everyone can adapt Atrium: theme (suggestions or custom themes with background and accent color), light/dark/system, accent color, language of the interface and emails, density (normal or compact), entries per page (10 to 100) and the **start page** after signing in.
+Appearance is part of your own profile (overview of all areas under [Your own profile](/en/docs/first-steps#your-own-profile)). In **Profile → Appearance**, everyone can adapt Atrium: theme (suggestions or custom themes with background and accent color), light/dark/system, accent color, language of the interface and emails, density (normal or compact), entries per page (10 to 100) and the **start page** after signing in.
 
 <DocShot name="29b-profile-appearance" lang="en" crop="900" />
 
