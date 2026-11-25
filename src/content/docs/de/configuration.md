@@ -1,6 +1,6 @@
 ---
 title: Konfiguration
-description: Alle Umgebungsvariablen von Kalypzo Atrium als Tabellen – plus SMTP, S3-Speicher, KI und PDF-Layout, die Sie in der Oberfläche einstellen.
+description: Alle Umgebungsvariablen von Atrium als Referenz – und welche Einstellungen Sie stattdessen in der Oberfläche vornehmen.
 order: 22
 section: Betrieb
 source: docs/deployment.md
@@ -88,6 +88,8 @@ Diese Variablen werden nur beim **ersten** Start übernommen, solange die Einste
 | `STORAGE_MEM_LIMIT` / `STORAGE_CPUS` | `512m` / `0.5` | MinIO (nur Dokploy-Stack mit MinIO) |
 | `NGINX_MEM_LIMIT` / `NGINX_CPUS` | `128m` / `0.5` | nginx |
 | `BACKUP_MEM_LIMIT` / `BACKUP_CPUS` | `512m` / `0.5` | Sicherungsdienst |
+
+`cpus` darf die Kernzahl des Hosts nicht übersteigen, sonst startet der Dienst nicht. Auf größeren Servern sind z. B. `APP_CPUS=2` und `DB_CPUS=2` sinnvoll. Kontrolle mit `docker stats`.
 
 Für Server mit **2 GB RAM** empfiehlt sich: `APP_MEM_LIMIT=1024m`, `DB_MEM_LIMIT=512m`, `STORAGE_MEM_LIMIT=256m`, `BACKUP_MEM_LIMIT=256m`, dazu 1–2 GB Swap; große PDF-Massenläufe und Sicherungen nicht parallel starten. Für den Neubau beim Installieren von Modulen (rund 3,5 GB) reicht das nicht aus.
 

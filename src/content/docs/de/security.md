@@ -1,6 +1,6 @@
 ---
 title: Sicherheit
-description: Das Sicherheitsmodell von Kalypzo Atrium – Anmeldung, 2FA, Rollen und Rechte, Security-Header, verschlüsselte Secrets, Audit-Log, Härtung und Grenzen.
+description: Das Sicherheitsmodell von Atrium – Anmeldung, Rechte, Secrets, Audit-Log, bekannte Grenzen und Härtungs-Checkliste.
 order: 23
 section: Betrieb
 source: docs/security.md
@@ -93,7 +93,7 @@ Für den Produktivbetrieb empfiehlt das Projekt `on` mit einem seccomp-Profil, d
 - [ ] `ADDRESS_HEADER`/`XFF_DEPTH` passend zum Proxy
 - [ ] Datenbank nicht öffentlich erreichbar
 - [ ] S3-Bucket privat, minimale Rechte, CORS nur für `ORIGIN`
-- [ ] regelmäßige Sicherungen inklusive Restore-Test
+- [ ] regelmäßige Sicherungen mit Ziel außerhalb des Servers, inklusive Restore-Test
 - [ ] Rollen und API-Key-Scopes nach dem Prinzip der geringsten Rechte, kurze Key-Laufzeiten
 - [ ] Audit-Log regelmäßig prüfen, Abhängigkeiten aktuell halten
 
@@ -102,3 +102,4 @@ Für den Produktivbetrieb empfiehlt das Projekt `on` mit einem seccomp-Profil, d
 - Rollen und admin-gleiche Rechte: [Benutzer, Rollen und Rechte](/de/docs/users-roles)
 - Module sicher installieren: [Module verwalten](/de/docs/module-management)
 - Betrieb und Sicherung einrichten: [Installation](/de/docs/installation)
+- Datenschutz und Audit-Log im Detail: [Datenschutz und Audit-Log](/de/docs/privacy)

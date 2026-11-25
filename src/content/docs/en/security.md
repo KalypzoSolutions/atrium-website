@@ -1,6 +1,6 @@
 ---
 title: Security
-description: The Kalypzo Atrium security model – sign-in, 2FA, roles and permissions, security headers, encrypted secrets, audit log, hardening and known limitations.
+description: The Atrium security model – sign-in, permissions, secrets, audit log, known limitations and hardening checklist.
 order: 23
 section: Operations
 source: docs/security.md
@@ -93,7 +93,7 @@ For production the project recommends `on` with a seccomp profile that allows Ch
 - [ ] `ADDRESS_HEADER`/`XFF_DEPTH` match the proxy
 - [ ] database not publicly reachable
 - [ ] S3 bucket private, minimal permissions, CORS for `ORIGIN` only
-- [ ] regular backups including restore tests
+- [ ] regular backups stored off the server, including restore tests
 - [ ] roles and API key scopes following least privilege, short key lifetimes
 - [ ] review the audit log regularly, keep dependencies up to date
 
@@ -102,3 +102,4 @@ For production the project recommends `on` with a seccomp profile that allows Ch
 - Roles and admin-level permissions: [Users, roles and permissions](/en/docs/users-roles)
 - Install modules safely: [Managing modules](/en/docs/module-management)
 - Set up operations and backups: [Installation](/en/docs/installation)
+- Privacy and audit log in detail: [Privacy and audit log](/en/docs/privacy)

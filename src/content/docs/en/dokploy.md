@@ -1,6 +1,6 @@
 ---
 title: Deploying with Dokploy
-description: Deploy Kalypzo Atrium from Git with Dokploy – with external S3 (recommended) or MinIO in the stack, step by step including domain, backups and migration.
+description: Deploy Atrium from Git with Dokploy – external S3 (recommended) or MinIO in the stack, domain, backups and migration.
 order: 21
 section: Operations
 source: docs/deployment.md
@@ -80,6 +80,8 @@ Click **Deploy**. On first start, migrations, module synchronization and creatio
 3. Under **Administration → Modules**, install and enable the modules you need.
 4. Remove `INITIAL_ADMIN_EMAIL` and `INITIAL_ADMIN_PASSWORD` from the environment and redeploy.
 
+In detail: [First steps after installation](/en/docs/first-steps).
+
 ## Option B: with MinIO in the stack
 
 The procedure is the same as option A, with these differences:
@@ -108,7 +110,7 @@ After a successful deploy, the `storage-init` log shows "Bucket … und App-Benu
 
 > **Important:** Dokploy's database backups only cover databases managed by Dokploy itself – **not** the `db` service in this stack. Enable Atrium's backup service instead.
 
-Add to the environment:
+The `db-backup` service works as described under [Installation – Automatic backups](/en/docs/installation#automatic-backups-profile-backup). Add to the environment:
 
 ```ini
 COMPOSE_PROFILES=backup
@@ -123,7 +125,7 @@ BACKUP_REPO_SECRET_ACCESS_KEY=
 - Never put `RESTIC_REPOSITORY` into the app bucket – ideally use a different provider or location.
 - Keep `RESTIC_PASSWORD` and `APP_SECRET` separate from the server.
 
-Run commands such as `snapshots` or `restore` on the server in the project directory using the project name (`docker compose -p <project> …`) or via `docker exec` in the running container (`ep-backup snapshots`). Restore details are described under [Installation](/en/docs/installation#restore).
+Run commands such as `snapshots` or `restore` on the server in the project directory using the project name (`docker compose -p <project> …`) or via `docker exec` in the running container (`ep-backup snapshots`). The restore procedure is described under [Installation – Restore](/en/docs/installation#restore); all variables are listed under [Configuration](/en/docs/configuration#automatic-backups).
 
 ## Multiple stacks on one server
 
@@ -145,7 +147,7 @@ If you run, for example, staging and production on the same Dokploy server, set 
 - **Uploads:** Traefik doesn't limit body size; the Node limit applies (`BODY_SIZE_LIMIT=110M` in the `Dockerfile`), followed by the application's own limits.
 - **Browser uploads via signed URLs** require CORS on the bucket allowing `PUT` from your own `ORIGIN`.
 - **Module installation:** The stacks set `ATRIUM_MODULE_INSTALL=supervisor` and keep builds in the `atrium-data` volume. Outbound access to `api.github.com`, `codeload.github.com` and, if needed, `registry.npmjs.org` is required.
-- **Auto-deploy:** Dokploy deploys on every push to the selected branch.
+- **Auto-deploy:** Dokploy deploys on every push to the selected branch. What to watch out for when updating is described under [Updates](/en/docs/updates#with-dokploy).
 
 ## Next steps
 
@@ -153,3 +155,4 @@ If you run, for example, staging and production on the same Dokploy server, set 
 - After the first start: [First steps after installation](/en/docs/first-steps)
 - Install modules: [Managing modules](/en/docs/module-management)
 - Backups: [Backup and restore](/en/docs/backup-restore)
+- Update safely: [Updates](/en/docs/updates)
