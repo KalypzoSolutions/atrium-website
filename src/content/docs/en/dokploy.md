@@ -144,7 +144,7 @@ If you run, for example, staging and production on the same Dokploy server, set 
 
 ## Good to know
 
-- **Uploads:** Traefik doesn't limit body size; the Node limit applies (`BODY_SIZE_LIMIT=110M` in the `Dockerfile`), followed by the application's own limits.
+- **Uploads:** Traefik doesn't limit body size; the app's limit applies (`BODY_SIZE_LIMIT=110M` in the `Dockerfile`), followed by the application's own limits.
 - **Browser uploads via signed URLs** require CORS on the bucket allowing `PUT` from your own `ORIGIN`.
 - **Module installation:** The stacks set `ATRIUM_MODULE_INSTALL=supervisor` and keep builds in the `atrium-data` volume. Outbound access to `api.github.com`, `codeload.github.com` and, if needed, `registry.npmjs.org` is required.
 - **Auto-deploy:** Dokploy deploys on every push to the selected branch. What to watch out for when updating is described under [Updates](/en/docs/updates#with-dokploy).

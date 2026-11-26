@@ -118,7 +118,7 @@ Je Endpunkt und Identität (Key → Benutzer → IP) gelten standardmäßig **12
 - **Statisch:** `docs/openapi.json` im Repository, erzeugt mit:
 
 ```bash
-npm run openapi
+bun run openapi
 ```
 
 - **In der Oberfläche:** Unter **Administration → API-Keys → API-Übersicht** (`/admin/api/docs`) finden Sie alle Endpunkte mit Schemas, Fehlern und Rate Limits. Dort können Sie Anfragen mit Ihrer Sitzung ausprobieren und ein curl-Snippet kopieren.

@@ -41,7 +41,8 @@ Die wichtigsten Bausteine im Überblick; wie sie zusammenspielen, erklärt [Arch
 
 | Bereich | Technologie |
 |---|---|
-| Framework | SvelteKit 2 mit Svelte 5 (Runes), `adapter-node` |
+| Laufzeit | [Bun](https://bun.sh) (App, Supervisor, Skripte, Tests) |
+| Framework | SvelteKit 2 mit Svelte 5 (Runes), `adapter-node` (Ausgabe läuft unter Bun) |
 | Sprache | TypeScript (strict) |
 | Oberfläche | Tailwind CSS 4, shadcn-svelte (bits-ui), Lucide |
 | Datenbank | PostgreSQL 17, Drizzle ORM |
@@ -51,7 +52,7 @@ Die wichtigsten Bausteine im Überblick; wie sie zusammenspielen, erklärt [Arch
 | KI | offizielles `openai`-SDK |
 | Speicher | S3-kompatibel (AWS S3, Hetzner, Cloudflare R2, Backblaze B2, MinIO …) |
 | PDF | Playwright/Chromium (HTML → PDF) |
-| Tests | Vitest mit PGlite, Playwright (E2E) |
+| Tests | `bun test` mit PGlite, Playwright (E2E) |
 | Betrieb | Docker Compose, nginx, Dokploy |
 
 ## Wo anfangen?

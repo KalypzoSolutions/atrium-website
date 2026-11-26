@@ -118,7 +118,7 @@ Per endpoint and identity (key → user → IP), the default is **120 requests p
 - **Static:** `docs/openapi.json` in the repository, generated with:
 
 ```bash
-npm run openapi
+bun run openapi
 ```
 
 - **In the UI:** Under **Administration → API keys → API overview** (`/admin/api/docs`) you'll find every endpoint with schemas, errors and rate limits. You can try requests with your session and copy a curl snippet.

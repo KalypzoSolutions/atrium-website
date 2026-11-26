@@ -1,16 +1,16 @@
 ---
 title: Schnellstart (lokal)
-description: Kalypzo Atrium lokal im Entwicklungsmodus starten – mit Node.js, Docker für PostgreSQL und MinIO und npm run dev.
+description: Kalypzo Atrium lokal im Entwicklungsmodus starten – mit Bun, Docker für PostgreSQL und MinIO und bun run dev.
 order: 2
 section: Erste Schritte
 source: README.md
 ---
 
-Diese Anleitung startet Atrium auf Ihrem Rechner im Entwicklungsmodus. PostgreSQL und der S3-Speicher (MinIO) laufen in Docker, die Anwendung selbst per `npm run dev`. Für einen Server lesen Sie stattdessen [Installation](/de/docs/installation) oder [Dokploy](/de/docs/dokploy).
+Diese Anleitung startet Atrium auf Ihrem Rechner im Entwicklungsmodus. PostgreSQL und der S3-Speicher (MinIO) laufen in Docker, die Anwendung selbst per `bun run dev`. Für einen Server lesen Sie stattdessen [Installation](/de/docs/installation) oder [Dokploy](/de/docs/dokploy).
 
 ## Voraussetzungen
 
-- **Node.js ≥ 24** (die Version der Docker-Images steht in `.nvmrc`)
+- **[Bun](https://bun.sh) ≥ 1.4.4** (die Version der Docker-Images steht in `.bun-version`)
 - **Docker** mit Docker Compose
 - **Git**
 
@@ -21,7 +21,7 @@ Diese Anleitung startet Atrium auf Ihrem Rechner im Entwicklungsmodus. PostgreSQ
 ```bash
 git clone https://github.com/KalypzoSolutions/kalypzo-atrium.git
 cd kalypzo-atrium
-npm install
+bun install
 ```
 
 ### 2. PostgreSQL und MinIO starten
@@ -61,7 +61,7 @@ openssl rand -base64 48
 ### 4. Entwicklungsserver starten
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 Beim Start wendet Atrium automatisch die Datenbank-Migrationen an, registriert und synchronisiert die Module und legt – falls noch kein Administrator existiert – den Administrator aus `INITIAL_ADMIN_EMAIL`/`INITIAL_ADMIN_PASSWORD` an. Das Passwort muss mindestens 12 Zeichen lang sein.
@@ -92,7 +92,7 @@ Atrium läuft jetzt. Die folgenden Schritte brauchen Sie nur für PDFs und eigen
 Der PDF-Service rendert HTML mit Chromium. Lokal installieren Sie den Browser einmalig über Playwright:
 
 ```bash
-npx playwright install chromium
+bun run playwright install chromium
 ```
 
 Im Docker-Image ist Chromium bereits enthalten.

@@ -12,7 +12,7 @@ For production, Atrium ships a hardened `docker-compose.yml`. It starts PostgreS
 
 | File / service | Purpose |
 |---|---|
-| `Dockerfile` | multi-stage build on `node:24.22.0-bookworm-slim` (pinned by digest), includes Chromium for PDF, runs as user `app` (UID 10001), health check on `/api/v1/health` |
+| `Dockerfile` | multi-stage build on `oven/bun:1.4.4-slim` (pinned by digest), includes Chromium for PDF, runs as user `app` (UID 10001), health check on `/api/v1/health` |
 | `db` | PostgreSQL 17, volume `db-data`, health check via `pg_isready` |
 | `app` | Atrium, built from the `Dockerfile`; port 3000 bound to `127.0.0.1` only |
 | `nginx` (profile `proxy`) | reverse proxy with HTTP→HTTPS redirect, TLS, per-path size limits |

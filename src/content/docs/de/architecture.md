@@ -110,9 +110,9 @@ Core-Jobs sind z. B. `core.housekeeping` (Aufbewahrungsfristen) und `core.notifi
 
 ## Modulinstallation zur Laufzeit
 
-Das Docker-Image startet nicht `node build`, sondern `scripts/supervisor.mjs`. Der Supervisor startet die App als Kindprozess und baut sie neu, wenn Module installiert werden (Bedienung siehe [Module verwalten](/de/docs/module-management)):
+Das Docker-Image startet nicht `bun ./build/index.js`, sondern `bun scripts/supervisor.mjs`. Der Supervisor startet die App als Kindprozess und baut sie neu, wenn Module installiert werden (Bedienung siehe [Module verwalten](/de/docs/module-management)):
 
-1. Module der laufenden Generation kopieren, neuen Inhalt einspielen (muss zum Inhaltshash der Vorschau passen), eigene npm-Pakete der Module installieren,
+1. Module der laufenden Generation kopieren, neuen Inhalt einspielen (muss zum Inhaltshash der Vorschau passen), eigene npm-Pakete der Module installieren (`bun install`),
 2. `svelte-kit sync` und `vite build` in eine neue **Generation** unter `/data/atrium/gen/<id>`,
 3. Probelauf: Module laden und prüfen, ohne Datenbank,
 4. Tausch und Neustart, Health-Prüfung (120 s) – sonst Rückkehr zur vorigen Generation.

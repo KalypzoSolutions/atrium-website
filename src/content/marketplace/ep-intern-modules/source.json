@@ -1,8 +1,8 @@
 {
 	"id": "ep-intern-modules",
 	"repository": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules",
-	"commit": "cbfa86f5f727bb91239d2212029790c62f6f3efb",
-	"syncedAt": "2026-11-26T01:37:02.449Z",
+	"commit": "bdde95e187a5879bae16d707d96af305ce895272",
+	"syncedAt": "2026-11-26T19:50:06.882Z",
 	"catalog": {
 		"schema": 1,
 		"name": "EP Intern – Fachmodule",
@@ -50,5 +50,6 @@
 			}
 		]
 	},
-	"readmePath": "README.md"
+	"readmePath": "README.md",
+	"images": []
 }
