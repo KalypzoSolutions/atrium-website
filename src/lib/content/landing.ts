@@ -206,7 +206,7 @@ const de: LandingCopy = {
 			},
 			{
 				q: 'Was brauche ich für den Betrieb?',
-				a: 'Einen Server mit Docker. Der Stack umfasst die App, PostgreSQL und einen S3-kompatiblen Speicher wie MinIO. Für den Neubau beim Installieren von Modulen sehen die Dokploy-Compose-Dateien standardmäßig 4 GB Arbeitsspeicher für den App-Container vor. Für die lokale Entwicklung benötigen Sie Node.js 24 oder neuer.'
+				a: 'Einen Server mit Docker. Der Stack umfasst die App, PostgreSQL und einen S3-kompatiblen Speicher wie MinIO. Für den Neubau beim Installieren von Modulen sehen die Dokploy-Compose-Dateien standardmäßig 4 GB Arbeitsspeicher für den App-Container vor. Für die lokale Entwicklung benötigen Sie Bun 1.4.4 oder neuer.'
 			},
 			{
 				q: 'Wo liegen meine Daten?',
@@ -356,7 +356,7 @@ const en: LandingCopy = {
 			},
 			{
 				q: 'What do I need to run it?',
-				a: 'A server with Docker. The stack consists of the app, PostgreSQL and S3-compatible storage such as MinIO. To rebuild when installing modules, the Dokploy compose files reserve 4 GB of memory for the app container by default. For local development you need Node.js 24 or newer.'
+				a: 'A server with Docker. The stack consists of the app, PostgreSQL and S3-compatible storage such as MinIO. To rebuild when installing modules, the Dokploy compose files reserve 4 GB of memory for the app container by default. For local development you need Bun 1.4.4 or newer.'
 			},
 			{
 				q: 'Where is my data stored?',

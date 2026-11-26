@@ -110,9 +110,9 @@ Core jobs include `core.housekeeping` (retention periods) and `core.notification
 
 ## Installing modules at runtime
 
-The Docker image doesn’t start `node build` but `scripts/supervisor.mjs`. The supervisor runs the app as a child process and rebuilds it when modules are installed (for the UI, see [Managing modules](/en/docs/module-management)):
+The Docker image doesn’t start `bun ./build/index.js` but `bun scripts/supervisor.mjs`. The supervisor runs the app as a child process and rebuilds it when modules are installed (for the UI, see [Managing modules](/en/docs/module-management)):
 
-1. Copy the modules of the running generation, add the new content (must match the content hash of the preview), install the modules’ own npm packages,
+1. Copy the modules of the running generation, add the new content (must match the content hash of the preview), install the modules’ own npm packages (`bun install`),
 2. `svelte-kit sync` and `vite build` into a new **generation** under `/data/atrium/gen/<id>`,
 3. Trial run: load and check the modules without a database,
 4. Swap and restart, health check (120 s) – otherwise return to the previous generation.

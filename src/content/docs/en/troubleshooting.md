@@ -127,19 +127,19 @@ If the app starts with a **different** `APP_SECRET` than before, all encrypted v
 | Message | Cause and fix |
 |---|---|
 | "Installing is turned off on this server (ATRIUM_MODULE_INSTALL)" | Set `ATRIUM_MODULE_INSTALL=supervisor` (the image default). The preview works anyway. |
-| "The server is not running under the supervisor" | The app was started with `node build` instead of the image or `scripts/supervisor.mjs`. |
+| "The server is not running under the supervisor" | The app was started with `bun ./build/index.js` instead of the image or `scripts/supervisor.mjs`. |
 | "GitHub rate limit reached" | Try again later or store a GitHub token under **Modules → Install**. |
 | "Repository not found (or private without a token)" | Check the link; for private repositories, store a token with read access. |
 | "Source … is not allowed" / ZIP blocked | The **Allowed sources** list is set. Add the source or clear the list. |
 | "A rebuild is already running" | Wait until the running rebuild has finished. |
-| Rebuild fails or aborts | Read the **log** on the installation page. Often memory is short: the rebuild needs around 3.5 GB (`APP_MEM_LIMIT` default 4 GB, heap via `ATRIUM_BUILD_HEAP`). The previous version stays in service. |
+| Rebuild fails or aborts | Read the **log** on the installation page. Often memory is short: the rebuild needs around 3.5 GB (`APP_MEM_LIMIT` default 4 GB). The previous version stays in service. |
 | Module "Broken" | The module violates a rule (manifest, migrations, permissions). The reason is shown in the module list; updating the module usually helps. |
 
 Outbound access to `api.github.com`, `codeload.github.com` and, for modules with their own packages, `registry.npmjs.org` is required.
 
 ### PDF generation
 
-- **Locally**, Chromium is often missing: `npx playwright install chromium`. The Docker image includes it.
+- **Locally**, Chromium is often missing: `bun run playwright install chromium`. The Docker image includes it.
 - With `PDF_CHROMIUM_SANDBOX=auto` (default), Chromium first starts with its sandbox and, in a container without a suitable seccomp profile, falls back once to `--no-sandbox` – with a warning in the log. That is expected; background in [Security](/en/docs/security#pdf-renderer).
 - PDFs need 300–500 MB of memory per run. On small servers, don't run large PDF batches and backups at the same time.
 

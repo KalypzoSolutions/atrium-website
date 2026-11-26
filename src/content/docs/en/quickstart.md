@@ -1,16 +1,16 @@
 ---
 title: Quick start (local)
-description: Run Kalypzo Atrium locally in development mode – with Node.js, Docker for PostgreSQL and MinIO, and npm run dev.
+description: Run Kalypzo Atrium locally in development mode – with Bun, Docker for PostgreSQL and MinIO, and bun run dev.
 order: 2
 section: Getting started
 source: README.md
 ---
 
-This guide starts Atrium on your machine in development mode. PostgreSQL and the S3 storage (MinIO) run in Docker, the application itself via `npm run dev`. For a server, read [Installation](/en/docs/installation) or [Dokploy](/en/docs/dokploy) instead.
+This guide starts Atrium on your machine in development mode. PostgreSQL and the S3 storage (MinIO) run in Docker, the application itself via `bun run dev`. For a server, read [Installation](/en/docs/installation) or [Dokploy](/en/docs/dokploy) instead.
 
 ## Prerequisites
 
-- **Node.js ≥ 24** (the version used by the Docker images is in `.nvmrc`)
+- **[Bun](https://bun.sh) ≥ 1.4.4** (the version used by the Docker images is in `.bun-version`)
 - **Docker** with Docker Compose
 - **Git**
 
@@ -21,7 +21,7 @@ This guide starts Atrium on your machine in development mode. PostgreSQL and the
 ```bash
 git clone https://github.com/KalypzoSolutions/kalypzo-atrium.git
 cd kalypzo-atrium
-npm install
+bun install
 ```
 
 ### 2. Start PostgreSQL and MinIO
@@ -61,7 +61,7 @@ openssl rand -base64 48
 ### 4. Start the development server
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 On startup, Atrium automatically applies database migrations, registers and synchronizes modules and – if no administrator exists yet – creates one from `INITIAL_ADMIN_EMAIL`/`INITIAL_ADMIN_PASSWORD`. The password must be at least 12 characters long.
@@ -92,7 +92,7 @@ Atrium is now running. You only need the following steps for PDFs and your own m
 The PDF service renders HTML with Chromium. Locally, install the browser once via Playwright:
 
 ```bash
-npx playwright install chromium
+bun run playwright install chromium
 ```
 
 The Docker image already includes Chromium.

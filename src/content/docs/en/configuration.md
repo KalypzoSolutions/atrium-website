@@ -20,7 +20,7 @@ Templates for the variables are in the repository: `.env.example` (Docker Compos
 | `APP_SECRET` | at least 32 random characters (`openssl rand -base64 48`). Signs sessions and encrypts stored secrets. In production, startup aborts if the value is a placeholder or has fewer than 6 distinct characters. |
 | `ORIGIN` | public URL of the app, exactly as in the browser. Required in production and must use `https://` (except `localhost`/`127.0.0.1`). |
 | `POSTGRES_PASSWORD` | password of the database container (Docker Compose, Dokploy) |
-| `DATABASE_URL` | PostgreSQL connection, only for `npm run dev`/`npm start` without Compose; the Compose files set it themselves |
+| `DATABASE_URL` | PostgreSQL connection, only for `bun run dev`/`bun run start` without Compose; the Compose files set it themselves |
 
 > **Caution:** Don't change `APP_SECRET` later. Encrypted settings would become unreadable and all sessions invalid. Keep the value somewhere safe, separate from the server.
 
@@ -74,7 +74,6 @@ These variables are only applied on the **first** start, as long as the setting 
 |---|---|---|
 | `ATRIUM_MODULE_INSTALL` | `supervisor` | `supervisor` = rebuild inside the container, `copy` = development with `vite dev`, `off` = preview only |
 | `ATRIUM_DATA_DIR` | `/data/atrium` | volume for build generations, status, sources and logs |
-| `ATRIUM_BUILD_HEAP` | `3072` | heap size of the rebuild in MB |
 | `ATRIUM_MODULES_SEED` | – | seed list (path or JSON) from which a fresh server fetches its modules |
 | `ATRIUM_GITHUB_TOKEN` / `GITHUB_TOKEN` | – | optional token for fetching seed modules |
 | `ATRIUM_MODULES_DIR` | `modules` | module directory at build time (e.g. for tests) |

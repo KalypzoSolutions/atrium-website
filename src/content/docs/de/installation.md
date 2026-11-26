@@ -12,7 +12,7 @@ Für den Produktivbetrieb liefert Atrium eine gehärtete `docker-compose.yml` mi
 
 | Datei / Dienst | Zweck |
 |---|---|
-| `Dockerfile` | Multi-Stage-Build auf `node:24.22.0-bookworm-slim` (gepinnt mit Digest), enthält Chromium für PDF, läuft als Benutzer `app` (UID 10001), Healthcheck auf `/api/v1/health` |
+| `Dockerfile` | Multi-Stage-Build auf `oven/bun:1.4.4-slim` (gepinnt mit Digest), enthält Chromium für PDF, läuft als Benutzer `app` (UID 10001), Healthcheck auf `/api/v1/health` |
 | `db` | PostgreSQL 17, Volume `db-data`, Healthcheck mit `pg_isready` |
 | `app` | Atrium, gebaut aus dem `Dockerfile`; Port 3000 nur auf `127.0.0.1` |
 | `nginx` (Profil `proxy`) | Reverse Proxy mit HTTP→HTTPS, TLS, Größengrenzen je Pfad |

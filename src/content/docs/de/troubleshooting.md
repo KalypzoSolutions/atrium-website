@@ -127,19 +127,19 @@ Startet die App mit einem **anderen** `APP_SECRET` als vorher, sind alle verschl
 | Meldung | Ursache und Lösung |
 |---|---|
 | „Installieren ist auf diesem Server ausgeschaltet (ATRIUM_MODULE_INSTALL)“ | `ATRIUM_MODULE_INSTALL=supervisor` setzen (Standard im Image). Die Vorschau funktioniert auch so. |
-| „Der Server läuft nicht unter dem Supervisor“ | Die App wurde mit `node build` statt über das Image bzw. `scripts/supervisor.mjs` gestartet. |
+| „Der Server läuft nicht unter dem Supervisor“ | Die App wurde mit `bun ./build/index.js` statt über das Image bzw. `scripts/supervisor.mjs` gestartet. |
 | „GitHub-Abruflimit erreicht“ | Später erneut versuchen oder unter **Module → Installieren** ein GitHub-Token hinterlegen. |
 | „Repository nicht gefunden (oder privat ohne Token)“ | Link prüfen; für private Repositorys ein Token mit Lesezugriff hinterlegen. |
 | „Quelle … ist nicht freigegeben“ / ZIP gesperrt | Die Liste **Erlaubte Quellen** ist gesetzt. Quelle ergänzen oder Liste leeren. |
 | „Es läuft bereits ein Neubau“ | Warten, bis der laufende Neubau fertig ist. |
-| Neubau schlägt fehl oder bricht ab | Das **Protokoll** auf der Installationsseite lesen. Häufig fehlt Arbeitsspeicher: Der Neubau braucht rund 3,5 GB (`APP_MEM_LIMIT` Standard 4 GB, Heap über `ATRIUM_BUILD_HEAP`). Die vorige Version bleibt in Betrieb. |
+| Neubau schlägt fehl oder bricht ab | Das **Protokoll** auf der Installationsseite lesen. Häufig fehlt Arbeitsspeicher: Der Neubau braucht rund 3,5 GB (`APP_MEM_LIMIT` Standard 4 GB). Die vorige Version bleibt in Betrieb. |
 | Modul „Defekt“ | Das Modul verletzt eine Regel (Manifest, Migrationen, Rechte). Die Begründung steht in der Modulliste; meist hilft ein Update des Moduls. |
 
 Ausgehend müssen `api.github.com`, `codeload.github.com` und für Module mit eigenen Paketen `registry.npmjs.org` erreichbar sein.
 
 ### PDF-Erzeugung
 
-- **Lokal** fehlt oft Chromium: `npx playwright install chromium`. Im Docker-Image ist es enthalten.
+- **Lokal** fehlt oft Chromium: `bun run playwright install chromium`. Im Docker-Image ist es enthalten.
 - Mit `PDF_CHROMIUM_SANDBOX=auto` (Standard) startet Chromium erst mit Sandbox und fällt im Container ohne passendes seccomp-Profil einmalig auf `--no-sandbox` zurück – mit einer Warnung im Log. Das ist erwartet; Hintergründe unter [Sicherheit](/de/docs/security#pdf-renderer).
 - PDFs brauchen pro Lauf 300–500 MB Arbeitsspeicher. Starten Sie auf kleinen Servern große PDF-Massenläufe und Sicherungen nicht gleichzeitig.
 
