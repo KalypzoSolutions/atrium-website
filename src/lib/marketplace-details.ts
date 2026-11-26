@@ -9,6 +9,7 @@ export interface MarketSourceDetails {
 	syncedAt: string;
 	catalog: { schema: number; name: string; description?: string; modules: { id: string; path: string }[] };
 	readmePath: string | null;
+	images?: MarketImage[];
 	readme?: string;
 }
 export interface MarketModuleDetails {
