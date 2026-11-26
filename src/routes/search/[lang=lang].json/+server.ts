@@ -3,7 +3,7 @@ import pages from 'virtual:docs-search';
 import { GUIDE_SLUG, LANGS, MARKET_SLUG, type Lang } from '$lib/config';
 import { docHref } from '$lib/docs';
 import { guide } from '$lib/content/guide';
-import { marketModules, sortedSources } from '$lib/marketplace';
+import { marketModulePath, marketModules, marketSourcePath, sortedSources } from '$lib/marketplace';
 import { t } from '$lib/i18n';
 import type { SearchEntry } from '$lib/components/search/search';
 import type { EntryGenerator, RequestHandler } from './$types';
@@ -87,8 +87,9 @@ function guideEntries(lang: Lang): SearchEntry[] {
 }
 
 /**
- * Marktplatz: die Seite selbst, je Quelle ein Eintrag mit Anker auf ihre Karte (#source-<id>) und
- * direkt danach je Modul der Quelle ein Eintrag mit Anker auf die Modulkarte (#module-<quelle>--<modul>).
+ * Marktplatz: die Übersicht selbst, je Quelle ein Eintrag für ihre Paketseite und direkt danach je
+ * Modul der Quelle ein Eintrag für die Modulseite. Die Detailseiten sind eigene Seiten (ohne Anker);
+ * die Suche gruppiert nach Pfad, daher tragen sie den Paket- bzw. Modulnamen als `page`.
  */
 function marketEntries(lang: Lang): SearchEntry[] {
 	const m = t(lang).market;
@@ -101,9 +102,9 @@ function marketEntries(lang: Lang): SearchEntry[] {
 	const modules = marketModules();
 	for (const s of sortedSources()) {
 		out.push({
-			url: `${base}#source-${s.id}`,
-			page,
-			heading: s.name,
+			url: marketSourcePath(lang, s.id),
+			page: s.name,
+			heading: '',
 			group,
 			text: plain(
 				[
@@ -118,9 +119,9 @@ function marketEntries(lang: Lang): SearchEntry[] {
 		});
 		for (const e of modules.filter((x) => x.source.id === s.id)) {
 			out.push({
-				url: `${base}#module-${e.key}`,
-				page,
-				heading: e.module.name[lang],
+				url: marketModulePath(lang, s.id, e.module.id),
+				page: e.module.name[lang],
+				heading: '',
 				group,
 				text: plain([e.module.description[lang], s.name, s.publisher.name].join(' ')),
 				code: e.install
