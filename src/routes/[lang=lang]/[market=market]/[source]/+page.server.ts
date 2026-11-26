@@ -14,6 +14,6 @@ export const load: PageServerLoad = async ({ params }) => {
 	const details = getSourceDetails(params.source);
 	if (params.market !== MARKET_SLUG[lang] || !source || !details) error(404, 'Not found');
 	const readme = details.readme && details.readmePath
-		? await renderReadme(details.readme, { repository: details.repository, commit: details.commit, readmePath: details.readmePath, images: [], removeH1: true }) : null;
+		? await renderReadme(details.readme, { repository: details.repository, commit: details.commit, readmePath: details.readmePath, images: details.images ?? [], removeH1: true }) : null;
 	return { lang, source, details, readme, modules: source.modules.map((module) => ({ ...module, version: getModuleDetails(source.id, module.id)?.version })) };
 };
