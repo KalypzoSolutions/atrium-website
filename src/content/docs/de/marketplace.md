@@ -5,7 +5,7 @@ order: 13.5
 section: Administration
 ---
 
-Der [Marktplatz](/de/marktplatz) ist eine öffentliche Übersicht über **Modulquellen** für Atrium – GitHub-Repositorys mit einem oder mehreren Fachmodulen. Sie sehen dort entweder ganze **Pakete** (Modulquellen) oder **einzelne Module**, suchen nach Name, Beschreibung und Schlagwörtern, filtern nach Kategorien und kopieren den GitHub-Link eines Pakets oder eines einzelnen Moduls. Dieselben Daten stehen als maschinenlesbare [Registry](#registry-fuer-atrium-instanzen) bereit, damit Atrium-Instanzen und andere Werkzeuge die Liste selbst abrufen können.
+Der [Marktplatz](/de/marktplatz) ist eine öffentliche Übersicht über **Modulquellen** für Atrium – GitHub-Repositorys mit einem oder mehreren Fachmodulen. Sie sehen dort entweder ganze **Pakete** (Modulquellen) oder **einzelne Module**, öffnen zu jedem Paket und Modul eine eigene [Detailseite](#detailseiten), suchen nach Name, Beschreibung und Schlagwörtern, filtern nach Kategorien und kopieren den GitHub-Link eines Pakets oder eines einzelnen Moduls. Dieselben Daten stehen als maschinenlesbare [Registry](#registry-fuer-atrium-instanzen) bereit, damit Atrium-Instanzen und andere Werkzeuge die Liste selbst abrufen können.
 
 > **Warnung:** Ein Eintrag im Marktplatz ist **keine Sicherheitsprüfung**. Modulcode läuft nach der Installation mit vollen Rechten im Server-Prozess (siehe [Module verwalten](/de/docs/module-management)). Prüfen Sie jede Quelle selbst. Die Markierung **Offiziell** tragen nur Quellen von Kalypzo Solutions.
 
@@ -26,19 +26,36 @@ Jede Karte beschreibt eine Quelle:
 
 - Name, Beschreibung und Herausgeber, ggf. mit der Markierung **Offiziell**,
 - Kategorien, Schlagwörter, Lizenz und ggf. eine Projektseite,
-- die enthaltenen Module mit Name und Kurzbeschreibung,
+- die enthaltenen Module mit Name und Kurzbeschreibung, jeweils als Link auf die Modulseite,
 - den GitHub-Link, den Sie in Atrium einfügen.
+
+Ein Klick auf den Namen des Pakets oder auf **Details** öffnet die Paketseite.
 
 ### Einzelne Module
 
 Jede Karte beschreibt ein Modul:
 
-- Name und Beschreibung des Moduls sowie den Verweis **aus Paket** mit dem Namen der Quelle,
+- Name, Version (sofern bekannt) und Beschreibung des Moduls sowie den Verweis **aus Paket** mit dem Namen der Quelle,
 - Herausgeber, ggf. die Markierung **Offiziell**, und Kategorien – beides übernimmt das Modul von seiner Quelle,
 - einen eigenen Installationslink mit **Link kopieren**,
 - einen Link auf den Ordner des Moduls auf GitHub.
 
-Die Suche durchsucht hier Modul-ID, Modulname und -beschreibung, Paketname, Herausgeber, Schlagwörter und Kategorien. Auch die Suche der Website findet einzelne Module und öffnet die Modulansicht direkt an der passenden Karte.
+Ein Klick auf den Modulnamen oder auf **Details** öffnet die Modulseite; **aus Paket** springt zur Karte der Quelle in der Paketansicht.
+
+Die Suche durchsucht hier Modul-ID, Modulname und -beschreibung, Paketname, Herausgeber, Schlagwörter und Kategorien. Auch die Suche der Website findet Pakete und einzelne Module und öffnet direkt deren Detailseite.
+
+### Detailseiten
+
+Jedes Paket und jedes Modul hat eine eigene Seite mit fester Adresse:
+
+| Seite | Adresse |
+|---|---|
+| Paket | `/de/marktplatz/<quell-id>` bzw. `/en/marketplace/<quell-id>` |
+| Modul | `/de/marktplatz/<quell-id>/<modul-id>` bzw. `/en/marketplace/<quell-id>/<modul-id>` |
+
+Die Paketseite zeigt neben den Angaben der Karte das README des Repositorys und alle enthaltenen Module. Die Modulseite zeigt zusätzlich, was das Manifest des Moduls angibt – etwa Version, benötigte Core-Version, Abhängigkeiten und Berechtigungen –, die bisherigen Versionen sowie README und Bilder des Moduls, sofern vorhanden. Diese Angaben stammen aus einem [Snapshot](#snapshot-der-quellen), der beim Build fest in die Website eingebaut ist; sie geben also den Stand der letzten Synchronisierung wieder, nicht unbedingt den aktuellen Stand im Repository.
+
+Alle Detailseiten stehen in der Sitemap.
 
 Die Modulliste dient nur der Orientierung. Maßgeblich ist der [Katalog](/de/docs/modules#katalog-atrium-modules-json) der Quelle, den Atrium bei der Installation liest.
 
@@ -106,6 +123,8 @@ Die Datei ist öffentlich, ohne Anmeldung abrufbar, mit CORS für alle Ursprüng
 | `sources[].homepage` | URL | Optional: Projektseite |
 | `sources[].modules[]` | Liste | Enthaltene Module mit `id`, `name` und `description` je Sprache sowie `source` (nur zur Anzeige) |
 | `sources[].modules[].source` | URL | Link zum Einfügen in Atrium für dieses einzelne Modul (Ordner des Moduls) |
+| `sources[].modules[].page.de` / `.en` | URL | Detailseite des Moduls je Sprache |
+| `sources[].page.de` / `.en` | URL | Detailseite der Quelle je Sprache |
 | `sources[].addedAt` | Datum | Tag der Aufnahme in den Marktplatz |
 
 ### Beispiel
@@ -141,10 +160,18 @@ Die Datei ist öffentlich, ohne Anmeldung abrufbar, mit CORS für alle Ursprüng
           "id": "events",
           "name": { "de": "Termine", "en": "Events" },
           "description": { "de": "Termine und Kalender.", "en": "Events and calendar." },
-          "source": "https://github.com/KalypzoSolutions/atrium-basic-modules/tree/main/modules/events"
+          "source": "https://github.com/KalypzoSolutions/atrium-basic-modules/tree/main/modules/events",
+          "page": {
+            "de": "https://atrium.kalypzo.de/de/marktplatz/atrium-basic-modules/events",
+            "en": "https://atrium.kalypzo.de/en/marketplace/atrium-basic-modules/events"
+          }
         }
       ],
-      "addedAt": "2026-11-25"
+      "addedAt": "2026-11-25",
+      "page": {
+        "de": "https://atrium.kalypzo.de/de/marktplatz/atrium-basic-modules",
+        "en": "https://atrium.kalypzo.de/en/marketplace/atrium-basic-modules"
+      }
     }
   ]
 }
@@ -184,7 +211,8 @@ Neue Quellen werden per Pull Request im Repository der Website [KalypzoSolutions
 2. Forken Sie `atrium-website` und ergänzen Sie in `src/lib/marketplace.ts` einen Eintrag für Ihre Quelle.
 3. Vergeben Sie eine eindeutige `id` (Kleinbuchstaben, Ziffern und Bindestriche), Beschreibungen auf **Deutsch und Englisch** sowie mindestens eine Kategorie aus der Liste oben. `official` bleibt `false` – diese Markierung ist Quellen von Kalypzo Solutions vorbehalten.
 4. Prüfen Sie lokal mit `npm run build`. Der Build bricht bei ungültigen Einträgen ab, etwa bei doppelten IDs, Links außerhalb von `https://github.com` (auch die Kurzform `github:…` ist nicht erlaubt), `official: true` außerhalb von KalypzoSolutions, fehlenden Übersetzungen, unbekannten Kategorien oder einem Modul-`source`, das nicht mit `https://github.com/` beginnt oder nicht ins Repository der Quelle zeigt.
-5. Öffnen Sie einen Pull Request mit einer kurzen Beschreibung Ihrer Module. Nach dem Merge erscheint die Quelle auf der Marktplatz-Seite und in der Registry.
+5. Erzeugen Sie optional mit `npm run sync:marketplace` den [Snapshot](#snapshot-der-quellen) für die Detailseiten und committen Sie ihn mit.
+6. Öffnen Sie einen Pull Request mit einer kurzen Beschreibung Ihrer Module. Nach dem Merge erscheint die Quelle auf der Marktplatz-Seite, mit eigenen Detailseiten und in der Registry.
 
 Ein Eintrag sieht zum Beispiel so aus:
 
@@ -227,6 +255,31 @@ Die Installationslinks der einzelnen Module bildet die Website automatisch aus `
 ```
 
 > **Tipp:** Kommen neue Module hinzu oder ändert sich der Ordner, passen Sie den Eintrag per Pull Request an. Die installierbaren Module liest Atrium immer direkt aus Ihrem Repository.
+
+### Snapshot der Quellen
+
+README, Manifeste, Versionen und Bilder für die [Detailseiten](#detailseiten) liest die Website nicht beim Aufruf von GitHub, sondern aus einem Snapshot im Repository der Website. Den Snapshot erzeugen Sie mit:
+
+```bash
+npm run sync:marketplace
+
+# optional mit Token für ein höheres GitHub-API-Limit
+GITHUB_TOKEN=ghp_… npm run sync:marketplace
+```
+
+Das Skript liest für jede Quelle aus `src/lib/marketplace.ts` den aktuellen Commit von `ref`, den Katalog und die Manifeste der eingetragenen Module und legt die Ergebnisse so ab:
+
+| Ablage | Inhalt |
+|---|---|
+| `src/content/marketplace/<quell-id>/source.json` | Commit, Zeitpunkt der Synchronisierung und Katalog der Quelle |
+| `src/content/marketplace/<quell-id>/README.md` | README des Repositorys (falls vorhanden) |
+| `src/content/marketplace/<quell-id>/modules/<modul-id>.json` | Manifest des Moduls, Versionen (aus der Git-Historie des Manifests) und Bilder |
+| `src/content/marketplace/<quell-id>/modules/<modul-id>.md` | README des Moduls (falls vorhanden) |
+| `static/marketplace/<quell-id>/<modul-id>/…` | Bilder des Moduls aus `screenshots/` und aus dem README (höchstens 5 MB je Datei) |
+
+Jeder Lauf ersetzt den Snapshot einer Quelle vollständig. Module, die nicht in `src/lib/marketplace.ts` stehen, überspringt das Skript. Committen Sie die geänderten Dateien zusammen mit Ihrem Eintrag; fehlt ein Snapshot, zeigen die Detailseiten nur die Angaben aus `src/lib/marketplace.ts`.
+
+> **Hinweis:** READMEs werden beim Build in sicheres HTML umgewandelt. Eigenes HTML und Bilder von fremden Servern erscheinen nicht; binden Sie Bilder mit relativem Pfad aus dem Modulordner ein.
 
 ## Nächste Schritte
 
