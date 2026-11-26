@@ -1,0 +1,48 @@
+{
+	"schema": 1,
+	"id": "material",
+	"name": "Material",
+	"description": "Materialverwaltung: Lager mit Typen, Artikeln, Sets, Kategorien und Lagerorten, Zelte als Bauplan, Verbrauchsmaterial mit Rücknahme, Vorrat für Lebensmittel mit Strichcode und Mindesthaltbarkeit, Reservierungen für Aktionen und Gruppen mit automatischer Zuteilung, Scannen per Kamera oder USB-Scanner, Etiketten und Listen",
+	"version": "2.3.0",
+	"core": ">=2.0.0-0 <3.0.0",
+	"dependencies": {},
+	"optionalDependencies": {
+		"actions": {
+			"version": "^1.9.0"
+		},
+		"members": {
+			"version": "^1.14.0"
+		},
+		"offices": {
+			"version": "^1.2.0"
+		}
+	},
+	"permissions": [
+		"material.inventory.manage",
+		"material.inventory.view",
+		"material.labels.manage",
+		"material.pantry.manage",
+		"material.reservation.create",
+		"material.reservation.manage"
+	],
+	"npm": {},
+	"readmePath": null,
+	"images": [],
+	"versions": [
+		{
+			"version": "2.3.0",
+			"date": "2026-11-19T13:30:20Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/8d9781a635ef8155f08040b642da212ed946406e"
+		},
+		{
+			"version": "2.2.0",
+			"date": "2026-11-03T11:47:19Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/85d84eced503d0673461abd6d6cfd6e559e2500f"
+		},
+		{
+			"version": "2.1.0",
+			"date": "2026-11-01T15:18:52Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/46b9aed265806b550549ead112355001e04e31ca"
+		}
+	]
+}
