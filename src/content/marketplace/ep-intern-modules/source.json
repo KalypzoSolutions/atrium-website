@@ -1,0 +1,54 @@
+{
+	"id": "ep-intern-modules",
+	"repository": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules",
+	"commit": "cbfa86f5f727bb91239d2212029790c62f6f3efb",
+	"syncedAt": "2026-11-26T01:37:02.449Z",
+	"catalog": {
+		"schema": 1,
+		"name": "EP Intern – Fachmodule",
+		"description": "Fachmodule für die Stammesverwaltung der Edelweißpiraten (Kalypzo Atrium).",
+		"modules": [
+			{
+				"id": "actions",
+				"path": "actions"
+			},
+			{
+				"id": "ep-stamm",
+				"path": "ep-stamm"
+			},
+			{
+				"id": "galleries",
+				"path": "galleries"
+			},
+			{
+				"id": "material",
+				"path": "material"
+			},
+			{
+				"id": "members",
+				"path": "members"
+			},
+			{
+				"id": "messages",
+				"path": "messages"
+			},
+			{
+				"id": "offices",
+				"path": "offices"
+			},
+			{
+				"id": "orders",
+				"path": "orders"
+			},
+			{
+				"id": "treasury",
+				"path": "treasury"
+			},
+			{
+				"id": "website",
+				"path": "website"
+			}
+		]
+	},
+	"readmePath": "README.md"
+}

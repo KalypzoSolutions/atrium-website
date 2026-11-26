@@ -430,3 +430,13 @@ export function marketRegistry() {
 		}))
 	};
 }
+
+/** Pfad zur Detailseite einer Marktplatzquelle. */
+export function marketSourcePath(lang: Lang, sourceId: string): string {
+	return `/${lang}/${MARKET_SLUG[lang]}/${sourceId}`;
+}
+
+/** Pfad zur Detailseite eines Moduls einer Marktplatzquelle. */
+export function marketModulePath(lang: Lang, sourceId: string, moduleId: string): string {
+	return `${marketSourcePath(lang, sourceId)}/${moduleId}`;
+}

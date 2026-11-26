@@ -1,0 +1,53 @@
+{
+	"schema": 1,
+	"id": "orders",
+	"name": "Bestellungen",
+	"description": "Stammesartikel bestellen (Halstuch, Liederbuch …) für Mitglieder mit Rechnung über die Kasse, für Gruppen und den Stamm ohne Rechnung, Lager und Einkauf für die*den Kämmerer*in",
+	"version": "1.3.0",
+	"core": ">=2.0.0-0 <3.0.0",
+	"dependencies": {
+		"members": {
+			"version": "^1.14.0"
+		}
+	},
+	"optionalDependencies": {
+		"treasury": {
+			"version": "^1.2.0"
+		},
+		"offices": {
+			"version": "^1.2.0"
+		}
+	},
+	"permissions": [
+		"orders.ai.use",
+		"orders.article.manage",
+		"orders.order.create",
+		"orders.order.delete",
+		"orders.order.edit",
+		"orders.order.group",
+		"orders.order.manage",
+		"orders.order.stamm",
+		"orders.order.view",
+		"orders.stock.manage"
+	],
+	"npm": {},
+	"readmePath": null,
+	"images": [],
+	"versions": [
+		{
+			"version": "1.3.0",
+			"date": "2026-11-20T09:08:25Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/c672d36a45d052ddedeaae0a6bd9b42493a45d59"
+		},
+		{
+			"version": "1.2.0",
+			"date": "2026-11-11T08:06:53Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/84b41acfce77c411a674b30ee00dcae0845c85c9"
+		},
+		{
+			"version": "1.1.0",
+			"date": "2026-11-01T15:18:52Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/46b9aed265806b550549ead112355001e04e31ca"
+		}
+	]
+}

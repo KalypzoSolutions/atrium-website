@@ -1,0 +1,21 @@
+{
+	"schema": 1,
+	"id": "ep-stamm",
+	"name": "Stammesprofil",
+	"description": "Aussehen und Vorgaben der Edelweißpiraten: Briefkopf, Mail-Kopf, Wappen als App-Icon, „Stamm“ als Bezeichnung für alle, Ton der Schreibhilfe",
+	"version": "1.0.0",
+	"core": ">=2.0.0-0 <3.0.0",
+	"dependencies": {},
+	"optionalDependencies": {},
+	"permissions": [],
+	"npm": {},
+	"readmePath": null,
+	"images": [],
+	"versions": [
+		{
+			"version": "1.0.0",
+			"date": "2026-11-01T17:05:24Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/acfd4f372442f2ab051ed339dadff526926d39ff"
+		}
+	]
+}

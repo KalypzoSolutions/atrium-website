@@ -1,0 +1,34 @@
+{
+	"id": "atrium-basic-modules",
+	"repository": "https://github.com/KalypzoSolutions/atrium-basic-modules",
+	"commit": "082f132b8bee934ef5cace350f201f636437e92e",
+	"syncedAt": "2026-11-26T01:37:02.051Z",
+	"catalog": {
+		"schema": 1,
+		"name": "Atrium – Basismodule",
+		"description": "Allgemeine Basismodule für Kalypzo Atrium: Dateien, Notizen, Aufgaben, Whiteboards, Termine.",
+		"modules": [
+			{
+				"id": "events",
+				"path": "events"
+			},
+			{
+				"id": "files",
+				"path": "files"
+			},
+			{
+				"id": "notes",
+				"path": "notes"
+			},
+			{
+				"id": "tasks",
+				"path": "tasks"
+			},
+			{
+				"id": "whiteboard",
+				"path": "whiteboard"
+			}
+		]
+	},
+	"readmePath": "README.md"
+}

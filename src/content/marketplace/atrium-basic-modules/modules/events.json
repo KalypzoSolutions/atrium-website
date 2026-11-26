@@ -1,0 +1,44 @@
+{
+	"schema": 1,
+	"id": "events",
+	"name": "Termine",
+	"description": "Interne Termine und Termine für die Stammeswebsite",
+	"version": "1.6.0",
+	"core": ">=2.0.0-0 <3.0.0",
+	"dependencies": {},
+	"optionalDependencies": {
+		"members": {
+			"version": "^1.14.0"
+		},
+		"actions": {
+			"version": "^1.9.0"
+		},
+		"tasks": {
+			"version": "^1.2.0"
+		}
+	},
+	"permissions": [
+		"events.ai.use",
+		"events.event.create",
+		"events.event.edit-all",
+		"events.event.publish",
+		"events.event.view",
+		"events.event.view-all",
+		"events.website.read"
+	],
+	"npm": {},
+	"readmePath": null,
+	"images": [],
+	"versions": [
+		{
+			"version": "1.6.0",
+			"date": "2026-11-16T09:35:01Z",
+			"url": "https://github.com/KalypzoSolutions/atrium-basic-modules/commit/c8e2cb5640079d33a0fad115117ce6b982e1d9ff"
+		},
+		{
+			"version": "1.5.0",
+			"date": "2026-11-09T08:27:11Z",
+			"url": "https://github.com/KalypzoSolutions/atrium-basic-modules/commit/a418708f992f7f396b142358784e3d0ae9fc57a7"
+		}
+	]
+}

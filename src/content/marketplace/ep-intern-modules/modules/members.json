@@ -1,0 +1,46 @@
+{
+	"schema": 1,
+	"id": "members",
+	"name": "Mitglieder & Gruppen",
+	"version": "1.15.0",
+	"core": ">=2.0.0-0 <3.0.0",
+	"dependencies": {},
+	"optionalDependencies": {},
+	"permissions": [
+		"members.ai.use",
+		"members.data.export",
+		"members.field.manage",
+		"members.group.delete",
+		"members.group.edit",
+		"members.group.view",
+		"members.led-member.edit",
+		"members.led-member.export",
+		"members.led-member.view",
+		"members.link.manage",
+		"members.link.view",
+		"members.member.delete",
+		"members.member.edit",
+		"members.member.view",
+		"members.own.edit",
+		"members.own.view",
+		"members.storage.delete",
+		"members.storage.read",
+		"members.storage.write",
+		"members.website.read"
+	],
+	"npm": {},
+	"readmePath": null,
+	"images": [],
+	"versions": [
+		{
+			"version": "1.15.0",
+			"date": "2026-11-20T08:09:00Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/9a37f70af1459bd0d17c5d28769a2ad8dc904563"
+		},
+		{
+			"version": "1.14.0",
+			"date": "2026-11-01T15:18:52Z",
+			"url": "https://github.com/Stamm-Edelweisspiraten/ep-intern-modules/commit/46b9aed265806b550549ead112355001e04e31ca"
+		}
+	]
+}
