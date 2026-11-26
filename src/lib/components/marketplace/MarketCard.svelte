@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { BadgeCheck, Check, Copy, ExternalLink, Scale } from '@lucide/svelte';
+	import { ArrowRight, BadgeCheck, Check, Copy, ExternalLink, Scale } from '@lucide/svelte';
 	import type { Lang } from '$lib/config';
-	import { githubRepoSlug, type MarketSource } from '$lib/marketplace';
+	import { githubRepoSlug, marketModulePath, marketSourcePath, type MarketSource } from '$lib/marketplace';
 	import { t } from '$lib/i18n';
 	import GithubIcon from '$lib/components/GithubIcon.svelte';
 	import { LinkCopy } from './copy.svelte';
@@ -10,6 +10,7 @@
 	const d = $derived(t(lang).market);
 	const slug = $derived(githubRepoSlug(s.repository));
 	const titleId = $derived(`source-${s.id}-title`);
+	const page = $derived(marketSourcePath(lang, s.id));
 
 	// Kopierstatus: kurzes visuelles Feedback plus Meldung für Screenreader.
 	const copier = new LinkCopy();
@@ -24,7 +25,9 @@
 <article id="source-{s.id}" aria-labelledby={titleId} class="card flex flex-col p-6">
 	<header>
 		<div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
-			<h3 id={titleId} class="text-lg font-semibold tracking-tight">{s.name}</h3>
+			<h3 id={titleId} class="text-lg font-semibold tracking-tight">
+				<a href={page} class="hover:text-brand-600 dark:hover:text-brand-400">{s.name}</a>
+			</h3>
 			{#if s.official}
 				<span
 					class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 ring-1 ring-brand-200 ring-inset dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-500/30"
@@ -78,10 +81,12 @@
 		<h4 class={label}>{d.card.modules(s.modules.length)}</h4>
 		<ul class="mt-2 flex flex-wrap gap-1.5">
 			{#each s.modules as m (m.id)}
-				<li
-					class="rounded-md border border-ink-200 px-2 py-0.5 text-xs text-ink-700 dark:border-ink-700 dark:text-ink-200"
-				>
-					{m.name[lang]}
+				<li>
+					<a
+						href={marketModulePath(lang, s.id, m.id)}
+						class="block rounded-md border border-ink-200 px-2 py-0.5 text-xs text-ink-700 hover:border-brand-300 hover:text-brand-600 dark:border-ink-700 dark:text-ink-200 dark:hover:border-brand-500/50 dark:hover:text-brand-400"
+						>{m.name[lang]}</a
+					>
 				</li>
 			{/each}
 		</ul>
@@ -126,6 +131,9 @@
 				title={slug}
 			>
 				<GithubIcon class="size-4" />{d.card.github}
+			</a>
+			<a href={page} class="btn-ghost" aria-label={d.card.detailsLabel(s.name)}>
+				{d.card.details}<ArrowRight class="size-4" aria-hidden="true" />
 			</a>
 			{#if s.homepage}
 				<a href={s.homepage} rel="noopener" target="_blank" class="link-arrow ml-1">

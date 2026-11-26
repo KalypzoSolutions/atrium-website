@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types';
 import { SITE_URL, LANGS, GUIDE_SLUG, MARKET_SLUG, type Lang } from '$lib/config';
+import { marketModulePath, marketSourcePath, sortedSources } from '$lib/marketplace';
 
 export const prerender = true;
 
@@ -37,6 +38,21 @@ function pages(): Page[] {
 			changefreq: 'weekly'
 		}
 	];
+	// Detailseiten des Marktplatzes: je Quelle die Paketseite, danach ihre Modulseiten.
+	for (const s of sortedSources()) {
+		list.push({
+			variants: Object.fromEntries(LANGS.map((l) => [l, marketSourcePath(l, s.id)])),
+			priority: '0.6',
+			changefreq: 'weekly'
+		});
+		for (const m of s.modules) {
+			list.push({
+				variants: Object.fromEntries(LANGS.map((l) => [l, marketModulePath(l, s.id, m.id)])),
+				priority: '0.6',
+				changefreq: 'weekly'
+			});
+		}
+	}
 	const allSlugs = [...new Set(LANGS.flatMap((l) => [...docSlugs.get(l)!]))].sort((a, b) =>
 		a === 'index' ? -1 : b === 'index' ? 1 : a.localeCompare(b)
 	);

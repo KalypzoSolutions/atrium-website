@@ -87,6 +87,8 @@ source: docs/quickstart.md
 
 Die Einträge des Marktplatzes (`/de/marktplatz`, `/en/marketplace`) stehen in `src/lib/marketplace.ts`; neue Quellen kommen per Pull Request in dieses Repository. `validateSources` prüft die Liste beim Build, ein ungültiger Eintrag lässt `npm run build` abbrechen. Aus denselben Daten entsteht die Registry `/marketplace/v1/index.json`.
 
+Jedes Paket und jedes Modul hat eine eigene Detailseite (`/de/marktplatz/<quelle>[/<modul>]`, `/en/marketplace/<quelle>[/<modul>]`); die Registry verlinkt sie im Feld `page`. README, Manifeste, Versionen und Bilder dafür stammen aus einem Snapshot, den `npm run sync:marketplace` von GitHub holt (optional mit `GITHUB_TOKEN`) und unter `src/content/marketplace/` bzw. `static/marketplace/` ablegt. Den Snapshot nach Änderungen an einer Quelle neu erzeugen und mitcommitten.
+
 Felder, Kategorien, Ablauf und das Registry-Format beschreibt die Doku unter [`/de/docs/marketplace`](src/content/docs/de/marketplace.md) bzw. [`/en/docs/marketplace`](src/content/docs/en/marketplace.md).
 
 ## Screenshots neu erzeugen

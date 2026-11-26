@@ -423,13 +423,23 @@ export function marketRegistry() {
 		generatedAt: new Date().toISOString(),
 		site: SITE_URL,
 		marketplace: Object.fromEntries(LANGS.map((l) => [l, `${SITE_URL}/${l}/${MARKET_SLUG[l]}`])) as Localized,
-		// Jedes Modul zusätzlich mit seinem eigenen Installationslink.
+		// Jede Quelle und jedes Modul mit der Detailseite (`page`, absolut je Sprache);
+		// jedes Modul zusätzlich mit seinem eigenen Installationslink.
 		sources: sortedSources().map((s) => ({
 			...s,
-			modules: s.modules.map((m) => ({ ...m, source: moduleSource(s, m) }))
+			page: localizedUrl((l) => marketSourcePath(l, s.id)),
+			modules: s.modules.map((m) => ({
+				...m,
+				source: moduleSource(s, m),
+				page: localizedUrl((l) => marketModulePath(l, s.id, m.id))
+			}))
 		}))
 	};
 }
+
+/** Absolute URL je Sprache aus einem Pfad-Helfer. */
+const localizedUrl = (path: (lang: Lang) => string): Localized =>
+	Object.fromEntries(LANGS.map((l) => [l, `${SITE_URL}${path(l)}`])) as Localized;
 
 /** Pfad zur Detailseite einer Marktplatzquelle. */
 export function marketSourcePath(lang: Lang, sourceId: string): string {

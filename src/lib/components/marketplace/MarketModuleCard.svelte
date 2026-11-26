@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { BadgeCheck, Check, Copy, Package } from '@lucide/svelte';
+	import { ArrowRight, BadgeCheck, Check, Copy, Package } from '@lucide/svelte';
 	import type { Lang } from '$lib/config';
-	import type { MarketModuleEntry } from '$lib/marketplace';
+	import { marketModulePath, type MarketModuleEntry } from '$lib/marketplace';
+	import { getModuleDetails } from '$lib/marketplace-details';
 	import { t } from '$lib/i18n';
 	import GithubIcon from '$lib/components/GithubIcon.svelte';
 	import { LinkCopy } from './copy.svelte';
@@ -21,6 +22,9 @@
 	const s = $derived(entry.source);
 	const name = $derived(m.name[lang]);
 	const titleId = $derived(`module-${entry.key}-title`);
+	const page = $derived(marketModulePath(lang, s.id, m.id));
+	// Version aus dem synchronisierten Snapshot (fehlt, solange kein Snapshot vorliegt).
+	const version = $derived(getModuleDetails(s.id, m.id)?.version);
 
 	// Kopierstatus: kurzes visuelles Feedback plus Meldung für Screenreader.
 	const copier = new LinkCopy();
@@ -43,7 +47,14 @@
 <article id="module-{entry.key}" aria-labelledby={titleId} class="card flex w-full flex-col p-6">
 	<header>
 		<div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
-			<h3 id={titleId} class="text-lg font-semibold tracking-tight">{name}</h3>
+			<h3 id={titleId} class="text-lg font-semibold tracking-tight">
+				<a href={page} class="hover:text-brand-600 dark:hover:text-brand-400">{name}</a>
+				{#if version}
+					<span class="ml-1 align-middle font-mono text-xs font-normal text-ink-500 dark:text-ink-400"
+						>v{version}</span
+					>
+				{/if}
+			</h3>
 			{#if s.official}
 				<span
 					class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 ring-1 ring-brand-200 ring-inset dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-500/30"
@@ -132,6 +143,9 @@
 				aria-label={d.moduleCard.githubLabel(name)}
 			>
 				<GithubIcon class="size-4" />{d.card.github}
+			</a>
+			<a href={page} class="btn-ghost" aria-label={d.moduleCard.detailsLabel(name)}>
+				{d.card.details}<ArrowRight class="size-4" aria-hidden="true" />
 			</a>
 		</div>
 		<p class="sr-only" role="status" aria-live="polite">{copier.message}</p>
