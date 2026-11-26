@@ -38,14 +38,16 @@ export async function renderReadme(md: string, ctx: ReadmeContext): Promise<{ ht
 		used.set(base, count + 1);
 		const id = count ? `${base}-${count}` : base;
 		if (depth === 2 || depth === 3) toc.push({ id, text, level: depth });
-		return `<h${depth} id="${id}">${content}</h${depth}>`;
+		const level = Math.min(6, depth + 2);
+		return `<h${level} id="${id}">${content}</h${level}>`;
 	};
 	renderer.image = ({ href, text }) => {
 		if (/^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(href)) return '';
 		let file: string;
 		try { file = posix.normalize(posix.join(posix.dirname(ctx.readmePath), decodeURIComponent(href.split(/[?#]/)[0]!))); } catch { return ''; }
 		const image = ctx.images.find((item) => item.path === file);
-		return image ? `<img src="${sanitizeHtml(image.url, { allowedTags: [], allowedAttributes: {} })}" alt="${sanitizeHtml(text, { allowedTags: [], allowedAttributes: {} })}">` : '';
+		const escape = (value: string) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return image ? `<img src="${escape(image.url)}" alt="${escape(text)}">` : '';
 	};
 	renderer.link = function ({ href, title, tokens }) {
 		let url = href;
