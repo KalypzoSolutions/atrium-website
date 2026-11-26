@@ -122,7 +122,17 @@ export const en: typeof de = {
 			integration: 'Integration',
 			other: 'Other'
 		},
+		detail: {
+			breadcrumb: 'Breadcrumb', publisher: 'Publisher', modules: 'Included modules',
+			readme: 'README', readmeFallback: 'No README is available for this module. The curated description is provided above.',
+			snapshot: 'Snapshot date', commit: 'Commit on GitHub', version: 'Current version', core: 'Core compatibility',
+			gallery: 'Image gallery', imageAlt: (name: string, n: number) => `Image ${n} of ${name}`,
+			versions: 'Version history', dependencies: 'Dependencies', optionalDependencies: 'Optional dependencies',
+			permissions: 'Permissions', none: 'None specified', back: 'Back to package', githubFolder: 'Module folder on GitHub'
+		},
 		card: {
+			details: 'Details',
+			detailsLabel: (name: string) => `Details for ${name}`,
 			official: 'Official',
 			officialHint: 'Published by Kalypzo Solutions',
 			by: 'by',
@@ -143,6 +153,7 @@ export const en: typeof de = {
 			copyFailed: 'Copying is not possible – the link in the field is selected, please copy it manually (e.g. with Ctrl+C).'
 		},
 		moduleCard: {
+			detailsLabel: (name: string) => `Details for module ${name}`,
 			fromSource: 'from package',
 			showSource: (name: string) => `Show package ${name}`,
 			sourceLabel: (name: string) => `Install link of the module ${name}`,

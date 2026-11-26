@@ -122,7 +122,17 @@ export const de = {
 			integration: 'Integration',
 			other: 'Sonstiges'
 		} satisfies Record<MarketCategory, string>,
+		detail: {
+			breadcrumb: 'Brotkrumennavigation', publisher: 'Herausgeber', modules: 'Enthaltene Module',
+			readme: 'README', readmeFallback: 'Für dieses Modul ist keine README verfügbar. Die kuratierte Beschreibung finden Sie oben.',
+			snapshot: 'Stand des Snapshots', commit: 'Commit auf GitHub', version: 'Aktuelle Version', core: 'Core-Kompatibilität',
+			gallery: 'Bildergalerie', imageAlt: (name: string, n: number) => `Bild ${n} von ${name}`,
+			versions: 'Versionshistorie', dependencies: 'Abhängigkeiten', optionalDependencies: 'Optionale Abhängigkeiten',
+			permissions: 'Berechtigungen', none: 'Keine angegeben', back: 'Zurück zum Paket', githubFolder: 'Modulordner auf GitHub'
+		},
 		card: {
+			details: 'Details',
+			detailsLabel: (name: string) => `Details zu ${name}`,
 			official: 'Offiziell',
 			officialHint: 'Veröffentlicht von Kalypzo Solutions',
 			by: 'von',
@@ -143,6 +153,7 @@ export const de = {
 			copyFailed: 'Kopieren nicht möglich – der Link im Feld ist markiert, bitte manuell kopieren (z. B. mit Strg+C).'
 		},
 		moduleCard: {
+			detailsLabel: (name: string) => `Details zum Modul ${name}`,
 			fromSource: 'aus Paket',
 			showSource: (name: string) => `Paket ${name} anzeigen`,
 			sourceLabel: (name: string) => `Installationslink des Moduls ${name}`,
